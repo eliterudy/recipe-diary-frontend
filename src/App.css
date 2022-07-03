@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+.text-default-theme {
+  color: "red" ;
+ }
+
+ .nav-pills .nav-link {
+  color: #fff;
+  cursor: default;
+  background-color: #868686;
+}
+
+
+
+.navbar .navbar-nav>li>a {
+ color: #151f2d
+} 
+
+.navbar .navbar-nav>li>a:hover {
+  color: #0450ba;
+}
+

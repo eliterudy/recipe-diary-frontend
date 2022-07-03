@@ -4,78 +4,57 @@ import {Link} from 'react-router-dom';
 const Footer = () => {
   return (
     <div className="footer">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-4 offset-1 col-sm-2">
-            <h5>Links</h5>
-            <ul className="list-unstyled">
-              <li>
+      <div className="container ms-2 me-2">
+        <div className="row justify-content-between align-items-center">
+          <div className="col-12  col-sm-4 align-items-center justify-content-center">
+            <ul className="list-unstyled d-flex flex-row col-sm-8 ms-sm-5 mb-0">
+              <li className="me-2">
                 <Link to="/home">Home</Link>
               </li>
-              <li>
+              <li className="me-2">
                 <Link to="/aboutus">About</Link>
               </li>
-              <li>
-                <Link to="/menu">Menu</Link>
+              <li className="me-2">
+                <Link to="/recipes">Recipes</Link>
               </li>
-              <li>
+              <li className="me-2">
                 <Link to="/contactus">Contact</Link>
               </li>
             </ul>
           </div>
-          <div className="col-7 col-sm-5">
-            <h5>Our Address</h5>
-            <address>
-              xxxxxxxxxxxxxxxxxxxxxx
-              <br />
-              xxxxxxxxxxxxxxxxxxxxxx
-              <br />
-              xxxxxxxxxxxxxxxxxxxxxx
-              <br />
-              <i className="fa fa-phone fa-lg"></i>: +999 9999 9999
-              <br />
-              <i className="fa fa-fax fa-lg"></i>: +999 9999 9999
-              <br />
-              <i className="fa fa-envelope fa-lg"></i>:{' '}
-              <a href="mailto:gdmello@umassd.edu">confusion@food.net</a>
-            </address>
+          <div className="col-12 col-sm-4 align-items-center justify-content-center">
+            <p className="mb-0 " style={{color: '#ddd', textAlign: 'center'}}>
+              © Copyright 2022 The Cook Book
+            </p>
           </div>
-          <div className="col-12 col-sm-4 align-self-center">
-            <div className="text-center">
+
+          <div className="col-12 col-sm-4 row d-flex flex-row align-items-center justify-content-end">
+            <span className="w-auto" style={{color: '#ddd'}}>
+              Share with friends
+            </span>
+            <div className="w-auto">
               <a
-                className="btn btn-social-icon btn-google"
-                href="http://google.com/+">
-                <i className="fa fa-google-plus"></i>
-              </a>
-              <a
-                className="btn btn-social-icon btn-facebook"
+                className="me-1 btn btn-social-icon btn-facebook"
                 href="http://www.facebook.com/profile.php?id=">
                 <i className="fa fa-facebook"></i>
               </a>
               <a
-                className="btn btn-social-icon btn-linkedin"
+                className="me-1 btn btn-social-icon btn-linkedin"
                 href="http://www.linkedin.com/in/">
                 <i className="fa fa-linkedin"></i>
               </a>
               <a
-                className="btn btn-social-icon btn-twitter"
+                className="me-1 btn btn-social-icon btn-twitter"
                 href="http://twitter.com/">
                 <i className="fa fa-twitter"></i>
               </a>
+
               <a
-                className="btn btn-social-icon btn-google"
-                href="http://youtube.com/">
-                <i className="fa fa-youtube"></i>
-              </a>
-              <a className="btn btn-social-icon" href="mailto:">
-                <i className="fa fa-envelope-o"></i>
+                className="me-1 btn btn-social-icon btn-instagram"
+                href="mailto:">
+                <i className="fa fa-instagram"></i>
               </a>
             </div>
-          </div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-auto">
-            <p>© Copyright 2022 The Cook Book</p>
           </div>
         </div>
       </div>
