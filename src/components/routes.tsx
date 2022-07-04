@@ -10,7 +10,6 @@ const MainRouter = () => {
   const HomePage = () => {
     return <Home />;
   };
-  console.log('HERE: ', location);
 
   return (
     <div>
@@ -18,7 +17,7 @@ const MainRouter = () => {
       {/* Routes are defined and wrapped with a switch component */}
       <Routes>
         <Route path="/home" element={<HomePage />} />
-        <Route path="/aboutus" element={<HomePage />} />
+        <Route path="/home/:recipe" element={<HomePage />} />
         <Route path="/recipes" element={<HomePage />} />
         <Route path="/recipes/:recipeId" element={<HomePage />} />
         <Route path="/contactus" element={<HomePage />} />

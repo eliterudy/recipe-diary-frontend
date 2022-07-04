@@ -20,7 +20,7 @@ import Generic from '../generic/Generic';
 import {Animate, AnimateGroup} from 'react-simple-animate';
 import useIntersection from '../generic/useIntersection';
 
-const Home = () => {
+const RecipeDetails = () => {
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const inViewport = useIntersection(ref, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
@@ -749,4 +749,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default RecipeDetails;

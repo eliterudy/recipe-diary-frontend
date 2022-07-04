@@ -24,7 +24,7 @@ import {NavLink} from 'react-router-dom';
 import {url} from 'inspector';
 import useHover from './useHover';
 
-interface DishCardData {
+interface RecipeCardData {
   title: string;
   ingredients: string[];
   instructions: string[];
@@ -41,12 +41,12 @@ interface DishCardData {
   ingredientCount: number;
 }
 
-interface DishCardProps {
-  data: DishCardData;
+interface RecipeCardProps {
+  data: RecipeCardData;
 }
 
 const Generic = {
-  DishCard: (cardProps: DishCardProps) => {
+  RecipeCard: (cardProps: RecipeCardProps) => {
     // const [growCard, updateGrow] = useState(false);
     const {
       title,
@@ -104,7 +104,7 @@ const Generic = {
                   width={30}
                   alt="serve"
                 />
-                <span className="  col-auto  mb-0  ms-1  p">{` ${servings} servings`}</span>
+                <span className="col-auto  mb-0  ms-1  p text-center">{` ${servings} servings`}</span>
               </div>
               <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
                 <img
@@ -114,7 +114,7 @@ const Generic = {
                   width={30}
                   alt="time"
                 />
-                <span className="  col-auto  mb-0  ms-1  p">
+                <span className="  col-auto  mb-0  ms-1  p text-center">
                   {` ${totalTimeInMins} Min`}
                 </span>
               </div>
@@ -126,7 +126,7 @@ const Generic = {
                   width={30}
                   alt="serve"
                 />
-                <span className="  col-auto  mb-0  ms-1  p">{` ${course} `}</span>
+                <span className="  col-auto  mb-0  ms-1  p text-center">{` ${course} `}</span>
               </div>
             </CardText>
           </CardBody>
