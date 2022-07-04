@@ -22,6 +22,7 @@ import {
 } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import {url} from 'inspector';
+import useHover from './useHover';
 
 interface DishCardData {
   title: string;
@@ -46,6 +47,7 @@ interface DishCardProps {
 
 const Generic = {
   DishCard: (cardProps: DishCardProps) => {
+    // const [growCard, updateGrow] = useState(false);
     const {
       title,
       ingredients,
@@ -58,8 +60,21 @@ const Generic = {
       course,
       ingredientCount,
     } = cardProps.data;
+    const hover = useHover(
+      {
+        transform: 'scale(1.05)',
+        zIndex: 10,
+        transition: '0.5s',
+      },
+      {transition: '0.3s'},
+    );
+
     return (
-      <div className="">
+      <div
+        {...hover}
+        onClick={() => {
+          alert('HELLO');
+        }}>
         <Card className=" col-12 col-sm-12">
           <CardBody className="p-0">
             {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}

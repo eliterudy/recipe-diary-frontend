@@ -24,6 +24,7 @@ const Home = () => {
   const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
   const inViewport = useIntersection(ref, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
+
   if (inViewport && showSpecials === false) {
     updateShowSpecials(true);
   }
@@ -687,6 +688,7 @@ const Home = () => {
       diet: 'Non Vegeterian',
     },
   ];
+
   return (
     <>
       <div
@@ -730,7 +732,7 @@ const Home = () => {
         <div className="d-flex flex-row flex-wrap" ref={ref}>
           <AnimateGroup play={showSpecials}>
             {specials.map((special, index) => (
-              <div className="col-12 px-2 col-sm-4 mb-5">
+              <div className={`col-12  col-sm-4 mb-5 px-4 `}>
                 <Animate
                   start={{opacity: 0, marginTop: 100}}
                   end={{opacity: 1, marginTop: 0}}

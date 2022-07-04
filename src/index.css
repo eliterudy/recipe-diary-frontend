@@ -93,3 +93,16 @@ address{
 }
 
 
+/* 
+@media only screen and (min-width: 760px) {
+  .dishCardAnimate {
+    transition: 0.3s;
+  }
+
+  .dishCardAnimate:hover {
+    transform: 'scale(1.05)';
+    z-index: 10;
+    transition: '0.5s';
+  }
+  
+} */
