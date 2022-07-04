@@ -55,11 +55,12 @@ const Generic = {
       totalTimeInMins,
       diet,
       servings,
+      course,
       ingredientCount,
     } = cardProps.data;
     return (
-      <div className="col-12 px-2 col-sm-4 mb-5">
-        <Card className=" col-12 col-sm-11">
+      <div className="">
+        <Card className=" col-12 col-sm-12">
           <CardBody className="p-0">
             {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
             <img
@@ -73,36 +74,46 @@ const Generic = {
                 objectFit: 'cover',
               }}
             />
-            <div className="p-4">
+            <div className="p-4 pb-2">
               <CardTitle tag="h5">{title}</CardTitle>
               <CardSubtitle className="mb-2 text-muted" tag="h6">
                 {cuisine}
               </CardSubtitle>
-              <CardText className="row">
-                <div className=" col-6 d-flex flex-row align-items-center  ">
-                  <img
-                    className="col-auto"
-                    src="assets/icons/serve.png"
-                    height={30}
-                    width={30}
-                    alt="serve"
-                  />
-                  <span className="  col-auto  mb-0  ms-1  p">{` ${servings} servings`}</span>
-                </div>
-                <div className="col-6 d-flex flex-row align-items-center  ">
-                  <img
-                    className="col-auto"
-                    src="assets/icons/time.png"
-                    height={30}
-                    width={30}
-                    alt="time"
-                  />
-                  <span className="  col-auto  mb-0  ms-1  p">
-                    {` ${totalTimeInMins} Min`}
-                  </span>
-                </div>
-              </CardText>
             </div>
+            <CardText className="row  mx-0">
+              <div className=" col-4 d-flex flex-column align-items-center p-2 ">
+                <img
+                  className="col-auto"
+                  src="assets/icons/serve.png"
+                  height={30}
+                  width={30}
+                  alt="serve"
+                />
+                <span className="  col-auto  mb-0  ms-1  p">{` ${servings} servings`}</span>
+              </div>
+              <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
+                <img
+                  className="col-auto"
+                  src="assets/icons/time.png"
+                  height={30}
+                  width={30}
+                  alt="time"
+                />
+                <span className="  col-auto  mb-0  ms-1  p">
+                  {` ${totalTimeInMins} Min`}
+                </span>
+              </div>
+              <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
+                <img
+                  className="col-auto"
+                  src="assets/icons/course.png"
+                  height={30}
+                  width={30}
+                  alt="serve"
+                />
+                <span className="  col-auto  mb-0  ms-1  p">{` ${course} `}</span>
+              </div>
+            </CardText>
           </CardBody>
         </Card>
       </div>

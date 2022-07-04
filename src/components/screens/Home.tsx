@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -17,8 +17,16 @@ import {
 } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import Generic from '../generic/Generic';
+import {Animate, AnimateGroup} from 'react-simple-animate';
+import useIntersection from '../generic/useIntersection';
 
 const Home = () => {
+  const ref = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const inViewport = useIntersection(ref, '0px'); // Trigger as soon as the element becomes visible
+  const [showSpecials, updateShowSpecials] = useState(false);
+  if (inViewport && showSpecials === false) {
+    updateShowSpecials(true);
+  }
   const specials = [
     {
       title: 'Spicy Lemon Chicken Kebab Recipe',
@@ -719,10 +727,20 @@ const Home = () => {
       </div>
       <div className="container">
         <h1 className="text-center my-5">Todays Specials</h1>
-        <div className="d-flex flex-row flex-wrap">
-          {specials.map(special => (
-            <Generic.DishCard data={special} />
-          ))}
+        <div className="d-flex flex-row flex-wrap" ref={ref}>
+          <AnimateGroup play={showSpecials}>
+            {specials.map((special, index) => (
+              <div className="col-12 px-2 col-sm-4 mb-5">
+                <Animate
+                  start={{opacity: 0, marginTop: 100}}
+                  end={{opacity: 1, marginTop: 0}}
+                  duration={0.5}
+                  sequenceIndex={index}>
+                  <Generic.DishCard data={special} />
+                </Animate>
+              </div>
+            ))}
+          </AnimateGroup>
         </div>
       </div>
     </>
