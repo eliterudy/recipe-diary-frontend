@@ -20,31 +20,9 @@ import {
   CardSubtitle,
   CardText,
 } from 'reactstrap';
-import {Link, To} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import useHover from './useHover';
-
-interface RecipeCardData {
-  title: string;
-  ingredients: string[];
-  instructions: string[];
-  ingredientsUsed: string[];
-  imageUrl: string;
-  cuisine: string;
-  course: string;
-  diet: string;
-  url: string;
-  prepTimeInMins: number;
-  cookTimeInMins: number;
-  totalTimeInMins: number;
-  servings: number;
-  ingredientCount: number;
-}
-
-interface RecipeCardProps {
-  data: RecipeCardData;
-  index: number;
-  redirect: To;
-}
+import {RecipeCardProps} from '../../types';
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
