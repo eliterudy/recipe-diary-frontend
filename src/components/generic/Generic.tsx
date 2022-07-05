@@ -20,8 +20,7 @@ import {
   CardSubtitle,
   CardText,
 } from 'reactstrap';
-import {NavLink} from 'react-router-dom';
-import {url} from 'inspector';
+import {Link, To} from 'react-router-dom';
 import useHover from './useHover';
 
 interface RecipeCardData {
@@ -43,11 +42,13 @@ interface RecipeCardData {
 
 interface RecipeCardProps {
   data: RecipeCardData;
+  index: number;
+  redirect: To;
 }
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
-    // const [growCard, updateGrow] = useState(false);
+    const {data, index, redirect} = cardProps;
     const {
       title,
       ingredients,
@@ -59,7 +60,7 @@ const Generic = {
       servings,
       course,
       ingredientCount,
-    } = cardProps.data;
+    } = data;
     const hover = useHover(
       {
         transform: 'scale(1.05)',
@@ -70,68 +71,71 @@ const Generic = {
     );
 
     return (
-      <div
-        {...hover}
-        onClick={() => {
-          alert('HELLO');
-        }}>
-        <Card className=" col-12 col-sm-12">
-          <CardBody className="p-0">
-            {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-            <img
-              src={imageUrl}
-              className="w-100 img-fluid center"
-              alt={title}
-              style={{
-                borderTopRightRadius: 4,
-                borderTopLeftRadius: 4,
-                height: 320,
-                objectFit: 'cover',
-              }}
-            />
-            <div className="p-4 pb-2">
-              <CardTitle tag="h5">{title}</CardTitle>
-              <CardSubtitle className="mb-2 text-muted" tag="h6">
-                {cuisine}
-              </CardSubtitle>
-            </div>
-            <CardText className="row  mx-0">
-              <div className=" col-4 d-flex flex-column align-items-center p-2 ">
-                <img
-                  className="col-auto"
-                  src="assets/icons/serve.png"
-                  height={30}
-                  width={30}
-                  alt="serve"
-                />
-                <span className="col-auto  mb-0  ms-1  p text-center">{` ${servings} servings`}</span>
+      <Link
+        to={redirect}
+        state={data}
+        style={{textDecoration: 'none', color: 'black'}}>
+        <div {...hover}>
+          <Card className=" col-12 col-sm-12">
+            <CardBody className="p-0">
+              {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+              <img
+                src={imageUrl}
+                className="w-100 img-fluid center"
+                alt={title}
+                style={{
+                  borderTopRightRadius: 4,
+                  borderTopLeftRadius: 4,
+                  height: 320,
+                  objectFit: 'cover',
+                }}
+              />
+              <div className="p-4 pb-2">
+                <CardTitle tag="h5" style={{color: 'black'}}>
+                  {title}
+                </CardTitle>
+                <CardSubtitle className="mb-2 text-muted" tag="h6">
+                  {cuisine}
+                </CardSubtitle>
               </div>
-              <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
-                <img
-                  className="col-auto"
-                  src="assets/icons/time.png"
-                  height={30}
-                  width={30}
-                  alt="time"
-                />
-                <span className="  col-auto  mb-0  ms-1  p text-center">
-                  {` ${totalTimeInMins} Min`}
-                </span>
+              <div className="row  mx-0">
+                <div className=" col-4 d-flex flex-column align-items-center p-2 ">
+                  <img
+                    className="col-auto"
+                    src="assets/icons/serve.png"
+                    height={40}
+                    width={40}
+                    alt="serve"
+                  />
+                  <span className="col-auto  mb-0  ms-1 text-center">{` ${servings} servings`}</span>
+                </div>
+                <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
+                  <img
+                    className="col-auto"
+                    src="assets/icons/time.png"
+                    height={40}
+                    width={40}
+                    alt="time"
+                  />
+                  <span className="  col-auto  mb-0  ms-1 text-center">
+                    {` ${totalTimeInMins} min`}
+                  </span>
+                </div>
+                <div className=" col-4 d-flex flex-column align-items-center p-2 ">
+                  <img
+                    className="col-auto"
+                    src="assets/icons/course.png"
+                    height={40}
+                    width={40}
+                    alt="serve"
+                  />
+                  <span className="  col-auto  mb-0  ms-1 text-center">{` ${course} `}</span>
+                </div>
               </div>
-              <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
-                <img
-                  className="col-auto"
-                  src="assets/icons/course.png"
-                  height={30}
-                  width={30}
-                  alt="serve"
-                />
-                <span className="  col-auto  mb-0  ms-1  p text-center">{` ${course} `}</span>
-              </div>
-            </CardText>
-          </CardBody>
-        </Card>
-      </div>
+            </CardBody>
+          </Card>
+        </div>
+      </Link>
     );
   },
 };

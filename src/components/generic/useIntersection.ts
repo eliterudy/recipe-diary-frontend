@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default (element: any, rootMargin: any) => {
+export default (element: React.MutableRefObject<HTMLInputElement>, rootMargin: any) => {
     const [isVisible, setState] = useState(false);
+
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
@@ -17,11 +18,10 @@ export default (element: any, rootMargin: any) => {
         );
 
         element.current && observer.observe(element.current);
-
         return () => {
-            observer.unobserve(element.current);
+            // observer.unobserve(element.current);
         };
-    }, [isVisible]);
+    }, [element, rootMargin]);
 
     return isVisible;
 };

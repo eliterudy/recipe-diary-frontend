@@ -80,38 +80,25 @@ const Header = () => {
             {/* Navigation */}
             <Nav navbar>
               <NavItem className="me-2">
-                <NavLink
-                  tag={RRNavLink}
-                  activeClassName="active"
-                  className={'nav-link inactive'}
-                  to="/home">
+                <NavLink tag={RRNavLink} className={'nav-link '} to="/home">
                   <strong>Home</strong>
                 </NavLink>
               </NavItem>
 
               <NavItem className="mx-sm-1">
-                <NavLink
-                  tag={RRNavLink}
-                  activeClassName="active"
-                  className={'nav-link inactive'}
-                  to="/recipes">
+                <NavLink tag={RRNavLink} className={'nav-link '} to="/recipes">
                   <strong>Recipes</strong>
                 </NavLink>
               </NavItem>
               <NavItem className="mx-sm-1">
-                <NavLink
-                  tag={RRNavLink}
-                  activeClassName="active"
-                  className={'nav-link inactive'}
-                  to="/aboutus">
+                <NavLink tag={RRNavLink} className={'nav-link '} to="/aboutus">
                   <strong>Find recipe</strong>
                 </NavLink>
               </NavItem>
               <NavItem className="mx-sm-1">
                 <NavLink
                   tag={RRNavLink}
-                  activeClassName="active"
-                  className={'nav-link inactive'}
+                  className={'nav-link '}
                   to="/contactus">
                   <strong>My stuff</strong>
                 </NavLink>
@@ -119,8 +106,7 @@ const Header = () => {
               <NavItem className="mx-sm-1">
                 <NavLink
                   tag={RRNavLink}
-                  activeClassName="active"
-                  className={'nav-link inactive'}
+                  className={'nav-link '}
                   to="/contactus">
                   <strong>Contact Us</strong>
                 </NavLink>
