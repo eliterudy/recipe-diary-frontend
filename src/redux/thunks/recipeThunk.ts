@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import apis from '../../config/apis/api';
+import apis from '../../config/api';
 import actionReducers from '../actionReducers/index';
 const {recipesLoading, recipesLoadingFailed, addRecipes} = actionReducers;
 
@@ -13,7 +13,7 @@ export const fetchRecipes = () => async (dispatch: Dispatch) => {
     .then(({data}) => {
       dispatch(dispatchAddRecipes(data));
     })
-    .catch(error => {
+    .catch((error: any) => {
       console.log(error);
       dispatch(dispatchRecipesFailed(error.code + ': ' + error.message));
     });
