@@ -12,11 +12,11 @@ export const recipeSlice = createSlice({
   name: 'recipes',
   initialState,
   reducers: {
-    recipesLoading: state => {
+    recipesLoading: (state, action) => {
       state.errMess = null;
       state.isLoading = true;
     },
-    recipesFailed: (state, action) => {
+    recipesLoadingFailed: (state, action) => {
       state.errMess = action.payload;
       state.isLoading = false;
     },
@@ -29,5 +29,5 @@ export const recipeSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {recipesLoading, recipesFailed, addRecipes} = recipeSlice.actions;
+export const {recipesLoading, recipesLoadingFailed, addRecipes} = recipeSlice.actions;
 export default recipeSlice.reducer;
