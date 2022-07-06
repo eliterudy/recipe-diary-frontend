@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, Dispatch} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -20,14 +20,10 @@ import Generic from '../generic/Generic';
 import {Animate, AnimateGroup} from 'react-simple-animate';
 import useIntersection from '../generic/useIntersection';
 import {useSelector, useDispatch} from 'react-redux';
-import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
-import actionReducers from '../../redux/actionReducers/index';
-import {recipes} from '../../shared/datasets';
-import {RecipeCardData} from '../../types';
-const {recipesLoading, recipesLoadingFailed, addRecipes} = actionReducers;
-const {fetchRecipes} = reduxApiCallers;
+import {Dispatch} from '@reduxjs/toolkit';
+import {RecipeDetails} from '../../config/types';
 
-const Home = () => {
+const HomeComponent = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const refToAnimateUsingViewport =
@@ -36,11 +32,6 @@ const Home = () => {
     useRef() as React.MutableRefObject<HTMLInputElement>;
   const inViewport = useIntersection(refToAnimateUsingViewport, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
-
-  useEffect(() => {
-    // dispatch(fetchRecipes());
-    dispatch(addRecipes(recipes));
-  }, []);
 
   const state = useSelector((state: any) => {
     return {
@@ -94,14 +85,14 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div ref={refToSpecialsUsingSmoothScroll} className="container pt-5">
-        <h1 className="text-center my-5">Todays Specials</h1>
+      <div className="container pt-5">
+        <h1 className="text-center mb-5">Todays Specials</h1>
         <div
           className="d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
-          {specials.map((special: RecipeCardData, index: number) => (
-            <div key={index} className={`col-12  col-sm-4 mb-5 px-4 `}>
+          {specials.map((special: RecipeDetails, index: number) => (
+            <div key={index} className={`col-12  col-sm-6 col-md-4 mb-5 px-4 `}>
               <Animate
                 play={showSpecials}
                 start={{opacity: 0, marginTop: 100}}
@@ -111,7 +102,7 @@ const Home = () => {
                 <Generic.RecipeCard
                   data={special}
                   index={index}
-                  redirect={`/home/specials/${special.title}`}
+                  redirect={`/home/specials/${special.id}`}
                 />
               </Animate>
             </div>
@@ -123,4 +114,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeComponent;

@@ -14,7 +14,6 @@ export const fetchRecipes = () => async (dispatch: Dispatch) => {
       dispatch(dispatchAddRecipes(data));
     })
     .catch((error: any) => {
-      console.log(error);
       dispatch(dispatchRecipesFailed(error.code + ': ' + error.message));
     });
 };

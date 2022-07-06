@@ -22,12 +22,13 @@ import {
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
 import useHover from './useHover';
-import {RecipeCardProps} from '../../types';
+import {RecipeCardProps} from '../../config/types';
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
     const {data, index, redirect} = cardProps;
     const {
+      id,
       title,
       ingredients,
       instructions,
@@ -47,11 +48,12 @@ const Generic = {
       },
       {transition: '0.3s'},
     );
+    console.log('CARD: ', id, data, redirect);
 
     return (
       <Link
         to={redirect}
-        state={data}
+        state={{recipeId: data.id}}
         style={{textDecoration: 'none', color: 'black'}}>
         <div {...hover}>
           <Card className=" col-12 col-sm-12">

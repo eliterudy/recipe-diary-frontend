@@ -1,5 +1,6 @@
 export const recipes = [
     {
+      id: "5063a0a522c6e275026bb18770411836639e89c5",
       title: 'Spicy Lemon Chicken Kebab Recipe',
       ingredients: [
         '2 tablespoon Extra Virgin Olive Oil',
@@ -23,7 +24,7 @@ export const recipes = [
         'Heat a grill pan, drizzle some oil and place the skewers and cook for at least 25 minutes.',
         'Keep brushing the extra marinade over the chicken and keep turning the skewers so that it is evenly cooked.',
         'Serve the Spicy Lemon Chicken Kebab Recipe, along with tzatziki dip, sliced onions and green chutney to make it more interesting.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/spicy-lemon-chicken-kebab-recipe',
       ingredientsUsed: [
@@ -47,6 +48,8 @@ export const recipes = [
       diet: 'Non Vegeterian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89b5",
+
       title:
         'Paneer Butter Masala Biryani Recipe - Layered Paneer Butter Masala Biryani Recipe',
       ingredients: [
@@ -111,7 +114,7 @@ export const recipes = [
         'Now place a plate over it and reverse it.',
         'Serve.',
         'Serve Paneer Butter Masala Biryani Recipe along with Bundi Raita and Papad for dinner.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/layered-paneer-butter-masala-biryani-recipe-in-hindi',
       ingredientsUsed: [
@@ -150,6 +153,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89a5",
+
       title: 'Udupi Style Ash Gourd Coconut Curry Recipe',
       ingredients: [
         '4 Dry Red Chillies',
@@ -185,7 +190,7 @@ export const recipes = [
         'After the mustard seeds have crackled add the curry leaves and red chillies.',
         'Tun off the heat after the red chillies have darkened and add it on top of the Udupi Style Ash Gourd Coconut Curry and serve.',
         'Serve the Udupi Style Ash Gourd Coconut Curry Recipe along with steamed rice, Elai Vadam  and Pisarna Manga for lunch.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/udupi-style-ash-gourd-coconut-curry-recipe',
       ingredientsUsed: [
@@ -214,6 +219,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89d5",
+
       title: 'Mexican Style Black Bean Burrito Recipe',
       ingredients: [
         '6 to 8 Spinach Leaves (Palak)',
@@ -247,7 +254,7 @@ export const recipes = [
         'Wrap up the burrito, then tuck it in.',
         'Repeat with the remaining ingredients to make the rest of the burritos.',
         'Serve Black Bean Burrito with a side of chips and a healthy Green Apple, Radish & Pepper Salad  and a glass of Carrot Pineapple Orange Juice Recipe to make a delicious lunch or dinner.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/black-bean-burrito-recipe',
       ingredientsUsed: [
@@ -274,6 +281,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89e5",
+
       title: 'Homemade Baked Beans Recipe (Wholesome & Healthy)',
       ingredients: [
         '250 grams Dry beans - (such as cannellini or soya beans)',
@@ -310,7 +319,7 @@ export const recipes = [
         'Cover the pan, turn the heat to low and simmer the beans for about 30 minutes until you noticed the beans are well coated with the spices and tomatoes.',
         'Check the salt and seasoning levels and adjust to suit your taste.',
         'You can optionally garnish the Homemade Baked Beans with coriander leaves and serve it along with toast, or Potato Cakes Recipe.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/homemade-baked-beans-recipe-wholesome-healthy',
       ingredientsUsed: [
@@ -335,6 +344,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89f5",
+
       title: 'Veg Chili Cheese Burgers Recipe',
       ingredients: [
         '1 tablespoon Tabasco Original - Hot Sauce',
@@ -391,7 +402,7 @@ export const recipes = [
         'Take the patty out, spread some of the sauce on the base of the burger bun and place the patty with cheese on top and add few slices of jalapeno and close it with the burger top and serve.',
         'Do the same for the rest of the burger.',
         'Serve the Veg Chili Cheese Burgers Recipe along with baby potato stir fry and Mango Iced Tea Recipe to make it a complete meal.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/veg-chili-cheese-burgers-recipe',
       ingredientsUsed: [
@@ -423,8 +434,9 @@ export const recipes = [
       course: 'Main Course',
       diet: 'Vegetarian',
     },
-
     {
+      id: "5063a0a522c6e275026bb18770411836639e89g5",
+
       title: 'Singapore Style Chicken Layered Fried Rice Recipe',
       ingredients: [
         '2 Spring Onion Greens - finely chopped',
@@ -484,7 +496,7 @@ export const recipes = [
         'Pour the prepared mayonnaise sauce.',
         'Put sauteed marinated chicken as the topmost layer of the layered fried rice.',
         'Serve Singapore Style Chicken Layered Fried Rice Recipe as a one pot meal for lunch, along with a dessert like Coconut Tapioca Pudding Recipe with Spicy Strawberry Sauce or Cinnamon Rice Pudding With Cherry Compote Recipe.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/singapore-style-chicken-layered-fried-rice-recipe',
       ingredientsUsed: [
@@ -524,6 +536,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89h5",
+
       title: 'Tofu Pulao Recipe',
       ingredients: [
         ' 3 long',
@@ -561,7 +575,7 @@ export const recipes = [
         'Turn off the gas after cooking.',
         'Open after 5 minutes and garnish with green coriander.',
         'Serve Tofu Casserole with Spinach Raita, Kachumbar Salad and Papad for day or dinner.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/tofu-pulao-recipe-in-hindi',
       ingredientsUsed: [
@@ -593,6 +607,8 @@ export const recipes = [
       diet: 'Vegetarian',
     },
     {
+      id: "5063a0a522c6e275026bb18770411836639e89i5",
+
       title: 'Murgh Malaiwala Recipe - Chicken In Rich Creamy Gravy',
       ingredients: [
         '1 Onion - sliced',
@@ -629,7 +645,7 @@ export const recipes = [
         'Let it cook for about a minute or two.',
         'Switch off the gas, cover the pan and let it sit for 10 minutes before serving.',
         'Serve Murgh Malaiwala along with Burani Raita, Garlic Naan and Jeera Rice for a weekend meal with your family.',
-        '',
+        
       ],
       url: 'https://www.archanaskitchen.com/murgh-malaiwala-recipe-chicken-in-rich-creamy-gravy',
       ingredientsUsed: [

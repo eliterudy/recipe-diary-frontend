@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {RecipeCardData} from '../../types';
+import {RecipeDetails} from '../../config/types';
 
-const recipes : RecipeCardData[] = [];
+const recipes : RecipeDetails[] = [];
 
 const initialState = {
   isLoading: true,
