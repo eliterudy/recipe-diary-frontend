@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container ms-2 me-2">
         <div className="row justify-content-between align-items-center">
           <div className="col-12  col-sm-4 align-items-center justify-content-center">
-            <ul className="list-unstyled d-flex flex-row col-sm-8 ms-sm-5 mb-0">
+            <ul className="list-unstyled d-flex flex-row col-12 justify-content-center col-sm-8 ms-sm-5 mb-2 mb-sm-0">
               <li className="me-2">
                 <Link to="/home">Home</Link>
               </li>
@@ -28,7 +28,7 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className="col-12 col-sm-4 row d-flex flex-row align-items-center justify-content-end">
+          <div className="col-12 col-sm-4 row d-flex flex-row align-items-center justify-content-end mt-2 mt-sm-0">
             <span className="w-auto" style={{color: '#ddd'}}>
               Share with friends
             </span>

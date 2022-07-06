@@ -58,11 +58,11 @@ const Header = () => {
         >
           {/* Toggle button to show/hide recipes list/elements */}
           <NavbarToggler className="col-auto" onClick={() => toggleNav()} />
-          <NavbarBrand className="col-8 col-sm-2 m-sm-0 py-sm-0" href="/">
+          <NavbarBrand className="col-8 col-sm-3 m-sm-0 p-sm-0" href="/">
             <div className="d-flex flex-row align-items-center ">
               <img
                 className="col-auto"
-                src="assets/icons/app_logo.png"
+                src="../../assets/icons/app_logo.png"
                 height={50}
                 width={50}
                 alt="The Cook Book"
