@@ -36,10 +36,31 @@ const HomeComponent = () => {
   const state = useSelector((state: any) => {
     return {
       recipeState: state.recipeActionReducer,
+      userState: state.userActionReducer,
     };
   });
-  const {recipeState} = state;
-  var specials = recipeState.recipes;
+  const {recipeState, userState} = state;
+
+  var getspecials = (): RecipeDetails[] => {
+    var featuredRecipes = recipeState.recipes.filter(
+      (recipe: RecipeDetails) => recipe.featured === true,
+    );
+    if (
+      userState &&
+      userState.favorites !== {} &&
+      userState.favorites.hasOwnProperty('recipes')
+    ) {
+      const favoriteRecipes = userState.favorites.recipes;
+      featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
+        return (featuredRecipe = {
+          ...featuredRecipe,
+          isFavorite: favoriteRecipes.includes(featuredRecipe.id),
+        });
+      });
+    }
+    return featuredRecipes;
+  };
+
   if (inViewport && showSpecials === false) {
     updateShowSpecials(true);
   }
@@ -49,9 +70,16 @@ const HomeComponent = () => {
       ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };
+  var featuredRecipes = getspecials();
 
   return (
     <>
+      <UseAnimations
+        animation={github}
+        size={56}
+        wrapperStyle={{padding: 100}}
+      />
+
       <div
         id="intro"
         style={{
@@ -91,8 +119,8 @@ const HomeComponent = () => {
           className="d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
-          {specials.map((special: RecipeDetails, index: number) => (
-            <div key={index} className={`col-12  col-sm-6 col-md-4 mb-5 px-4 `}>
+          {featuredRecipes.map((special: RecipeDetails, index: number) => (
+            <div key={index} className={`col-12  col-sm-6 col-md-3 mb-5 px-4 `}>
               <Animate
                 play={showSpecials}
                 start={{opacity: 0, marginTop: 100}}

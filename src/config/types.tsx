@@ -16,10 +16,16 @@ export interface RecipeDetails {
   totalTimeInMins: number;
   servings: number;
   ingredientCount: number;
+  featured: boolean;
+  isFavorite?: boolean;
 }
 
 export interface RecipeCardProps {
   data: RecipeDetails;
   index: number;
   redirect: To;
+}
+
+export interface Favorites {
+  recipes: String[];
 }

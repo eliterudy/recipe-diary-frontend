@@ -45,9 +45,9 @@ const MainRouter = () => {
         <Route
           path="/recipes"
           element={
-            <ScrollToTop>
-              <Home />
-            </ScrollToTop>
+            // <ScrollToTop>
+            <Home />
+            // </ScrollToTop>
           }
         />
         <Route path="/recipes/:recipeId" element={<HomePage />} />

@@ -23,9 +23,18 @@ import {
 import {Link} from 'react-router-dom';
 import useHover from './useHover';
 import {RecipeCardProps} from '../../config/types';
+import {icons} from '../../config/configuration';
+import {useSelector, useDispatch} from 'react-redux';
+import {Dispatch} from '@reduxjs/toolkit';
+import actionReducers from '../../redux/actionReducers/index';
+import UseAnimation from 'react-useanimations';
+import heart from 'react-useanimations/lib/heart';
+
+const {addRecipeToFavorites, deleteRecipeFromFavorites} = actionReducers;
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
+    const dispatch: Dispatch<any> = useDispatch();
     const {data, index, redirect} = cardProps;
     const {
       id,
@@ -39,6 +48,7 @@ const Generic = {
       servings,
       course,
       ingredientCount,
+      isFavorite,
     } = data;
     const hover = useHover(
       {
@@ -48,74 +58,81 @@ const Generic = {
       },
       {transition: '0.3s'},
     );
-    console.log('CARD: ', id, data, redirect);
 
     return (
-      <Link
-        to={redirect}
-        state={{recipeId: data.id}}
-        style={{textDecoration: 'none', color: 'black'}}>
-        <div {...hover}>
-          <Card className=" col-12 col-sm-12">
-            <CardBody className="p-0">
-              {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-              <img
-                src={imageUrl}
-                className="w-100 img-fluid center"
-                alt={title}
+      // <Link
+      //   to={redirect}
+      //   state={{recipeId: data.id}}
+      //   style={{textDecoration: 'none', color: 'black'}}>
+      <div {...hover}>
+        <Card className=" col-12 col-sm-12">
+          <CardBody className="p-0">
+            {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+            <div
+              className="w-100 img-fluid center"
+              style={{
+                borderTopRightRadius: 4,
+                borderTopLeftRadius: 4,
+                height: 320,
+                objectFit: 'cover',
+                backgroundImage: `url(${imageUrl})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+              }}>
+              <div
+                className=" "
                 style={{
-                  borderTopRightRadius: 4,
-                  borderTopLeftRadius: 4,
-                  height: 320,
-                  objectFit: 'cover',
-                }}
-              />
-              <div className="p-4 pb-2">
-                <CardTitle tag="h5" style={{color: 'black'}}>
-                  {title}
-                </CardTitle>
-                <CardSubtitle className="mb-2 text-muted" tag="h6">
-                  {cuisine}
-                </CardSubtitle>
+                  marginTop: -8,
+                  padding: 5,
+                }}>
+                {/* <img
+                  className="col-auto "
+                  src={isFavorite ? icons.bookmark_red : icons.bookmark_white}
+                  height={50}
+                  width={50}
+                  alt="The Cook Book"
+                  onClick={() => {
+                    console.log('her');
+                    isFavorite
+                      ? dispatch(deleteRecipeFromFavorites(id))
+                      : dispatch(addRecipeToFavorites(id));
+                  }}
+                /> */}
+                <UseAnimation
+                  animation={heart}
+                  size={40}
+                  onClick={() => {
+                    // eslint-disable-next-line
+                    console.log('isFav', isFavorite);
+                    isFavorite
+                      ? dispatch(deleteRecipeFromFavorites(id))
+                      : dispatch(addRecipeToFavorites(id));
+                  }}
+                />
               </div>
-              <div className="row  mx-0">
-                <div className=" col-4 d-flex flex-column align-items-center p-2 ">
-                  <img
-                    className="col-auto"
-                    src="assets/icons/serve.png"
-                    height={40}
-                    width={40}
-                    alt="serve"
-                  />
-                  <span className="col-auto  mb-0  ms-1 text-center">{` ${servings} servings`}</span>
-                </div>
-                <div className=" col-4 d-flex flex-column align-items-center  p-2 ">
-                  <img
-                    className="col-auto"
-                    src="assets/icons/time.png"
-                    height={40}
-                    width={40}
-                    alt="time"
-                  />
-                  <span className="  col-auto  mb-0  ms-1 text-center">
-                    {` ${totalTimeInMins} min`}
-                  </span>
-                </div>
-                <div className=" col-4 d-flex flex-column align-items-center p-2 ">
-                  <img
-                    className="col-auto"
-                    src="assets/icons/course.png"
-                    height={40}
-                    width={40}
-                    alt="serve"
-                  />
-                  <span className="  col-auto  mb-0  ms-1 text-center">{` ${course} `}</span>
-                </div>
+              <div
+                className="px-2 mb-1 me-1 py-1"
+                style={{backgroundColor: 'antiquewhite', borderRadius: 50}}>
+                {totalTimeInMins} min
               </div>
-            </CardBody>
-          </Card>
-        </div>
-      </Link>
+            </div>
+            <div className="p-4 pb-2">
+              <CardTitle tag="h5" style={{color: 'black'}}>
+                {title}
+              </CardTitle>
+              <CardSubtitle className="mb-2 text-muted" tag="h6">
+                {`${cuisine} | ${course} | ${servings} servings`}
+              </CardSubtitle>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+      // </Link>
     );
   },
 };

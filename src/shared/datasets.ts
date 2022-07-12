@@ -13,6 +13,7 @@ export const recipes = [
         '1 teaspoon Black pepper powder',
         '1 teaspoon Dried Thyme Leaves',
       ],
+      featured: true,
       totalTimeInMins: 90,
       cuisine: 'Indian',
       instructions: [
@@ -83,6 +84,7 @@ export const recipes = [
         '1 cup rice',
         ' as per taste - As per use',
       ],
+      featured: true,
       totalTimeInMins: 45,
       cuisine: 'North Indian Recipes',
       instructions: [
@@ -175,6 +177,7 @@ export const recipes = [
         '2 teaspoons Coriander (Dhania) Seeds',
         '1/2 teaspoon Cumin seeds (Jeera)',
       ],
+      featured: true,
       totalTimeInMins: 40,
       cuisine: 'Udupi',
       instructions: [
@@ -236,6 +239,7 @@ export const recipes = [
         '1 Tomato - chopped',
         '4 Tortillas',
       ],
+      featured: true,
       totalTimeInMins: 40,
       cuisine: 'Mexican',
       instructions: [
@@ -296,6 +300,7 @@ export const recipes = [
         'Salt and Pepper - (coarsely pounded pepper) to taste',
         '1 teaspoon Dried oregano',
       ],
+      featured: false,
       totalTimeInMins: 120,
       cuisine: 'Fusion',
       instructions: [
@@ -370,6 +375,7 @@ export const recipes = [
         '1 tablespoon Cumin powder (Jeera)',
         'Sunflower Oil',
       ],
+      featured: false,
       totalTimeInMins: 55,
       cuisine: 'Continental',
       instructions: [
@@ -468,6 +474,7 @@ export const recipes = [
         '250 grams Egg noodles - boiled and tossed in a teaspoon oil',
         '1 teaspoon Black pepper powder',
       ],
+      featured: false,
       totalTimeInMins: 75,
       cuisine: 'Asian',
       instructions: [
@@ -559,6 +566,7 @@ export const recipes = [
         ' 1/2 teaspoon red chilli powder',
         ' 2 tablespoons ghee',
       ],
+      featured: false,
       totalTimeInMins: 65,
       cuisine: 'Indian',
       instructions: [
@@ -628,6 +636,7 @@ export const recipes = [
         '500 gram Chicken - cut into pieces',
         '2 Cardamom Powder (Elaichi)',
       ],
+      featured: false,
       totalTimeInMins: 180,
       cuisine: 'North Indian Recipes',
       instructions: [

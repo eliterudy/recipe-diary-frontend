@@ -24,7 +24,6 @@ const RecipeDetailsComponent = (props: any) => {
   });
   const {recipeState} = state;
   const {recipes} = recipeState;
-  console.log(recipes);
 
   var recipeDetails = recipes.filter(
     (recipe: RecipeDetails) => recipe.id === recipeId,
