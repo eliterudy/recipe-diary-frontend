@@ -3,6 +3,8 @@ import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import Footer from './functional/Footer';
 import Header from './functional/Header';
 import Home from './screens/Home';
+import RecipeList from './screens/RecipeList';
+
 import RecipeDetails from './screens/RecipeDetails';
 import {useSelector, useDispatch} from 'react-redux';
 import reduxApiCallers from '../redux/thunks/reduxApiCallers';
@@ -46,7 +48,7 @@ const MainRouter = () => {
           path="/recipes"
           element={
             // <ScrollToTop>
-            <Home />
+            <RecipeList />
             // </ScrollToTop>
           }
         />

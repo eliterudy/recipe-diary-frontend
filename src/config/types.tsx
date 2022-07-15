@@ -27,5 +27,11 @@ export interface RecipeCardProps {
 }
 
 export interface Favorites {
-  recipes: String[];
+  recipes: string[];
+}
+
+export interface CheckboxProps {
+  label: string;
+  value: boolean;
+  onChange: () => void;
 }

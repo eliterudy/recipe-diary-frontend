@@ -115,11 +115,7 @@ const Header = () => {
             <Nav className="ml-auto" navbar>
               <NavItem className="mx-sm-1">
                 <Button outline onClick={() => {}}>
-                  <span className="  fa fa-sign-in fa-lg">
-                    {`  
-                    Login
- `}
-                  </span>
+                  <span className="  fa fa-sign-in fa-lg">{` Login `}</span>
                 </Button>
               </NavItem>
             </Nav>

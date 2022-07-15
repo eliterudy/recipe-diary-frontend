@@ -1,12 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 
-const recipes : RecipeDetails[] = [];
+const recipes: RecipeDetails[] = [];
 
 const initialState = {
   isLoading: true,
   errMess: null,
   recipes: recipes,
+  
 };
 export const recipeSlice = createSlice({
   name: 'recipes',
@@ -29,5 +30,6 @@ export const recipeSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {recipesLoading, recipesLoadingFailed, addRecipes} = recipeSlice.actions;
+export const {recipesLoading, recipesLoadingFailed, addRecipes} =
+  recipeSlice.actions;
 export default recipeSlice.reducer;

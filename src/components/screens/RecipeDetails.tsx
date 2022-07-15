@@ -5,31 +5,56 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 import {useMediaQuery} from 'react-responsive';
+import {icons} from '../../config/configuration';
+
+import actionReducers from '../../redux/actionReducers/index';
+const {addRecipeToFavorites, deleteRecipeFromFavorites} = actionReducers;
 
 const RecipeDetailsComponent = (props: any) => {
   const locationParams = useLocation();
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 767px)'});
-  const {state: paramState}: any = locationParams;
   const pathSplit = locationParams.pathname.split('/');
   const recipeId = pathSplit[pathSplit.length - 1];
-  useEffect(() => {
-    console.log('AAAAA', paramState['recipeId']);
-  }, []);
+  const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
 
   const state = useSelector((state: any) => {
     return {
       recipeState: state.recipeActionReducer,
+      userState: state.userActionReducer,
     };
   });
-  const {recipeState} = state;
+  const {recipeState, userState} = state;
   const {recipes} = recipeState;
 
-  var recipeDetails = recipes.filter(
-    (recipe: RecipeDetails) => recipe.id === recipeId,
-  )[0];
+  var getRecipeDetails = (): RecipeDetails => {
+    var details = recipes.filter(
+      (recipe: RecipeDetails) => recipe.id === recipeId,
+    )[0];
+    if (
+      userState &&
+      userState.favorites !== {} &&
+      userState.favorites.hasOwnProperty('recipes')
+    ) {
+      const favoriteRecipes = userState.favorites.recipes;
+      details = {
+        ...details,
+        isFavorite: favoriteRecipes.includes(details.id),
+      };
+    }
+    return details;
+  };
 
+  var bookmarkIcon = () => {
+    if (isMouseHoveredOnBookmarkButton) {
+      return icons.bookmark_hover;
+    } else if (isFavorite) {
+      return icons.bookmark_selected;
+    }
+    return icons.bookmark_unselected;
+  };
   const {
+    id: recipe_id,
     title,
     ingredients,
     instructions,
@@ -43,7 +68,8 @@ const RecipeDetailsComponent = (props: any) => {
     course,
     ingredientCount,
     ingredientsUsed,
-  } = recipeDetails;
+    isFavorite,
+  } = getRecipeDetails();
   return (
     <>
       {!isTabletOrMobile && (
@@ -63,32 +89,104 @@ const RecipeDetailsComponent = (props: any) => {
       <div className="container pb-5 ">
         <div className="px-4 pb-5">
           <h1 className=" col-12 mt-5">{title}</h1>
-          <h5 className="text-muted col-12 mb-5">{cuisine}</h5>
-          <div className="flex flex-row flex-wrap my-3">
-            <em
-              className="p-2"
-              style={{backgroundColor: '#78b0f0', color: 'white'}}>
-              {course}
-            </em>
-            <em
-              className="p-2 mx-1"
-              style={{backgroundColor: '#b278f0', color: 'white'}}>
-              {servings} servings
-            </em>
-            <em
-              className="p-2"
-              style={{backgroundColor: '#f08878', color: 'white'}}>
-              {diet}
-            </em>
+          <h5 className="text-muted col-12 mb-4">{cuisine}</h5>
+          <div className="row">
+            <div className=" d-flex flex-wrap col-12 col-md-6 mt-2">
+              <p
+                className="py-1 px-3 my-1 "
+                style={{
+                  backgroundColor: '#78b0f0',
+                  color: 'white',
+                }}>
+                {course}
+              </p>
+              <p
+                className="py-1 px-3 my-1 mx-2"
+                style={{
+                  backgroundColor: '#b278f0',
+                  color: 'white',
+                }}>
+                {servings} servings
+              </p>
+              <p
+                className="py-1 px-3 my-1 "
+                style={{
+                  backgroundColor: '#f08878',
+                  color: 'white',
+                }}>
+                {diet}
+              </p>
+            </div>
+            {!isTabletOrMobile && (
+              <div className="col-12 col-md-6 d-flex justify-content-end align-items-end">
+                <div
+                  onClick={e => {
+                    e.preventDefault();
+                    isFavorite
+                      ? dispatch(deleteRecipeFromFavorites(recipe_id))
+                      : dispatch(addRecipeToFavorites(recipe_id));
+                  }}
+                  className="px-4 py-1"
+                  onMouseEnter={() => changeMouseStatus(true)}
+                  onMouseLeave={() => changeMouseStatus(false)}
+                  style={{
+                    ...{
+                      backgroundColor: '#2785bd',
+
+                      color: 'white',
+                      borderRadius: 50,
+                      height: 32,
+                    },
+                    ...(isMouseHoveredOnBookmarkButton && {
+                      backgroundColor: '#39a8e9',
+                      cursor: 'pointer',
+                    }),
+                  }}>
+                  <span className="">
+                    {isFavorite ? 'Remove bookmark' : 'Add to Bookmarks'}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
-          <img
-            src={imageUrl}
-            className=" img-fluid center col-12 my-3"
-            alt={title}
-            style={{
-              objectFit: 'cover',
-            }}
-          />
+          <div className="" style={{position: 'relative'}}>
+            <img
+              src={imageUrl}
+              className=" img-fluid center col-12 my-3"
+              alt={title}
+              style={{
+                objectFit: 'cover',
+              }}
+            />
+            {isTabletOrMobile && (
+              <div
+                className=" "
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  marginTop: 3,
+                  padding: 5,
+                }}>
+                <img
+                  onMouseDown={() => changeMouseStatus(true)}
+                  onMouseUp={() => changeMouseStatus(false)}
+                  className="col-auto "
+                  src={bookmarkIcon()}
+                  height={45}
+                  width={45}
+                  alt="The Cook Book"
+                  onClick={e => {
+                    e.preventDefault();
+                    console.log('her');
+                    isFavorite
+                      ? dispatch(deleteRecipeFromFavorites(recipe_id))
+                      : dispatch(addRecipeToFavorites(recipe_id));
+                  }}
+                />
+              </div>
+            )}
+          </div>
           <div className="row  mx-0">
             <div className=" col-4 d-flex flex-column align-items-center p-2 ">
               <span className="  col-auto  mb-0  ms-1 text-center">

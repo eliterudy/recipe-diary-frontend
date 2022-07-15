@@ -74,12 +74,6 @@ const HomeComponent = () => {
 
   return (
     <>
-      <UseAnimations
-        animation={github}
-        size={56}
-        wrapperStyle={{padding: 100}}
-      />
-
       <div
         id="intro"
         style={{
@@ -113,7 +107,7 @@ const HomeComponent = () => {
           </div>
         </div>
       </div>
-      <div className="container pt-5">
+      <div className="container pt-5" ref={refToSpecialsUsingSmoothScroll}>
         <h1 className="text-center mb-5">Todays Specials</h1>
         <div
           className="d-flex flex-row flex-wrap"
