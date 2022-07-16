@@ -30,6 +30,12 @@ export interface Favorites {
   recipes: string[];
 }
 
+export interface User {
+  username: string;
+  password: string;
+  favorites: Favorites;
+}
+
 export interface CheckboxProps {
   label: string;
   value: boolean;

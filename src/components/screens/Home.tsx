@@ -47,10 +47,11 @@ const HomeComponent = () => {
     );
     if (
       userState &&
-      userState.favorites !== {} &&
-      userState.favorites.hasOwnProperty('recipes')
+      userState.user &&
+      userState.user.favorites !== {} &&
+      userState.user.favorites.hasOwnProperty('recipes')
     ) {
-      const favoriteRecipes = userState.favorites.recipes;
+      const favoriteRecipes = userState.user.favorites.recipes;
       featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,
@@ -82,16 +83,18 @@ const HomeComponent = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-        className="bg-image shadow-2-strong vh-100 vw-100">
+        className="noselect bg-image shadow-2-strong vh-100 vw-100">
         <div
-          className="mask vh-100 vw-100"
+          className="noselect mask vh-100 vw-100"
           style={{backgroundColor: 'rgba(0, 0, 0, 0.8)'}}>
-          <div className="container d-flex align-items-center justify-content-center text-center h-100">
-            <div className="text-white">
-              <h1 className="mb-3">Learn Healthy and Tasty Recipes</h1>
-              <h5 className="mb-4">Easy & Professional Indian recipes</h5>
+          <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
+            <div className="noselect text-white">
+              <h1 className="noselect mb-3">Learn Healthy and Tasty Recipes</h1>
+              <h5 className="noselect mb-4">
+                Easy & Professional Indian recipes
+              </h5>
               <a
-                className="btn btn-outline-light btn-lg m-2"
+                className="noselect btn btn-outline-light btn-lg m-2"
                 href="https://www.youtube.com/watch?v=c9B4TPnak1A"
                 role="button"
                 rel="nofollow noreferrer"
@@ -99,7 +102,7 @@ const HomeComponent = () => {
                 Explore
               </a>
               <div
-                className="btn btn-outline-light btn-lg m-2"
+                className="noselect btn btn-outline-light btn-lg m-2"
                 onClick={() => scrollTo(refToSpecialsUsingSmoothScroll)}>
                 Today's specials
               </div>
@@ -107,10 +110,12 @@ const HomeComponent = () => {
           </div>
         </div>
       </div>
-      <div className="container pt-5" ref={refToSpecialsUsingSmoothScroll}>
-        <h1 className="text-center mb-5">Todays Specials</h1>
+      <div
+        className="noselect container pt-5"
+        ref={refToSpecialsUsingSmoothScroll}>
+        <h1 className="noselect text-center mb-5">Todays Specials</h1>
         <div
-          className="d-flex flex-row flex-wrap"
+          className="noselect d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
           {featuredRecipes.map((special: RecipeDetails, index: number) => (
@@ -124,7 +129,7 @@ const HomeComponent = () => {
                 <Generic.RecipeCard
                   data={special}
                   index={index}
-                  redirect={`/home/specials/${special.id}`}
+                  redirect={`/home/${special.id}`}
                 />
               </Animate>
             </div>

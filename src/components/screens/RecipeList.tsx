@@ -1,35 +1,26 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavbarToggler,
-  Collapse,
-  NavItem,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
   Input,
   InputGroup,
-  InputGroupText,
+  Breadcrumb,
+  BreadcrumbItem,
+  Button,
 } from 'reactstrap';
-import {NavLink} from 'react-router-dom';
 import Generic from '../generic/Generic';
-import {Animate, AnimateGroup} from 'react-simple-animate';
-import useIntersection from '../generic/useIntersection';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 import {icons} from '../../config/configuration';
+import {useMediaQuery} from 'react-responsive';
+import {useLocation, Link} from 'react-router-dom';
 
 const RecipesComponent = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  const refToSpecialsUsingSmoothScroll =
-    useRef() as React.MutableRefObject<HTMLInputElement>;
+  const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
+  const locationParams = useLocation();
+  const pathSplit = locationParams.pathname.split('/');
+  const activePath = pathSplit[pathSplit.length - 1];
+  console.log(pathSplit);
   const [searchHover, updateSearchHover] = useState(false);
   const [recipeFilters, updateFilters] = useState([
     {
@@ -63,10 +54,11 @@ const RecipesComponent = () => {
     var featuredRecipes = recipeState.recipes;
     if (
       userState &&
-      userState.favorites !== {} &&
-      userState.favorites.hasOwnProperty('recipes')
+      userState.user &&
+      userState.user.favorites !== {} &&
+      userState.user.favorites.hasOwnProperty('recipes')
     ) {
-      const favoriteRecipes = userState.favorites.recipes;
+      const favoriteRecipes = userState.user.favorites.recipes;
       featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,
@@ -82,7 +74,6 @@ const RecipesComponent = () => {
     listIndex: number,
     value: any,
   ) => {
-    console.log(filterIndex, value);
     // console.log(recipeFilters.hasOwnProperty(key));
     const temp = [...recipeFilters];
     temp[filterIndex].list[listIndex] = value;
@@ -96,11 +87,11 @@ const RecipesComponent = () => {
       var list = data.list;
 
       return (
-        <div className="row my-5">
+        <div className="noselect row my-5">
           <strong>{title}</strong>
           {list.map((filterDataElement: any, listIndex: number) => {
             return (
-              <div className="pt-2">
+              <div className="noselect pt-2">
                 <Generic.Checkbox
                   key={listIndex}
                   label={filterDataElement.title}
@@ -126,12 +117,32 @@ const RecipesComponent = () => {
       ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };
+
   var featuredRecipes = getRecipes();
 
   return (
     <>
-      <div className=" row border-bottom  p-2">
-        <div className=" offset-sm-3 col-12 col-sm-6 ">
+      {!isTabletOrMobile && (
+        <div className="noselect ">
+          <Breadcrumb
+            className="noselect mt-2 mx-5"
+            style={{backgroundColor: 'white'}}>
+            <BreadcrumbItem>
+              <Link to={'/home'}>
+                <strong>Home</strong>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>
+              <strong>
+                {activePath.substring(0, 1).toUpperCase() +
+                  activePath.substring(1)}
+              </strong>
+            </BreadcrumbItem>
+          </Breadcrumb>
+        </div>
+      )}
+      <div className="noselect  row border-bottom  p-2">
+        <div className="noselect  offset-sm-3 col-12 col-sm-6 ">
           <InputGroup>
             <Input
               placeholder="Search recipes..."
@@ -147,7 +158,7 @@ const RecipesComponent = () => {
                 backgroundColor: searchHover ? '#1976D2' : 'white',
               }}>
               <img
-                className="col-auto"
+                className="noselect col-auto"
                 src={searchHover ? icons.search_white : icons.search_black}
                 height={30}
                 width={30}
@@ -159,17 +170,17 @@ const RecipesComponent = () => {
           </InputGroup>
         </div>
       </div>
-      <div className="row">
+      <div className="noselect row">
         {recipeFilters && (
-          <div className=" col-12 col-md-2 border-end px-5 bg-white">
+          <div className="noselect  col-12 col-md-3 col-lg-2 border-end px-5 bg-white">
             {getFilters(recipeFilters)}
           </div>
         )}
-        <div className=" col-12 col-md-10 d-flex flex-row flex-wrap pt-5">
+        <div className="noselect  col-12 col-md-9 col-lg-10 d-flex flex-row flex-wrap pt-5 pe-4">
           {featuredRecipes.map((recipe: RecipeDetails, index: number) => (
             <div
               key={index}
-              className={`col-12  col-sm-6 col-md-4 col-lg-4 mb-5 px-4 `}>
+              className={`col-12  col-sm-6 col-lg-4 col-xl-3 mb-5 px-4 `}>
               <Generic.RecipeCard
                 data={recipe}
                 index={index}

@@ -4,7 +4,7 @@ import Footer from './functional/Footer';
 import Header from './functional/Header';
 import Home from './screens/Home';
 import RecipeList from './screens/RecipeList';
-
+import {Modal, ModalBody, ModalFooter, ModalHeader, Button} from 'reactstrap';
 import RecipeDetails from './screens/RecipeDetails';
 import {useSelector, useDispatch} from 'react-redux';
 import reduxApiCallers from '../redux/thunks/reduxApiCallers';
@@ -18,13 +18,13 @@ const {fetchRecipes} = reduxApiCallers;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
-  // This runs when I am on Recipe details page after i refresh the page
   dispatch(addRecipes(recipes));
-  // This doesn't. It only is called when I launch the root Route
-  // useEffect(() => {
-  //   console.log('INSIDE USE_EFFECT');
-  //   dispatch(addRecipes(recipes));
-  // }, []);
+
+  const [isModalOpen, updateModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    updateModalOpen(!isModalOpen);
+  };
 
   const HomePage = () => {
     return <Home />;
@@ -32,12 +32,12 @@ const MainRouter = () => {
 
   return (
     <div>
-      <Header />
+      <Header modalCallback={() => toggleModal()} />
       {/* Routes are defined and wrapped with a switch component */}
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route
-          path="/home/specials/:recipeId"
+          path="/home/:recipeId"
           element={
             <ScrollToTop>
               <RecipeDetails />
@@ -52,12 +52,41 @@ const MainRouter = () => {
             // </ScrollToTop>
           }
         />
-        <Route path="/recipes/:recipeId" element={<HomePage />} />
-        <Route path="/contactus" element={<HomePage />} />
-        <Route path="/specials" element={<HomePage />} />
-        <Route path="/specials/:recipeId" element={<HomePage />} />
+        <Route
+          path="/recipes/:recipeId"
+          element={
+            <ScrollToTop>
+              <RecipeDetails />
+            </ScrollToTop>
+          }
+        />
+        <Route path="/my-stuff" element={<HomePage />} />
+        <Route path="/contact-us" element={<RecipeList />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
+      <Modal
+        style={{
+          paddingTop: 50,
+        }}
+        isOpen={isModalOpen}>
+        <ModalHeader charCode="Y" toggle={() => toggleModal()}>
+          Access denied!
+        </ModalHeader>
+        <ModalBody>
+          You dont have access to this feature. To <strong>gain</strong> access,
+          <strong> create you very own account</strong> with us. If you already
+          have an account, go ahead and <strong>login</strong> to unlock this
+          feature.
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            style={{backgroundColor: '#2785bd'}}
+            onClick={() => toggleModal()}>
+            Do it now
+          </Button>
+          <Button onClick={() => toggleModal()}>Do it later</Button>
+        </ModalFooter>
+      </Modal>
       <Footer />
     </div>
   );
