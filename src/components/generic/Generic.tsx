@@ -21,7 +21,7 @@ import {
   CardText,
 } from 'reactstrap';
 import {Link} from 'react-router-dom';
-import useHover from './useHover';
+import {cssHover} from './hoverProps';
 import {RecipeCardProps, CheckboxProps} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useSelector, useDispatch} from 'react-redux';
@@ -56,7 +56,7 @@ const Generic = {
       ingredientCount,
       isFavorite,
     } = data;
-    const hover = useHover(
+    const cardHoverStlye = cssHover(
       {
         transform: 'scale(1.05)',
         zIndex: 10,
@@ -78,7 +78,7 @@ const Generic = {
         state={{recipeId: data.id}}
         style={{textDecoration: 'none', color: 'black'}}>
         <div
-          {...hover}
+          {...cardHoverStlye}
           onClick={() => {
             // console.log('clicked');
           }}>

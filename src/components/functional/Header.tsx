@@ -17,19 +17,44 @@ import {
   Label,
   Input,
 } from 'reactstrap';
-import {NavLink as RRNavLink} from 'react-router-dom';
+import {NavLink as RRNavLink, useNavigate} from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import useHover from '../generic/useHover';
+import {cssHover} from '../generic/hoverProps';
 
 const Header = ({modalCallback}: any) => {
+  const myStuffNavItemStyle = cssHover(
+    {
+      color: '#2785bd',
+      cursor: 'pointer',
+    },
+    {
+      color: '#777',
+      cursor: 'pointer',
+    },
+  );
+
+  const loginButtonStyle = cssHover(
+    {
+      borderWidth: 1,
+      borderColor: '#2785bd',
+      backgroundColor: '#2785bd',
+      color: 'white',
+    },
+    {
+      borderWidth: 1,
+      borderColor: '#2785bd',
+      backgroundColor: 'white',
+      color: '#2785bd',
+    },
+    {
+      cursor: 'pointer',
+    },
+  );
+
+  const navigate = useNavigate();
   const [isNavOpen, updateNavOpen] = useState(false);
-  const [myStuffStyle, updateMyStuffStyle] = useState({
-    color: '#777',
-    // transition: '0.2s',
-    cursor: 'pointer',
-  });
 
   var username: HTMLInputElement | HTMLTextAreaElement | null = null;
   var password: HTMLInputElement | HTMLTextAreaElement | null = null;
@@ -113,21 +138,7 @@ const Header = ({modalCallback}: any) => {
               </NavItem>
               {!userState.user && (
                 <div
-                  onMouseEnter={() =>
-                    updateMyStuffStyle({
-                      color: '#06a',
-                      // transition: '0.2s',
-                      cursor: 'pointer',
-                    })
-                  }
-                  onMouseLeave={() =>
-                    updateMyStuffStyle({
-                      color: '#777',
-                      // transition: '0.2s',
-                      cursor: 'pointer',
-                    })
-                  }
-                  style={myStuffStyle}
+                  {...myStuffNavItemStyle}
                   className="noselect mt-2 mx-3"
                   onClick={() => modalCallback()}>
                   <i className="noselect fa fa-lock me-1" />
@@ -155,8 +166,11 @@ const Header = ({modalCallback}: any) => {
             </Nav>
             <Nav className="noselect ml-auto" navbar>
               <NavItem className="noselect mx-sm-1">
-                <Button outline onClick={() => {}}>
-                  <span className="noselect   fa fa-sign-in fa-lg">{` Login `}</span>
+                <Button
+                  outline
+                  onClick={() => navigate('auth/login')}
+                  {...loginButtonStyle}>
+                  <span className="noselect">{` Sign In`}</span>
                 </Button>
               </NavItem>
             </Nav>

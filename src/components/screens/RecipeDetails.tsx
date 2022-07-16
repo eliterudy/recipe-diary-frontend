@@ -6,6 +6,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 import {useMediaQuery} from 'react-responsive';
 import {icons} from '../../config/configuration';
+import {cssHover} from '../generic/hoverProps';
 
 import actionReducers from '../../redux/actionReducers/index';
 const {addRecipeToFavorites, deleteRecipeFromFavorites} = actionReducers;
@@ -20,6 +21,16 @@ const RecipeDetailsComponent = (props: any) => {
   });
   const {recipeState, userState} = state;
   const {recipes} = recipeState;
+
+  const buttonHoverStyle = cssHover(
+    {
+      backgroundColor: '#39a8e9',
+    },
+    {
+      backgroundColor: '#2785bd',
+    },
+    {color: 'white', borderRadius: 50, height: 32, cursor: 'pointer'},
+  );
 
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
@@ -142,21 +153,7 @@ const RecipeDetailsComponent = (props: any) => {
                         : dispatch(addRecipeToFavorites(recipe_id));
                     }}
                     className="noselect px-4 py-1"
-                    onMouseEnter={() => changeMouseStatus(true)}
-                    onMouseLeave={() => changeMouseStatus(false)}
-                    style={{
-                      ...{
-                        backgroundColor: '#2785bd',
-
-                        color: 'white',
-                        borderRadius: 50,
-                        height: 32,
-                      },
-                      ...(isMouseHoveredOnBookmarkButton && {
-                        backgroundColor: '#39a8e9',
-                        cursor: 'pointer',
-                      }),
-                    }}>
+                    {...buttonHoverStyle}>
                     <span className="noselect ">
                       {isFavorite ? 'Remove bookmark' : 'Add to Bookmarks'}
                     </span>

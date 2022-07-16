@@ -11,15 +11,15 @@ export interface initialStateUser {
 const initialState: initialStateUser = {
   isLoadingUser: true,
   errMessUser: null,
-  user: null,
-  // user: {
-  //   _id: 1,
-  //   username: "",
-  //   password: "",
-  //   favorites: {
-  //     recipes: []
-  //   } as Favorites,
-  // },
+  // user: null,
+  user: {
+    _id: 1,
+    username: "",
+    password: "",
+    favorites: {
+      recipes: []
+    } as Favorites,
+  },
 };
 export const userSlice = createSlice({
   name: 'user',

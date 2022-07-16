@@ -20,7 +20,7 @@ const RecipesComponent = () => {
   const locationParams = useLocation();
   const pathSplit = locationParams.pathname.split('/');
   const activePath = pathSplit[pathSplit.length - 1];
-  console.log(pathSplit);
+  console.log(locationParams);
   const [searchHover, updateSearchHover] = useState(false);
   const [recipeFilters, updateFilters] = useState([
     {
