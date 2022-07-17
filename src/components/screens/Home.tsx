@@ -78,15 +78,15 @@ const HomeComponent = () => {
       <div
         id="intro"
         style={{
-          backgroundImage: 'url(../../assets/images/food-background-1.jpeg)',
+          backgroundImage: 'url(../../assets/images/food-background-1.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-        className="noselect bg-image shadow-2-strong vh-100 vw-100">
+        className="noselect bg-image shadow-5-strong vh-100 vw-100">
         <div
           className="noselect mask vh-100 vw-100"
-          style={{backgroundColor: 'rgba(0, 0, 0, 0.8)'}}>
+          style={{backgroundColor: 'rgba(0, 0, 0, 0.85)'}}>
           <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
             <div className="noselect text-white">
               <h1 className="noselect mb-3">Learn Healthy and Tasty Recipes</h1>

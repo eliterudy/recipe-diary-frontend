@@ -8,6 +8,10 @@ import {
   NavItem,
   NavLink,
   Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
   Modal,
   ModalHeader,
   ModalBody,
@@ -52,7 +56,7 @@ const Header = ({modalCallback}: any) => {
 
   const navigate = useNavigate();
   const [isNavOpen, updateNavOpen] = useState(false);
-
+  const [isDropdownOpen, updateDropdown] = useState(false);
   var username: HTMLInputElement | HTMLTextAreaElement | null = null;
   var password: HTMLInputElement | HTMLTextAreaElement | null = null;
   var remember: HTMLInputElement | HTMLTextAreaElement | null = null;
@@ -64,12 +68,11 @@ const Header = ({modalCallback}: any) => {
 
   const state = useSelector((state: any) => {
     return {
-      recipeState: state.recipeActionReducer,
       userState: state.userActionReducer,
     };
   });
-  const {recipeState, userState} = state;
-
+  const {userState} = state;
+  const {user} = userState;
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     alert(
@@ -162,14 +165,29 @@ const Header = ({modalCallback}: any) => {
               </NavItem>
             </Nav>
             <Nav className="noselect ml-auto" navbar>
-              <NavItem className="noselect mx-sm-1">
-                <Button
-                  outline
-                  onClick={() => navigate('auth/signin')}
-                  {...signInButtonStyle}>
-                  <span className="noselect">{` Sign In`}</span>
-                </Button>
-              </NavItem>
+              {user ? (
+                <Dropdown
+                  isOpen={isDropdownOpen}
+                  toggle={() => updateDropdown(!isDropdownOpen)}>
+                  <DropdownToggle caret>Dropdown</DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header>Header</DropdownItem>
+                    <DropdownItem disabled>Action</DropdownItem>
+                    <DropdownItem>Another Action</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem>Another Action</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <NavItem className="noselect mx-sm-1">
+                  <Button
+                    outline
+                    onClick={() => navigate('auth/signin')}
+                    {...signInButtonStyle}>
+                    <span className="noselect">{` Sign In`}</span>
+                  </Button>
+                </NavItem>
+              )}
             </Nav>
           </Collapse>
         </div>
