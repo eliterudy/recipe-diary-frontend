@@ -35,21 +35,18 @@ const Header = ({modalCallback}: any) => {
     },
   );
 
-  const loginButtonStyle = cssHover(
+  const signInButtonStyle = cssHover(
     {
-      borderWidth: 1,
-      borderColor: '#2785bd',
-      backgroundColor: '#2785bd',
+      backgroundColor: '#2b59a1',
       color: 'white',
     },
     {
-      borderWidth: 1,
-      borderColor: '#2785bd',
       backgroundColor: 'white',
-      color: '#2785bd',
+      color: '#2b59a1',
     },
     {
       cursor: 'pointer',
+      border: '1px solid #2b59a1',
     },
   );
 
@@ -107,10 +104,10 @@ const Header = ({modalCallback}: any) => {
                 src="../../assets/icons/app_logo.png"
                 height={50}
                 width={50}
-                alt="The Cook Book"
+                alt="Recipe Diary"
               />
               <span className="noselect   col-auto  mb-0 h-25 align-middle h5">
-                The Cook Book
+                Recipe Diary
               </span>
             </div>
           </NavbarBrand>
@@ -168,8 +165,8 @@ const Header = ({modalCallback}: any) => {
               <NavItem className="noselect mx-sm-1">
                 <Button
                   outline
-                  onClick={() => navigate('auth/login')}
-                  {...loginButtonStyle}>
+                  onClick={() => navigate('auth/signin')}
+                  {...signInButtonStyle}>
                   <span className="noselect">{` Sign In`}</span>
                 </Button>
               </NavItem>

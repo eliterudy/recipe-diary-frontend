@@ -24,12 +24,18 @@ const RecipeDetailsComponent = (props: any) => {
 
   const buttonHoverStyle = cssHover(
     {
-      backgroundColor: '#39a8e9',
+      backgroundColor: '#2b59a1',
+      color: 'white',
     },
     {
-      backgroundColor: '#2785bd',
+      backgroundColor: 'white',
+      color: '#2b59a1',
     },
-    {color: 'white', borderRadius: 50, height: 32, cursor: 'pointer'},
+    {
+      cursor: 'pointer',
+      borderRadius: 50,
+      border: '1px solid #2b59a1',
+    },
   );
 
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});

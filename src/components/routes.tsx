@@ -3,7 +3,7 @@ import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
 import Footer from './functional/Footer';
 import Header from './functional/Header';
 import Home from './screens/Home';
-import Login from './screens/Login';
+import Login from './screens/SignIn';
 import RecipeList from './screens/RecipeList';
 import {Modal, ModalBody, ModalFooter, ModalHeader, Button} from 'reactstrap';
 import RecipeDetails from './screens/RecipeDetails';
@@ -13,6 +13,8 @@ import actionReducers from '../redux/actionReducers/index';
 import {Dispatch} from '@reduxjs/toolkit';
 import {recipes} from '../shared/datasets';
 import ScrollToTop from './generic/scrollToTop';
+import SignUpComponent from './screens/SignUp';
+import SignInComponent from './screens/SignIn';
 
 const {recipesLoading, recipesLoadingFailed, addRecipes} = actionReducers;
 const {fetchRecipes} = reduxApiCallers;
@@ -85,7 +87,7 @@ const MainRouter = () => {
             You dont have access to this feature. To <strong>gain</strong>{' '}
             access,
             <strong> create you very own account</strong> with us. If you
-            already have an account, go ahead and <strong>login</strong> to
+            already have an account, go ahead and <strong>sign in</strong> to
             unlock this feature.
           </ModalBody>
           <ModalFooter>
@@ -105,8 +107,10 @@ const MainRouter = () => {
     return (
       <div>
         <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="*" element={<Navigate to="login" replace />} />
+          <Route path="signin" element={<SignInComponent />} />
+          <Route path="signup" element={<SignUpComponent />} />
+
+          {/* <Route path="*" element={<Navigate to="signup" replace />} /> */}
         </Routes>
       </div>
     );

@@ -20,7 +20,7 @@ const RecipesComponent = () => {
   const locationParams = useLocation();
   const pathSplit = locationParams.pathname.split('/');
   const activePath = pathSplit[pathSplit.length - 1];
-  console.log(locationParams);
+  // console.log(locationParams);
   const [searchHover, updateSearchHover] = useState(false);
   const [recipeFilters, updateFilters] = useState([
     {
@@ -91,7 +91,7 @@ const RecipesComponent = () => {
           <strong>{title}</strong>
           {list.map((filterDataElement: any, listIndex: number) => {
             return (
-              <div className="noselect pt-2">
+              <div className="noselect pt-2" key={listIndex}>
                 <Generic.Checkbox
                   key={listIndex}
                   label={filterDataElement.title}
@@ -110,12 +110,6 @@ const RecipesComponent = () => {
       );
     });
     return results;
-  };
-
-  const scrollTo = (ref: any) => {
-    if (ref && ref.current /* + other conditions */) {
-      ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
-    }
   };
 
   var featuredRecipes = getRecipes();

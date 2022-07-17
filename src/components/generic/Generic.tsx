@@ -117,7 +117,7 @@ const Generic = {
                       src={bookmarkIcon()}
                       height={45}
                       width={45}
-                      alt="The Cook Book"
+                      alt="Recipe Diary"
                       onClick={e => {
                         e.preventDefault();
                         console.log('her');

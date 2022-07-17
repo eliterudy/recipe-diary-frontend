@@ -26,7 +26,7 @@ const Footer = () => {
             <p
               className="noselect mb-0 "
               style={{color: '#ddd', textAlign: 'center'}}>
-              © Copyright 2022 The Cook Book
+              © Copyright 2022 Recipe Diary
             </p>
           </div>
 
