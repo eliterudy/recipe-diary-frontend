@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -21,12 +21,15 @@ import {
   Label,
   Input,
 } from 'reactstrap';
+import {Avatar, AvatarGroup} from '@chakra-ui/avatar';
 import {NavLink as RRNavLink, useNavigate} from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
+import {randomColorGenerator} from '../../config/configuration';
 
+const avatarColor = randomColorGenerator();
 const Header = ({modalCallback}: any) => {
   const myStuffNavItemStyle = cssHover(
     {
@@ -57,6 +60,7 @@ const Header = ({modalCallback}: any) => {
   const navigate = useNavigate();
   const [isNavOpen, updateNavOpen] = useState(false);
   const [isDropdownOpen, updateDropdown] = useState(false);
+
   var username: HTMLInputElement | HTMLTextAreaElement | null = null;
   var password: HTMLInputElement | HTMLTextAreaElement | null = null;
   var remember: HTMLInputElement | HTMLTextAreaElement | null = null;
@@ -169,13 +173,22 @@ const Header = ({modalCallback}: any) => {
                 <Dropdown
                   isOpen={isDropdownOpen}
                   toggle={() => updateDropdown(!isDropdownOpen)}>
-                  <DropdownToggle caret>Dropdown</DropdownToggle>
-                  <DropdownMenu>
+                  <DropdownToggle
+                    style={{
+                      backgroundColor: avatarColor,
+                      borderRadius: 40,
+                      height: 40,
+                      width: 40,
+                      padding: 0,
+                    }}>
+                    <Avatar size={'md'} name={user.fullname} />
+                  </DropdownToggle>
+                  <DropdownMenu className="mt-3">
                     <DropdownItem header>Header</DropdownItem>
                     <DropdownItem disabled>Action</DropdownItem>
                     <DropdownItem>Another Action</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem>Another Action</DropdownItem>
+                    <DropdownItem>Logout</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               ) : (

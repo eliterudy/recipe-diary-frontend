@@ -92,10 +92,8 @@ const RecipeDetailsComponent = (props: any) => {
   return (
     <>
       {!isTabletOrMobile && (
-        <div className="noselect " style={{}}>
-          <Breadcrumb
-            className="noselect mt-2 mx-5"
-            style={{backgroundColor: 'white'}}>
+        <div className="noselect  border-bottom">
+          <Breadcrumb className="noselect mt-3 mx-5">
             {pathSplit.slice(1, pathSplit.length - 1).map(value => {
               console.log(value);
               return (

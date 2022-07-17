@@ -14,8 +14,9 @@ const initialState: initialStateUser = {
   // user: null,
   user: {
     _id: 1,
-    username: "",
-    password: "",
+    firstname: "Harvey",
+    lastname: "Spectre",
+    fullname: "Harvey Spectre",
     favorites: {
       recipes: []
     } as Favorites,

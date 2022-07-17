@@ -87,7 +87,7 @@ const RecipesComponent = () => {
       var list = data.list;
 
       return (
-        <div className="noselect row my-5">
+        <div className="noselect row my-4">
           <strong>{title}</strong>
           {list.map((filterDataElement: any, listIndex: number) => {
             return (
@@ -117,10 +117,8 @@ const RecipesComponent = () => {
   return (
     <>
       {!isTabletOrMobile && (
-        <div className="noselect ">
-          <Breadcrumb
-            className="noselect mt-2 mx-5"
-            style={{backgroundColor: 'white'}}>
+        <div className="noselect  border-bottom">
+          <Breadcrumb className="noselect mt-3 mx-5">
             <BreadcrumbItem>
               <Link to={'/home'}>
                 <strong>Home</strong>
@@ -135,53 +133,56 @@ const RecipesComponent = () => {
           </Breadcrumb>
         </div>
       )}
-      <div className="noselect  row border-bottom  p-2">
-        <div className="noselect  offset-sm-3 col-12 col-sm-6 ">
-          <InputGroup>
-            <Input
-              placeholder="Search recipes..."
-              style={{borderColor: '#eee'}}
-            />
-            <Button
-              outline
-              onClick={() => {}}
-              onMouseEnter={() => updateSearchHover(true)}
-              onMouseLeave={() => updateSearchHover(false)}
-              style={{
-                borderColor: '#eee',
-                backgroundColor: searchHover ? '#1976D2' : 'white',
-              }}>
-              <img
-                className="noselect col-auto"
-                src={searchHover ? icons.search_white : icons.search_black}
-                height={30}
-                width={30}
-                alt="Search"
-              />
-            </Button>
 
-            {/* <InputGroupText></InputGroupText> */}
-          </InputGroup>
-        </div>
-      </div>
       <div className="noselect row">
         {recipeFilters && (
           <div className="noselect  col-12 col-md-3 col-lg-2 border-end px-5 bg-white">
             {getFilters(recipeFilters)}
           </div>
         )}
-        <div className="noselect  col-12 col-md-9 col-lg-10 d-flex flex-row flex-wrap pt-5 pe-4">
-          {featuredRecipes.map((recipe: RecipeDetails, index: number) => (
-            <div
-              key={index}
-              className={`col-12  col-sm-6 col-lg-4 col-xl-3 mb-5 px-4 `}>
-              <Generic.RecipeCard
-                data={recipe}
-                index={index}
-                redirect={`/recipes/${recipe.id}`}
+        <div className="noselect  col-12 col-md-9 col-lg-10 p-0">
+          <div
+            className="noselect col-12    border-bottom bg-primary"
+            style={{padding: 20, paddingLeft: 25, paddingRight: 40}}>
+            <InputGroup>
+              <Input
+                placeholder="Search recipes..."
+                style={{borderColor: '#eee'}}
               />
-            </div>
-          ))}
+              <Button
+                outline
+                onClick={() => {}}
+                onMouseEnter={() => updateSearchHover(true)}
+                onMouseLeave={() => updateSearchHover(false)}
+                style={{
+                  borderColor: '#eee',
+                  backgroundColor: searchHover ? '#1976D2' : 'white',
+                }}>
+                <img
+                  className="noselect col-auto"
+                  src={searchHover ? icons.search_white : icons.search_black}
+                  height={30}
+                  width={30}
+                  alt="Search"
+                />
+              </Button>
+
+              {/* <InputGroupText></InputGroupText> */}
+            </InputGroup>
+          </div>
+          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-3 pe-3">
+            {featuredRecipes.map((recipe: RecipeDetails, index: number) => (
+              <div
+                key={index}
+                className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
+                <Generic.RecipeCard
+                  data={recipe}
+                  index={index}
+                  redirect={`/recipes/${recipe.id}`}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
