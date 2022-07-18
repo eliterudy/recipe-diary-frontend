@@ -7,9 +7,9 @@ import {RecipeDetails} from '../../config/types';
 import {useMediaQuery} from 'react-responsive';
 import {icons} from '../../config/configuration';
 import {cssHover} from '../generic/hoverProps';
+import actions from '../../redux/actionReducers/index';
 
-import actionReducers from '../../redux/actionReducers/index';
-const {addRecipeToFavorites, deleteRecipeFromFavorites} = actionReducers;
+const {addRecipeToFavorites, deleteRecipeFromFavorites} = actions;
 
 const RecipeDetailsComponent = (props: any) => {
   const dispatch: Dispatch<any> = useDispatch();

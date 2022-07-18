@@ -142,8 +142,13 @@ const RecipesComponent = () => {
         )}
         <div className="noselect  col-12 col-md-9 col-lg-10 p-0">
           <div
-            className="noselect col-12    border-bottom bg-primary"
-            style={{padding: 20, paddingLeft: 25, paddingRight: 40}}>
+            className="noselect col-12 border-bottom"
+            style={{
+              padding: 20,
+              paddingLeft: 25,
+              paddingRight: 40,
+              backgroundColor: '#ddd',
+            }}>
             <InputGroup>
               <Input
                 placeholder="Search recipes..."
@@ -161,8 +166,8 @@ const RecipesComponent = () => {
                 <img
                   className="noselect col-auto"
                   src={searchHover ? icons.search_white : icons.search_black}
-                  height={30}
-                  width={30}
+                  height={25}
+                  width={25}
                   alt="Search"
                 />
               </Button>
@@ -170,7 +175,7 @@ const RecipesComponent = () => {
               {/* <InputGroupText></InputGroupText> */}
             </InputGroup>
           </div>
-          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-3 pe-3">
+          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
             {featuredRecipes.map((recipe: RecipeDetails, index: number) => (
               <div
                 key={index}

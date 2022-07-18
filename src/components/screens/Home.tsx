@@ -22,9 +22,11 @@ import useIntersection from '../generic/useIntersection';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
+import {useNavigate} from 'react-router-dom';
 
 const HomeComponent = () => {
   const dispatch: Dispatch<any> = useDispatch();
+  const navigate = useNavigate();
 
   const refToAnimateUsingViewport =
     useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -93,14 +95,11 @@ const HomeComponent = () => {
               <h5 className="noselect mb-4">
                 Easy & Professional Indian recipes
               </h5>
-              <a
+              <div
                 className="noselect btn btn-outline-light btn-lg m-2"
-                href="https://www.youtube.com/watch?v=c9B4TPnak1A"
-                role="button"
-                rel="nofollow noreferrer"
-                target="_blank">
+                onClick={() => navigate('/recipes')}>
                 Explore
-              </a>
+              </div>
               <div
                 className="noselect btn btn-outline-light btn-lg m-2"
                 onClick={() => scrollTo(refToSpecialsUsingSmoothScroll)}>

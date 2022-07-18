@@ -28,9 +28,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {randomColorGenerator} from '../../config/configuration';
+import actions from '../../redux/actionReducers/index';
+
+const {loadUser, removeUser} = actions;
 
 const avatarColor = randomColorGenerator();
 const Header = ({modalCallback}: any) => {
+  const dispatch: Dispatch<any> = useDispatch();
+
   const myStuffNavItemStyle = cssHover(
     {
       color: '#2785bd',
@@ -135,11 +140,7 @@ const Header = ({modalCallback}: any) => {
                   <strong>Recipes</strong>
                 </NavLink>
               </NavItem>
-              <NavItem className="noselect mx-sm-1">
-                <NavLink tag={RRNavLink} className={'nav-link '} to="/about-us">
-                  <strong>Find recipe</strong>
-                </NavLink>
-              </NavItem>
+
               {!userState.user && (
                 <div
                   {...myStuffNavItemStyle}
@@ -183,19 +184,24 @@ const Header = ({modalCallback}: any) => {
                     }}>
                     <Avatar size={'md'} name={user.fullname} />
                   </DropdownToggle>
-                  <DropdownMenu className="mt-3">
-                    <DropdownItem header>Header</DropdownItem>
-                    <DropdownItem disabled>Action</DropdownItem>
-                    <DropdownItem>Another Action</DropdownItem>
+                  <DropdownMenu style={{marginTop: 14, marginRight: -15}}>
+                    <DropdownItem>My Profile</DropdownItem>
+                    <DropdownItem>My Recipes</DropdownItem>
+                    <DropdownItem>Saved Recipes</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem>Logout</DropdownItem>
+                    <DropdownItem onClick={() => dispatch(removeUser())}>
+                      Logout
+                    </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               ) : (
                 <NavItem className="noselect mx-sm-1">
                   <Button
                     outline
-                    onClick={() => navigate('auth/signin')}
+                    onClick={() => {
+                      // dispatch(loadUser(null));
+                      navigate('auth/signin');
+                    }}
                     {...signInButtonStyle}>
                     <span className="noselect">{` Sign In`}</span>
                   </Button>

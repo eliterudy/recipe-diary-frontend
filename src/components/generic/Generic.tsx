@@ -26,9 +26,9 @@ import {RecipeCardProps, CheckboxProps} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import actionReducers from '../../redux/actionReducers/index';
+import actions from '../../redux/actionReducers/index';
 
-const {addRecipeToFavorites, deleteRecipeFromFavorites} = actionReducers;
+const {addRecipeToFavorites, deleteRecipeFromFavorites} = actions;
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {

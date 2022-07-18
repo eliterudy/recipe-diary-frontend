@@ -5,22 +5,13 @@ import {Favorites, User} from '../../config/types';
 export interface initialStateUser {
   isLoadingUser: boolean;
   errMessUser: null | string;
-  user: any | null;
+  user: User | null;
 }
 
 const initialState: initialStateUser = {
   isLoadingUser: true,
   errMessUser: null,
-  // user: null,
-  user: {
-    _id: 1,
-    firstname: "Harvey",
-    lastname: "Spectre",
-    fullname: "Harvey Spectre",
-    favorites: {
-      recipes: []
-    } as Favorites,
-  },
+  user: null,
 };
 export const userSlice = createSlice({
   name: 'user',
@@ -51,6 +42,21 @@ export const userSlice = createSlice({
           1,
         );
     },
+    loadUser: (state, action) => {
+      console.log('LOAD USER');
+      state.user = {
+        _id: 1,
+        firstname: 'Harvey',
+        lastname: 'Spectre',
+        fullname: 'Harvey Spectre',
+        favorites: {
+          recipes: [],
+        },
+      };
+    },
+    removeUser: state => {
+      state.user = null;
+    },
   },
 });
 
@@ -60,5 +66,7 @@ export const {
   favoritesLoadingFailed,
   addRecipeToFavorites,
   deleteRecipeFromFavorites,
+  loadUser,
+  removeUser,
 } = userSlice.actions;
 export default userSlice.reducer;

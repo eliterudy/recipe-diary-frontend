@@ -31,8 +31,10 @@ export interface Favorites {
 }
 
 export interface User {
-  username: string;
-  password: string;
+  _id: number;
+  firstname: string;
+  lastname: string;
+  fullname: string;
   favorites: Favorites;
 }
 

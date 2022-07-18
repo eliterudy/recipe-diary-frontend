@@ -9,14 +9,14 @@ import {Modal, ModalBody, ModalFooter, ModalHeader, Button} from 'reactstrap';
 import RecipeDetails from './screens/RecipeDetails';
 import {useSelector, useDispatch} from 'react-redux';
 import reduxApiCallers from '../redux/thunks/reduxApiCallers';
-import actionReducers from '../redux/actionReducers/index';
+import actions from '../redux/actionReducers/index';
 import {Dispatch} from '@reduxjs/toolkit';
 import {recipes} from '../shared/datasets';
 import ScrollToTop from './generic/scrollToTop';
 import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
 
-const {recipesLoading, recipesLoadingFailed, addRecipes} = actionReducers;
+const {addRecipes} = actions;
 const {fetchRecipes} = reduxApiCallers;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();

@@ -15,6 +15,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
+import actions from '../../redux/actionReducers/index';
+
+const {loadUser, removeUser} = actions;
 
 const SignInComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -133,6 +136,8 @@ const SignInComponent = () => {
                   onClick={e => {
                     e.preventDefault();
                     updateErrorVisible(true);
+                    dispatch(loadUser(null));
+                    navigate('/');
                   }}>
                   Sign In
                 </Button>
@@ -154,7 +159,6 @@ const SignInComponent = () => {
               <Button
                 {...signUpButtonStyle}
                 onClick={() => {
-                  console.log('nav', navigate);
                   navigate('/auth/signup');
                 }}>
                 Create an account
