@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.text-default-theme {
+  color: "red" ;
+ }
+
+ .nav-pills .nav-link {
+  color: #fff;
+  cursor: default;
+  background-color: #868686;
+}
+
+
+
+.navbar .navbar-nav>li>a {
+ color: #151f2d
+} 
+
+.navbar .navbar-nav>li>a:hover {
+  color: #0450ba;
+}
+
+/* @media only screen and (min-width: 760px) {
+  .dishCardAnimate {
+    transition: 0.3s;
+  }
+
+  .dishCardAnimate:hover {
+    transform: 'scale(1.05)';
+    z-index: 10;
+    transition: '0.5s';
+  }
+  
+} */
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
