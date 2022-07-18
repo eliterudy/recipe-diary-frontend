@@ -95,7 +95,6 @@ const RecipeDetailsComponent = (props: any) => {
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
             {pathSplit.slice(1, pathSplit.length - 1).map(value => {
-              console.log(value);
               return (
                 <BreadcrumbItem>
                   <Link to={`/${value}`}>

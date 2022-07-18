@@ -38,7 +38,7 @@ const Header = ({modalCallback}: any) => {
 
   const myStuffNavItemStyle = cssHover(
     {
-      color: '#2785bd',
+      color: '#2b59a1',
       cursor: 'pointer',
     },
     {
@@ -66,11 +66,6 @@ const Header = ({modalCallback}: any) => {
   const [isNavOpen, updateNavOpen] = useState(false);
   const [isDropdownOpen, updateDropdown] = useState(false);
 
-  var username: HTMLInputElement | HTMLTextAreaElement | null = null;
-  var password: HTMLInputElement | HTMLTextAreaElement | null = null;
-  var remember: HTMLInputElement | HTMLTextAreaElement | null = null;
-  // let location = useLocation();
-
   const toggleNav = () => {
     updateNavOpen(!isNavOpen);
   };
@@ -82,17 +77,6 @@ const Header = ({modalCallback}: any) => {
   });
   const {userState} = state;
   const {user} = userState;
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    alert(
-      'Username: ' +
-        username +
-        ', Password: ' +
-        password +
-        ', Remember?  : ' +
-        remember,
-    );
-  };
 
   return (
     <>
@@ -110,7 +94,9 @@ const Header = ({modalCallback}: any) => {
           <NavbarBrand
             className="noselect col-8 col-sm-3 m-sm-0 p-sm-0"
             href="/">
-            <div className="noselect d-flex flex-row align-items-center ">
+            <div
+              className="noselect d-flex flex-row align-items-center"
+              style={{marginLeft: 12}}>
               <img
                 className="noselect col-auto"
                 src="../../assets/icons/app_logo.png"
@@ -141,22 +127,22 @@ const Header = ({modalCallback}: any) => {
                 </NavLink>
               </NavItem>
 
-              {!userState.user && (
+              {!user && (
                 <div
                   {...myStuffNavItemStyle}
                   className="noselect mt-2 mx-3"
                   onClick={() => modalCallback()}>
                   <i className="noselect fa fa-lock me-1" />
-                  <strong style={{cursor: 'pointer'}}>My Stuff</strong>
+                  <strong style={{cursor: 'pointer'}}>My Profile</strong>
                 </div>
               )}
-              {userState.user && (
+              {user && (
                 <NavItem className="noselect mx-sm-1">
                   <NavLink
                     tag={RRNavLink}
                     className={'nav-link '}
-                    to="/my-stuff">
-                    <strong>My Stuff</strong>
+                    to="/my-profile">
+                    <strong>My Profile</strong>
                   </NavLink>
                 </NavItem>
               )}

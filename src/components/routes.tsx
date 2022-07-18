@@ -1,5 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Routes, Route, Navigate, useLocation} from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import Footer from './functional/Footer';
 import Header from './functional/Header';
 import Home from './screens/Home';
@@ -15,6 +21,7 @@ import {recipes} from '../shared/datasets';
 import ScrollToTop from './generic/scrollToTop';
 import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
+import MyProfile from './screens/MyProfile';
 
 const {addRecipes} = actions;
 const {fetchRecipes} = reduxApiCallers;
@@ -28,10 +35,19 @@ const MainRouter = () => {
   };
 
   const MainRoutes = () => {
+    const navigate = useNavigate();
+    const state = useSelector((state: any) => {
+      return {
+        userState: state.userActionReducer,
+      };
+    });
+    const {userState} = state;
+    const {user} = userState;
     const [isModalOpen, updateModalOpen] = useState(false);
     const toggleModal = () => {
       updateModalOpen(!isModalOpen);
     };
+
     return (
       <div>
         <Header modalCallback={() => toggleModal()} />
@@ -66,7 +82,7 @@ const MainRouter = () => {
           />
 
           {/* My Stuff */}
-          <Route path="my-stuff/" element={<HomePage />} />
+          <Route path="my-profile/" element={<MyProfile />} />
 
           {/* Contact Us */}
           <Route path="contact-us/" element={<RecipeList />} />
@@ -80,10 +96,13 @@ const MainRouter = () => {
             paddingTop: 50,
           }}
           isOpen={isModalOpen}>
-          <ModalHeader charCode="Y" toggle={() => toggleModal()}>
+          <ModalHeader
+            className="noselect"
+            charCode="Y"
+            toggle={() => toggleModal()}>
             Access denied!
           </ModalHeader>
-          <ModalBody>
+          <ModalBody className="noselect">
             You dont have access to this feature. To <strong>gain</strong>{' '}
             access,
             <strong> create you very own account</strong> with us. If you
@@ -92,8 +111,11 @@ const MainRouter = () => {
           </ModalBody>
           <ModalFooter>
             <Button
-              style={{backgroundColor: '#2785bd'}}
-              onClick={() => toggleModal()}>
+              style={{backgroundColor: '#2b59a1'}}
+              onClick={() => {
+                toggleModal();
+                navigate('/auth/signin');
+              }}>
               Do it now
             </Button>
             <Button onClick={() => toggleModal()}>Do it later</Button>

@@ -19,7 +19,9 @@ const RecipesComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
   const pathSplit = locationParams.pathname.split('/');
-  const activePath = pathSplit[pathSplit.length - 1];
+  var activePath = pathSplit[pathSplit.length - 1];
+  activePath =
+    activePath.substring(0, 1).toUpperCase() + activePath.substring(1);
   // console.log(locationParams);
   const [searchHover, updateSearchHover] = useState(false);
   const [recipeFilters, updateFilters] = useState([
@@ -51,7 +53,7 @@ const RecipesComponent = () => {
   const {recipeState, userState} = state;
 
   var getRecipes = (): RecipeDetails[] => {
-    var featuredRecipes = recipeState.recipes;
+    var recipesList = recipeState.recipes;
     if (
       userState &&
       userState.user &&
@@ -59,14 +61,14 @@ const RecipesComponent = () => {
       userState.user.favorites.hasOwnProperty('recipes')
     ) {
       const favoriteRecipes = userState.user.favorites.recipes;
-      featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
+      recipesList = recipesList.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,
           isFavorite: favoriteRecipes.includes(featuredRecipe.id),
         });
       });
     }
-    return featuredRecipes;
+    return recipesList;
   };
 
   var addFiltersToList = (
@@ -112,7 +114,7 @@ const RecipesComponent = () => {
     return results;
   };
 
-  var featuredRecipes = getRecipes();
+  var recipesList = getRecipes();
 
   return (
     <>
@@ -125,10 +127,7 @@ const RecipesComponent = () => {
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem active>
-              <strong>
-                {activePath.substring(0, 1).toUpperCase() +
-                  activePath.substring(1)}
-              </strong>
+              <strong>{activePath}</strong>
             </BreadcrumbItem>
           </Breadcrumb>
         </div>
@@ -176,7 +175,7 @@ const RecipesComponent = () => {
             </InputGroup>
           </div>
           <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
-            {featuredRecipes.map((recipe: RecipeDetails, index: number) => (
+            {recipesList.map((recipe: RecipeDetails, index: number) => (
               <div
                 key={index}
                 className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
