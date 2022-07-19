@@ -28,7 +28,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import actions from '../../redux/actionReducers/index';
 
-const {addRecipeToFavorites, deleteRecipeFromFavorites} = actions;
+const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
+  actions;
 
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
@@ -80,7 +81,8 @@ const Generic = {
         <div
           {...cardHoverStlye}
           onClick={() => {
-            // console.log('clicked');
+            console.log('clicked');
+            dispatch(addRecipeToRecents(data.id));
           }}>
           <Card className="noselect  col-12 col-sm-12 ">
             <CardBody className="noselect p-0">
@@ -120,6 +122,7 @@ const Generic = {
                       alt="Recipe Diary"
                       onClick={e => {
                         e.preventDefault();
+                        e.stopPropagation();
                         console.log('her');
                         isFavorite
                           ? dispatch(deleteRecipeFromFavorites(id))

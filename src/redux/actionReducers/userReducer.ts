@@ -32,6 +32,25 @@ export const userSlice = createSlice({
         state.user.favorites &&
         state.user.favorites.recipes.push(action.payload);
     },
+    addRecipeToRecents: (state, action) => {
+      state.errMessUser = null;
+      state.isLoadingUser = false;
+
+      if (
+        state.user &&
+        state.user.recents &&
+        state.user.recents.recipes &&
+        state.user.recents.recipes.includes(action.payload)
+      ) {
+        state.user.recents.recipes.splice(
+          state.user.recents.recipes.indexOf(action.payload),
+          1,
+        );
+      }
+      state.user &&
+        state.user.recents &&
+        state.user.recents.recipes.push(action.payload);
+    },
     deleteRecipeFromFavorites: (state, action) => {
       state.errMessUser = null;
       state.isLoadingUser = false;
@@ -52,6 +71,9 @@ export const userSlice = createSlice({
         favorites: {
           recipes: [],
         },
+        recents: {
+          recipes: [],
+        },
       };
     },
     removeUser: state => {
@@ -65,6 +87,7 @@ export const {
   favoritesLoading,
   favoritesLoadingFailed,
   addRecipeToFavorites,
+  addRecipeToRecents,
   deleteRecipeFromFavorites,
   loadUser,
   removeUser,

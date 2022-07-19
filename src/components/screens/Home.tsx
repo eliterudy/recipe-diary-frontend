@@ -42,18 +42,18 @@ const HomeComponent = () => {
     };
   });
   const {recipeState, userState} = state;
+  const {user} = userState;
 
   var getspecials = (): RecipeDetails[] => {
     var featuredRecipes = recipeState.recipes.filter(
       (recipe: RecipeDetails) => recipe.featured === true,
     );
     if (
-      userState &&
-      userState.user &&
-      userState.user.favorites !== {} &&
-      userState.user.favorites.hasOwnProperty('recipes')
+      user &&
+      user.favorites !== {} &&
+      user.favorites.hasOwnProperty('recipes')
     ) {
-      const favoriteRecipes = userState.user.favorites.recipes;
+      const favoriteRecipes = user.favorites.recipes;
       featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,

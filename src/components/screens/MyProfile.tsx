@@ -42,12 +42,11 @@ const MyProfileComponent = () => {
 
   useEffect(() => {
     if (location.pathname === '/my-profile' && !user) {
-      console.log('here');
       navigate('/');
     }
   });
   const [activeTab, updateActiveTab] = useState(0);
-  const tabs = ['My Recipes', 'Saved Recipes'];
+  const tabs = ['Recent Recipes', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
@@ -73,33 +72,83 @@ const MyProfileComponent = () => {
     },
   );
 
-  var getRecipes = (): RecipeDetails[] => {
-    var list = [];
-    var recipes = recipeState.recipes;
+  var getRecipes = (userProp: string): RecipeDetails[] => {
+    var results: RecipeDetails[] = [];
+    var allRecipes = recipeState.recipes;
     if (
       user &&
-      user.favorites !== {} &&
-      user.favorites.hasOwnProperty('recipes')
+      user[userProp] !== {} &&
+      user[userProp].hasOwnProperty('recipes')
     ) {
-      const favRecipes = user.favorites.recipes;
+      const recipeListForUserProp = user[userProp].recipes;
+      results = recipeListForUserProp.map((elem: string) => {
+        var recipe = allRecipes.filter((e: RecipeDetails) => e.id === elem)[0];
+        recipe = {...recipe, isFavorite: false};
+        if (
+          user &&
+          user['favorites'] !== {} &&
+          user['favorites'].hasOwnProperty('recipes')
+        ) {
+          var favRecipeList = user.favorites.recipes;
+          recipe = {
+            ...recipe,
+            isFavorite: favRecipeList.includes(recipe.id),
+          };
 
-      list = favRecipes.map((recipeId: string) => {
-        var recipeArr = recipes.filter(
-          (recipe: RecipeDetails) => recipe.id === recipeId,
-        );
-        var recipe = recipeArr[0];
-        recipe = {
-          ...recipe,
-          isFavorite: true,
-        };
-        return recipe;
+          return recipe;
+        }
       });
-      console.log('list', list);
     }
-    return list;
+    return results.reverse();
   };
 
-  var favoriteRecipes = getRecipes();
+  var loadRecipes = (recipes: RecipeDetails[], recipeType: string) => {
+    var response;
+    if (recipes && recipes.length > 0) {
+      if (recipeType === 'recents' && recipes.length > 10) {
+        recipes = recipes.slice(0, 10);
+      }
+      response = (
+        <div>
+          {recipeType == 'recents' && (
+            <em>
+              <small className="ps-4 mb-0 pb-0 text-muted">
+                Top {recipes.length > 10 ? 10 : recipes.length} recipes you
+                recently checked out...
+              </small>
+            </em>
+          )}
+
+          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4 pe-3">
+            {recipes.map((recipe: RecipeDetails, index: number) => (
+              <div
+                key={index}
+                className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>
+                <Generic.RecipeCard
+                  data={recipe}
+                  index={index}
+                  redirect={`/recipes/${recipe.id}`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    } else {
+      response = (
+        <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
+          <span className="col-12 text-center">
+            {`No ${recipeType} recipes`}
+          </span>
+        </div>
+      );
+    }
+
+    return response;
+  };
+
+  var savedRecipes = getRecipes('favorites');
+  var recentRecipes = getRecipes('recents');
 
   return (
     <>
@@ -169,36 +218,10 @@ const MyProfileComponent = () => {
               </Nav>
               <TabContent activeTab={activeTab} className="m-3">
                 <TabPane tabId={0}>
-                  <Row>
-                    <Col sm="12">
-                      <h4>Tab 1 Contents</h4>
-                    </Col>
-                  </Row>
+                  {loadRecipes(recentRecipes, 'recents')}
                 </TabPane>
                 <TabPane tabId={1}>
-                  {favoriteRecipes && favoriteRecipes.length > 0 ? (
-                    <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
-                      {favoriteRecipes.map(
-                        (recipe: RecipeDetails, index: number) => (
-                          <div
-                            key={index}
-                            className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>
-                            <Generic.RecipeCard
-                              data={recipe}
-                              index={index}
-                              redirect={`/recipes/${recipe.id}`}
-                            />
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  ) : (
-                    <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
-                      <span className="col-12 text-center">
-                        No saved recipes
-                      </span>
-                    </div>
-                  )}
+                  {loadRecipes(savedRecipes, 'favorites')}
                 </TabPane>
               </TabContent>
             </div>

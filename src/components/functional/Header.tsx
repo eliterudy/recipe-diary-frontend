@@ -172,7 +172,7 @@ const Header = ({modalCallback}: any) => {
                   </DropdownToggle>
                   <DropdownMenu style={{marginTop: 14, marginRight: -15}}>
                     <DropdownItem>My Profile</DropdownItem>
-                    <DropdownItem>My Recipes</DropdownItem>
+                    <DropdownItem>Recent Recipes</DropdownItem>
                     <DropdownItem>Saved Recipes</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={() => dispatch(removeUser())}>
