@@ -81,7 +81,6 @@ const Generic = {
         <div
           {...cardHoverStlye}
           onClick={() => {
-            console.log('clicked');
             dispatch(addRecipeToRecents(data.id));
           }}>
           <Card className="noselect  col-12 col-sm-12 ">

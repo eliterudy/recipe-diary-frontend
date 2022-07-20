@@ -41,6 +41,7 @@ export interface User {
   fullname: string;
   favorites: Favorites;
   recents: Recents;
+  isVerified?: boolean;
 }
 
 export interface CheckboxProps {

@@ -56,7 +56,39 @@ const MyProfileComponent = (props: any) => {
     .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
     .join(' ');
 
-  const signInButtonStyle = cssHover(
+  const verifyCardHoverStyle = cssHover(
+    {
+      transform: 'scale(1.05)',
+      zIndex: 10,
+      transition: '0.5s',
+    },
+    {transition: '0.3s'},
+    {
+      marginBottom: 400,
+      flex: 1,
+      padding: 10,
+      paddingLeft: 20,
+      paddingRight: 20,
+      backgroundColor: '#774360',
+      borderRadius: 8,
+    },
+  );
+  const getVerifiedButtonStyle = cssHover(
+    {
+      border: '1px solid #2b72a1',
+      boxShadow: '0px 0px 1px 2px rgba(231, 171, 121, 1)',
+      backgroundColor: '#B25068',
+    },
+    {
+      border: '0px solid #2b72a1',
+      backgroundColor: '#B25068',
+    },
+    {
+      cursor: 'pointer',
+      color: '#ECDBBA',
+    },
+  );
+  const editProfileButtonStyle = cssHover(
     {
       border: '1px solid #2b72a1',
       boxShadow: '0px 0px 1px 2px rgba(43, 114, 161, 0.6)',
@@ -110,7 +142,7 @@ const MyProfileComponent = (props: any) => {
       }
       response = (
         <div>
-          {recipeType == 'recents' && (
+          {recipeType === 'recents' && (
             <em>
               <small className="ps-4 mb-0 pb-0 text-muted">
                 Top {recipes.length > 10 ? 10 : recipes.length} recipes you
@@ -197,9 +229,26 @@ const MyProfileComponent = (props: any) => {
                     padding: 10,
                     overflowWrap: 'break-word',
                   }}>{`${user.firstname} ${user.lastname}`}</h4>
-                <Button className="col-12 mb-5" {...signInButtonStyle} outline>
+                <Button
+                  className="col-12 mb-5"
+                  {...editProfileButtonStyle}
+                  outline>
                   Edit Profile
                 </Button>
+                <Col className="col-12 ">
+                  {!user.isVerified && (
+                    <div className="py-4" {...verifyCardHoverStyle}>
+                      <p style={{color: '#ECDBBA', marginBottom: 20}}>
+                        If you love cooking like we do and wish to contribute to
+                        our website with you marvelous recipes, click on the
+                        link below to become a verified contributor
+                      </p>
+                      <Button {...getVerifiedButtonStyle} className="col-12 ">
+                        <span>Get Verified</span>
+                      </Button>
+                    </div>
+                  )}
+                </Col>
               </div>
             </div>
             <div className="noselect  col-12 col-md-8 col-xl-9  p-2">

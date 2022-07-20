@@ -74,6 +74,7 @@ export const userSlice = createSlice({
         recents: {
           recipes: [],
         },
+        isVerified: false,
       };
     },
     removeUser: state => {
