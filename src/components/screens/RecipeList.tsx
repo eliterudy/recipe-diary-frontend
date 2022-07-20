@@ -14,7 +14,9 @@ import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
 
-const RecipesComponent = () => {
+const RecipesComponent = (props: any) => {
+  const {pathDetails} = props;
+
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
@@ -121,11 +123,15 @@ const RecipesComponent = () => {
       {!isTabletOrMobile && (
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
-            <BreadcrumbItem>
-              <Link to={'/home'}>
-                <strong>Home</strong>
-              </Link>
-            </BreadcrumbItem>
+            {pathDetails &&
+              pathDetails.map((pathElement: any) => (
+                <BreadcrumbItem>
+                  <Link to={'/home'}>
+                    <strong>Home</strong>
+                  </Link>
+                </BreadcrumbItem>
+              ))}
+
             <BreadcrumbItem active>
               <strong>{activePath}</strong>
             </BreadcrumbItem>
@@ -182,7 +188,7 @@ const RecipesComponent = () => {
                 <Generic.RecipeCard
                   data={recipe}
                   index={index}
-                  redirect={`/recipes/${recipe.id}`}
+                  redirect={`recipeId/${recipe.id}`}
                 />
               </div>
             ))}

@@ -24,7 +24,8 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 import {useNavigate} from 'react-router-dom';
 
-const HomeComponent = () => {
+const HomeComponent = (props: any) => {
+  const {pathDetails} = props;
   const dispatch: Dispatch<any> = useDispatch();
   const navigate = useNavigate();
 
@@ -128,7 +129,7 @@ const HomeComponent = () => {
                 <Generic.RecipeCard
                   data={special}
                   index={index}
-                  redirect={`/home/${special.id}`}
+                  redirect={`recipeId/${special.id}`}
                 />
               </Animate>
             </div>

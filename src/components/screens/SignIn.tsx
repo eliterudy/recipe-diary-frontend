@@ -137,7 +137,7 @@ const SignInComponent = () => {
                     e.preventDefault();
                     updateErrorVisible(true);
                     dispatch(loadUser(null));
-                    navigate('/');
+                    navigate('/home');
                   }}>
                   Sign In
                 </Button>

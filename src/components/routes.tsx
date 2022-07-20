@@ -30,8 +30,62 @@ const MainRouter = () => {
   let location = useLocation();
   dispatch(addRecipes(recipes));
 
-  const HomePage = () => {
-    return <Home />;
+  const HomeRoutes = () => {
+    const homePath = [{path: '/home', pathName: 'Home'}];
+    const homeRecipeDetailsPath = [{path: '/home', pathName: 'Home'}];
+    return (
+      <Routes>
+        <Route path="/" element={<Home pathDetails={homePath} />} />
+        <Route
+          path="recipeId/:recipeId"
+          element={
+            <ScrollToTop>
+              <RecipeDetails pathDetails={homeRecipeDetailsPath} />
+            </ScrollToTop>
+          }
+        />
+      </Routes>
+    );
+  };
+  const RecipeRoutes = () => {
+    const recipePath = [{path: '/home', pathName: 'Home'}];
+    const recipeRecipeDetailsPath = [
+      {path: '/home', pathName: 'Home'},
+      {path: '/recipes', pathName: 'Recipes'},
+    ];
+    return (
+      <Routes>
+        <Route path="/" element={<RecipeList pathDetails={recipePath} />} />
+        <Route
+          path="recipeId/:recipeId"
+          element={
+            <ScrollToTop>
+              <RecipeDetails pathDetails={recipeRecipeDetailsPath} />
+            </ScrollToTop>
+          }
+        />
+      </Routes>
+    );
+  };
+  const MyProfileRoutes = () => {
+    const myProfilePath = [{path: '/home', pathName: 'Home'}];
+    const myProfileRecipeDetailsPath = [
+      {path: '/home', pathName: 'Home'},
+      {path: '/myProfile', pathName: 'My Profile'},
+    ];
+    return (
+      <Routes>
+        <Route path="/" element={<MyProfile pathDetails={myProfilePath} />} />
+        <Route
+          path="recipeId/:recipeId"
+          element={
+            <ScrollToTop>
+              <RecipeDetails pathDetails={myProfileRecipeDetailsPath} />
+            </ScrollToTop>
+          }
+        />
+      </Routes>
+    );
   };
 
   const MainRoutes = () => {
@@ -53,39 +107,16 @@ const MainRouter = () => {
         <Header modalCallback={() => toggleModal()} />
         <Routes>
           {/* Home */}
-          <Route path="home/" element={<HomePage />} />
-          <Route
-            path="home/:recipeId"
-            element={
-              <ScrollToTop>
-                <RecipeDetails />
-              </ScrollToTop>
-            }
-          />
+          <Route path="home/*" element={<HomeRoutes />} />
 
           {/* Recipes */}
-          <Route
-            path="recipes/"
-            element={
-              // <ScrollToTop>
-              <RecipeList />
-              // </ScrollToTop>
-            }
-          />
-          <Route
-            path="recipes/:recipeId"
-            element={
-              <ScrollToTop>
-                <RecipeDetails />
-              </ScrollToTop>
-            }
-          />
+          <Route path="recipes/*" element={<RecipeRoutes />} />
 
           {/* My Stuff */}
-          <Route path="my-profile/" element={<MyProfile />} />
+          <Route path="myprofile/*" element={<MyProfileRoutes />} />
 
           {/* Contact Us */}
-          <Route path="contact-us/" element={<RecipeList />} />
+          <Route path="contactus/*" element={<RecipeRoutes />} />
 
           {/* default route */}
           <Route path="*" element={<Navigate to="home/" replace />} />
@@ -143,7 +174,7 @@ const MainRouter = () => {
       <Routes>
         <Route path={'auth/*'} element={<AuthRoutes />} />
         <Route path="/*" element={<MainRoutes />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/*" replace />} />
       </Routes>
     </div>
   );

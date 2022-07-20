@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import {Breadcrumb, BreadcrumbItem, Row, Col} from 'reactstrap';
 import {useLocation, Link} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
@@ -12,6 +12,7 @@ import actions from '../../redux/actionReducers/index';
 const {addRecipeToFavorites, deleteRecipeFromFavorites} = actions;
 
 const RecipeDetailsComponent = (props: any) => {
+  const {pathDetails} = props;
   const dispatch: Dispatch<any> = useDispatch();
   const state = useSelector((state: any) => {
     return {
@@ -40,9 +41,15 @@ const RecipeDetailsComponent = (props: any) => {
 
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
-  const pathSplit = locationParams.pathname.split('/');
-  const recipeId = pathSplit[pathSplit.length - 1];
+  const pathSplit = locationParams.pathname.split('/').map(pathParam => {
+    return pathParam
+      .split('-')
+      .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
+      .join(' ');
+  });
+  console.log('pathSplit', pathSplit);
 
+  const recipeId = pathSplit[pathSplit.length - 1];
   const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
 
   var getRecipeDetails = (): RecipeDetails => {
@@ -94,12 +101,13 @@ const RecipeDetailsComponent = (props: any) => {
       {!isTabletOrMobile && (
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
-            {pathSplit.slice(1, pathSplit.length - 1).map(value => {
+            {pathDetails.map((pathDetail: any) => {
               return (
                 <BreadcrumbItem>
-                  <Link to={`/${value}`}>
+                  <Link to={pathDetail.path}>
                     <strong>
-                      {value.substring(0, 1).toUpperCase() + value.substring(1)}
+                      {pathDetail.pathName.substring(0, 1).toUpperCase() +
+                        pathDetail.pathName.substring(1)}
                     </strong>
                   </Link>
                 </BreadcrumbItem>
@@ -227,21 +235,38 @@ const RecipeDetailsComponent = (props: any) => {
               </strong>
             </div>
           </div>
-
-          <h3 className="noselect  col-12 mt-5">Ingredients</h3>
-          <ul>
-            {ingredients &&
-              ingredients.map((ingredient: any) => {
-                return <li className="noselect mt-3">{ingredient}</li>;
-              })}
-          </ul>
-          <h3 className="noselect  col-12 mt-5">Instructions</h3>
-          <ol>
-            {instructions &&
-              instructions.map((instruction: any) => {
-                return <li className="noselect mt-3">{instruction}</li>;
-              })}
-          </ol>
+          <Row>
+            <Col className="col-12 col-md-3 border-end">
+              <h3 className="noselect  col-12 mt-5">Ingredients</h3>
+              <div className="text-decoration-none">
+                {ingredients &&
+                  ingredients.map((ingredient: any, index: number) => {
+                    return (
+                      <li
+                        key={index}
+                        className="noselect my-4 text-decoration-none list-unstyled">
+                        {ingredient}
+                      </li>
+                    );
+                  })}
+              </div>
+            </Col>
+            <Col className="col-12 col-md-7 ps-md-5 ">
+              <h3 className="noselect col-12 mt-5">Instructions</h3>
+              <ol className="text-decoration-none">
+                {instructions &&
+                  instructions.map((instruction: any, index: number) => {
+                    return (
+                      <li
+                        key={index}
+                        className="noselect text-decoration-none my-5">
+                        {instruction}
+                      </li>
+                    );
+                  })}
+              </ol>
+            </Col>
+          </Row>
         </div>
       </div>
     </>

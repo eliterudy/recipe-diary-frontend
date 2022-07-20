@@ -27,30 +27,29 @@ import classnames from 'classnames';
 
 const avatarColor = randomColorGenerator();
 
-const MyProfileComponent = () => {
+const MyProfileComponent = (props: any) => {
   const state = useSelector((state: any) => {
     return {
       recipeState: state.recipeActionReducer,
       userState: state.userActionReducer,
     };
   });
-  let location = useLocation();
-
+  let locationParams = useLocation();
   const {recipeState, userState} = state;
   const {user} = userState;
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.pathname === '/my-profile' && !user) {
-      navigate('/');
+    if (locationParams.pathname === '/my-profile' && !user) {
+      navigate('/home');
     }
   });
   const [activeTab, updateActiveTab] = useState(0);
-  const tabs = ['Recent Recipes', 'Saved Recipes'];
+  const tabs = ['Recently Viewed', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
-  const locationParams = useLocation();
   const pathSplit = locationParams.pathname.split('/');
+  console.log('pathSplit', pathSplit);
   const activePath = pathSplit[pathSplit.length - 1]
     .split('-')
     .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
@@ -127,7 +126,7 @@ const MyProfileComponent = () => {
                 <Generic.RecipeCard
                   data={recipe}
                   index={index}
-                  redirect={`/recipes/${recipe.id}`}
+                  redirect={`recipeId/${recipe.id}`}
                 />
               </div>
             ))}
