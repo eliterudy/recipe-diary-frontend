@@ -141,7 +141,7 @@ const Header = ({modalCallback}: any) => {
                   <NavLink
                     tag={RRNavLink}
                     className={'nav-link '}
-                    to="/myprofile">
+                    to="/my-profile">
                     <strong>My Profile</strong>
                   </NavLink>
                 </NavItem>
@@ -150,7 +150,7 @@ const Header = ({modalCallback}: any) => {
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
-                  to="/contactus">
+                  to="/contact-us">
                   <strong>Contact Us</strong>
                 </NavLink>
               </NavItem>

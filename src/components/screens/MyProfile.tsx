@@ -28,6 +28,7 @@ import classnames from 'classnames';
 const avatarColor = randomColorGenerator();
 
 const MyProfileComponent = (props: any) => {
+  const {pathDetails} = props;
   const state = useSelector((state: any) => {
     return {
       recipeState: state.recipeActionReducer,
@@ -156,11 +157,14 @@ const MyProfileComponent = (props: any) => {
           {!isTabletOrMobile && (
             <div className="noselect  border-bottom">
               <Breadcrumb className="noselect mt-3 mx-5">
-                <BreadcrumbItem>
-                  <Link to={'/home'}>
-                    <strong>Home</strong>
-                  </Link>
-                </BreadcrumbItem>
+                {pathDetails &&
+                  pathDetails.map((pathDetail: any) => (
+                    <BreadcrumbItem>
+                      <Link to={pathDetail.path}>
+                        <strong>{pathDetail.pathName}</strong>
+                      </Link>
+                    </BreadcrumbItem>
+                  ))}
                 <BreadcrumbItem active>
                   <strong>{activePath}</strong>
                 </BreadcrumbItem>

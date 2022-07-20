@@ -124,10 +124,10 @@ const RecipesComponent = (props: any) => {
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
             {pathDetails &&
-              pathDetails.map((pathElement: any) => (
+              pathDetails.map((pathDetail: any) => (
                 <BreadcrumbItem>
-                  <Link to={'/home'}>
-                    <strong>Home</strong>
+                  <Link to={pathDetail.path}>
+                    <strong>{pathDetail.pathName}</strong>
                   </Link>
                 </BreadcrumbItem>
               ))}

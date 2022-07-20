@@ -71,7 +71,7 @@ const MainRouter = () => {
     const myProfilePath = [{path: '/home', pathName: 'Home'}];
     const myProfileRecipeDetailsPath = [
       {path: '/home', pathName: 'Home'},
-      {path: '/myProfile', pathName: 'My Profile'},
+      {path: '/my-profile', pathName: 'My Profile'},
     ];
     return (
       <Routes>
@@ -113,10 +113,10 @@ const MainRouter = () => {
           <Route path="recipes/*" element={<RecipeRoutes />} />
 
           {/* My Stuff */}
-          <Route path="myprofile/*" element={<MyProfileRoutes />} />
+          <Route path="my-profile/*" element={<MyProfileRoutes />} />
 
           {/* Contact Us */}
-          <Route path="contactus/*" element={<RecipeRoutes />} />
+          <Route path="contact-us/*" element={<RecipeRoutes />} />
 
           {/* default route */}
           <Route path="*" element={<Navigate to="home/" replace />} />
