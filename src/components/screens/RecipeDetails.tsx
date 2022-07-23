@@ -92,8 +92,6 @@ const RecipeDetailsComponent = (props: any) => {
     diet,
     servings,
     course,
-    ingredientCount,
-    ingredientsUsed,
     isFavorite,
   } = getRecipeDetails();
   return (

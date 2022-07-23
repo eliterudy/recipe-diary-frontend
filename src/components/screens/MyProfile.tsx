@@ -24,6 +24,9 @@ import {Avatar, AvatarGroup} from '@chakra-ui/avatar';
 import {randomColorGenerator} from '../../config/configuration';
 import {cssHover} from '../generic/hoverProps';
 import classnames from 'classnames';
+import actions from '../../redux/actionReducers/index';
+
+const {verifyUser} = actions;
 
 const avatarColor = randomColorGenerator();
 
@@ -46,11 +49,10 @@ const MyProfileComponent = (props: any) => {
     }
   });
   const [activeTab, updateActiveTab] = useState(0);
-  const tabs = ['Recently Viewed', 'Saved Recipes'];
+  const tabs = ['Recently Viewed', 'My Recipes', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const pathSplit = locationParams.pathname.split('/');
-  console.log('pathSplit', pathSplit);
   const activePath = pathSplit[pathSplit.length - 1]
     .split('-')
     .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
@@ -64,7 +66,6 @@ const MyProfileComponent = (props: any) => {
     },
     {transition: '0.3s'},
     {
-      marginBottom: 400,
       flex: 1,
       padding: 10,
       paddingLeft: 20,
@@ -134,6 +135,17 @@ const MyProfileComponent = (props: any) => {
     return results.reverse();
   };
 
+  var getMyRecipes = (userId: any) => {
+    var results = recipeState.recipes;
+    if (recipeState.recipes) {
+      // results = recipeState.recipes.filter(
+      //   (recipe: RecipeDetails) => recipe.author._id === userId,
+      // );
+    }
+
+    return results;
+  };
+
   var loadRecipes = (recipes: RecipeDetails[], recipeType: string) => {
     var response;
     if (recipes && recipes.length > 0) {
@@ -181,6 +193,7 @@ const MyProfileComponent = (props: any) => {
 
   var savedRecipes = getRecipes('favorites');
   var recentRecipes = getRecipes('recents');
+  var myrecipes = getMyRecipes(user._id);
 
   return (
     <>
@@ -205,7 +218,9 @@ const MyProfileComponent = (props: any) => {
           )}
           <div className="noselect row">
             <div className="noselect  col-12 col-md-4 col-xl-3 border-end  px-5 bg-white ">
-              <div className="d-flex flex-column align-items-center pt-5">
+              <div
+                className="d-flex flex-column align-items-center pt-5"
+                style={{marginBottom: 600}}>
                 <div
                   className=""
                   style={{
@@ -243,7 +258,12 @@ const MyProfileComponent = (props: any) => {
                         our website with you marvelous recipes, click on the
                         link below to become a verified contributor
                       </p>
-                      <Button {...getVerifiedButtonStyle} className="col-12 ">
+                      <Button
+                        {...getVerifiedButtonStyle}
+                        className="col-12 "
+                        onClick={() => {
+                          dispatch(verifyUser(true));
+                        }}>
                         <span>Get Verified</span>
                       </Button>
                     </div>
@@ -255,6 +275,9 @@ const MyProfileComponent = (props: any) => {
               <Nav tabs className="m-2">
                 {tabs &&
                   tabs.map((tab, index) => {
+                    if (tab === 'My Recipes' && !user.isVerified) {
+                      return null;
+                    }
                     return (
                       <NavItem>
                         <NavLink
@@ -273,6 +296,14 @@ const MyProfileComponent = (props: any) => {
                   {loadRecipes(recentRecipes, 'recents')}
                 </TabPane>
                 <TabPane tabId={1}>
+                  <Col>
+                    <Button color="success" className="ms-4 ps-3 pe-3">
+                      + New Recipe
+                    </Button>
+                  </Col>
+                  {loadRecipes(myrecipes, 'myrecipes')}
+                </TabPane>
+                <TabPane tabId={2}>
                   {loadRecipes(savedRecipes, 'favorites')}
                 </TabPane>
               </TabContent>

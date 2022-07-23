@@ -5,19 +5,17 @@ export interface RecipeDetails {
   title: string;
   ingredients: string[];
   instructions: string[];
-  ingredientsUsed: string[];
   imageUrl: string;
   cuisine: string;
   course: string;
   diet: string;
-  url: string;
   prepTimeInMins: number;
   cookTimeInMins: number;
   totalTimeInMins: number;
   servings: number;
-  ingredientCount: number;
   featured: boolean;
   isFavorite?: boolean;
+  author: User;
 }
 
 export interface RecipeCardProps {
@@ -39,9 +37,12 @@ export interface User {
   firstname: string;
   lastname: string;
   fullname: string;
+  username: string;
   favorites: Favorites;
   recents: Recents;
+  isAdmin: boolean;
   isVerified?: boolean;
+  email: string;
 }
 
 export interface CheckboxProps {

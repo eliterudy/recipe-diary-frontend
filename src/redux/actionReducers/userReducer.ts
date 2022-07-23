@@ -62,7 +62,6 @@ export const userSlice = createSlice({
         );
     },
     loadUser: (state, action) => {
-      console.log('LOAD USER');
       state.user = {
         _id: 1,
         firstname: 'Harvey',
@@ -71,6 +70,9 @@ export const userSlice = createSlice({
         favorites: {
           recipes: [],
         },
+        isAdmin: false,
+        username: 'hvspectre',
+        email: 'hello@abc.com',
         recents: {
           recipes: [],
         },
@@ -79,6 +81,9 @@ export const userSlice = createSlice({
     },
     removeUser: state => {
       state.user = null;
+    },
+    verifyUser: (state, action) => {
+      state.user && (state.user.isVerified = action.payload);
     },
   },
 });
@@ -92,5 +97,6 @@ export const {
   deleteRecipeFromFavorites,
   loadUser,
   removeUser,
+  verifyUser,
 } = userSlice.actions;
 export default userSlice.reducer;

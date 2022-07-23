@@ -54,7 +54,6 @@ const Generic = {
       diet,
       servings,
       course,
-      ingredientCount,
       isFavorite,
     } = data;
     const cardHoverStlye = cssHover(
