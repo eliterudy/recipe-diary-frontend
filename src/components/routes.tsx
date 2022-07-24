@@ -22,6 +22,7 @@ import ScrollToTop from './generic/scrollToTop';
 import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
+import AddRecipe from './screens/AddRecipe';
 
 const {addRecipes} = actions;
 const {fetchRecipes} = reduxApiCallers;
@@ -73,6 +74,7 @@ const MainRouter = () => {
       {path: '/home', pathName: 'Home'},
       {path: '/my-profile', pathName: 'My Profile'},
     ];
+    console.log('MY PROFINE');
     return (
       <Routes>
         <Route path="/" element={<MyProfile pathDetails={myProfilePath} />} />
@@ -83,6 +85,11 @@ const MainRouter = () => {
               <RecipeDetails pathDetails={myProfileRecipeDetailsPath} />
             </ScrollToTop>
           }
+        />
+        <Route path="new/" element={<AddRecipe />} />
+        <Route
+          path="*"
+          element={<Navigate to="recipeId/:recipeId" replace />}
         />
       </Routes>
     );
@@ -101,10 +108,14 @@ const MainRouter = () => {
     const toggleModal = () => {
       updateModalOpen(!isModalOpen);
     };
-
+    var location = useLocation();
+    console.log('LOCS', location.pathname);
     return (
       <div>
-        <Header modalCallback={() => toggleModal()} />
+        {location.pathname !== '/my-profile/new/' &&
+          location.pathname !== '/my-profile/new' && (
+            <Header modalCallback={() => toggleModal()} />
+          )}
         <Routes>
           {/* Home */}
           <Route path="home/*" element={<HomeRoutes />} />
@@ -113,7 +124,7 @@ const MainRouter = () => {
           <Route path="recipes/*" element={<RecipeRoutes />} />
 
           {/* My Stuff */}
-          <Route path="my-profile/*" element={<MyProfileRoutes />} />
+          <Route path="/my-profile/*" element={<MyProfileRoutes />} />
 
           {/* Contact Us */}
           <Route path="contact-us/*" element={<RecipeRoutes />} />

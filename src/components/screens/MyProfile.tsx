@@ -44,12 +44,18 @@ const MyProfileComponent = (props: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (locationParams.pathname === '/my-profile' && !user) {
+    if (
+      (locationParams.pathname === '/my-profile' ||
+        locationParams.pathname === '/my-profile/') &&
+      !user
+    ) {
       navigate('/home');
     }
   });
-  const [activeTab, updateActiveTab] = useState(0);
-  const tabs = ['Recently Viewed', 'My Recipes', 'Saved Recipes'];
+  const [activeTab, updateActiveTab] = useState(
+    user && user.isVerified ? 0 : 1,
+  );
+  const tabs = ['My Recipes', 'Recently Viewed', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const pathSplit = locationParams.pathname.split('/');
@@ -193,7 +199,7 @@ const MyProfileComponent = (props: any) => {
 
   var savedRecipes = getRecipes('favorites');
   var recentRecipes = getRecipes('recents');
-  var myrecipes = getMyRecipes(user._id);
+  var myrecipes = getMyRecipes(user && user._id);
 
   return (
     <>
@@ -263,6 +269,7 @@ const MyProfileComponent = (props: any) => {
                         className="col-12 "
                         onClick={() => {
                           dispatch(verifyUser(true));
+                          updateActiveTab(0);
                         }}>
                         <span>Get Verified</span>
                       </Button>
@@ -293,18 +300,22 @@ const MyProfileComponent = (props: any) => {
               </Nav>
               <TabContent activeTab={activeTab} className="m-3">
                 <TabPane tabId={0}>
-                  {loadRecipes(recentRecipes, 'recents')}
-                </TabPane>
-                <TabPane tabId={1}>
                   <Col>
-                    <Button color="success" className="ms-4 ps-3 pe-3">
+                    <Button
+                      color="success"
+                      className="ms-4 ps-3 pe-3"
+                      onClick={() => navigate('new')}>
                       + New Recipe
                     </Button>
                   </Col>
                   {loadRecipes(myrecipes, 'myrecipes')}
                 </TabPane>
+                <TabPane tabId={1}>
+                  {loadRecipes(recentRecipes, 'recents')}
+                </TabPane>
+
                 <TabPane tabId={2}>
-                  {loadRecipes(savedRecipes, 'favorites')}
+                  {loadRecipes(savedRecipes, 'saved')}
                 </TabPane>
               </TabContent>
             </div>
