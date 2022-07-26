@@ -1,7 +1,7 @@
 import {To} from 'react-router-dom';
 
 export interface RecipeDetails {
-  id: string;
+  _id: string;
   title: string;
   ingredients: string[];
   instructions: string[];

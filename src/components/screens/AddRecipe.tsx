@@ -12,31 +12,88 @@ import {
   Row,
   Col,
   Button,
+  Spinner,
 } from 'reactstrap';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
 
-const {loadUser, removeUser} = actions;
+const {loadUser, removeUser, addingRecipeLoading} = actions;
+const required = (val: any) => val && val.length > 0;
+const maxLength = (val: any, len: any) => val.length < len;
+const minLength = (val: any, len: any) => val.length >= len;
+const isNumber = (val: any) => !isNaN(Number(val)) && Number(val) > 0;
+
+const FormValidators = {
+  textValidator: (
+    value: string,
+    minLen: number,
+    maxLen: number,
+  ): [string, boolean] => {
+    var error = '';
+    if (!required(value)) {
+      error = 'Required!';
+    } else if (!minLength(value, minLen)) {
+      error = `Should be atleast ${minLen} characters!`;
+    } else if (!maxLength(value, maxLen)) {
+      error = `Should be at most ${maxLen} characters!`;
+    }
+    return [error, error.length > 0];
+  },
+
+  numberValidator: (value: string): [string, boolean] => {
+    var error = '';
+    if (!required(value)) {
+      error = 'Required!';
+    } else if (!isNumber(value)) {
+      error = `Should be a positive number greater than zero`;
+    }
+    return [error, error.length > 0];
+  },
+};
 
 const AddRecipeComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const dispatch: Dispatch<any> = useDispatch();
   const navigate = useNavigate();
+  let locationParams = useLocation();
+
   const [formIngredients, updateFormIngredients] = useState('');
   const [formInstructions, updateFormInstructions] = useState('');
+
+  const state = useSelector((state: any) => {
+    return {
+      recipeState: state.recipeActionReducer,
+      userState: state.userActionReducer,
+    };
+  });
+  const {user} = state.userState;
+  const {isAddingRecipe} = state.recipeState;
+
+  const [formErrors, updateFormErrors] = useState({
+    title: '',
+    cuisine: '',
+    diet: '',
+    course: '',
+    servings: '',
+    prepTimeInMins: '',
+    cookTimeInMins: '',
+    imageUrl: '',
+    ingredients: '',
+    instructions: '',
+  });
 
   const [formValues, updateFormValues] = useState({
     title: '',
     cuisine: '',
     diet: '',
     course: '',
-    servings: undefined,
-    prepTimeInMins: undefined,
-    cookTimeInMins: undefined,
+    servings: undefined as number | undefined,
+    prepTimeInMins: undefined as number | undefined,
+    cookTimeInMins: undefined as number | undefined,
     totalTimeInMins: 0,
     imageUrl: '',
     ingredients: [] as string[],
@@ -44,49 +101,6 @@ const AddRecipeComponent = () => {
   });
 
   const [isErrorVisible, updateErrorVisible] = useState(false);
-
-  const state = useSelector((state: any) => {
-    return {
-      userState: state.userActionReducer,
-    };
-  });
-  const {userState} = state;
-  const signInButtonStyle = cssHover(
-    {
-      borderWidth: 1,
-      borderColor: '#2b59a1',
-      backgroundColor: '#2b59a1',
-      color: 'white',
-    },
-    {
-      borderWidth: 1,
-      borderColor: '#2b59a1',
-      backgroundColor: 'white',
-      color: '#2b59a1',
-    },
-    {
-      cursor: 'pointer',
-      marginRight: 10,
-    },
-  );
-
-  const goBackButtonStyle = cssHover(
-    {
-      borderWidth: 1,
-      borderColor: '#2b3c65',
-      backgroundColor: '#2b3c65',
-      color: 'white',
-    },
-    {
-      borderWidth: 1,
-      borderColor: '#2b3c65',
-      backgroundColor: 'white',
-      color: '#2b3c65',
-    },
-    {
-      cursor: 'pointer',
-    },
-  );
 
   const {
     title,
@@ -101,7 +115,8 @@ const AddRecipeComponent = () => {
     ingredients,
     instructions,
   } = formValues;
-  const regex = new RegExp('.');
+
+  const {textValidator, numberValidator} = FormValidators;
   return (
     <div className="p-3">
       <div className="noselect col-12 d-flex flex-row justify-content-center my-5  ">
@@ -152,7 +167,27 @@ const AddRecipeComponent = () => {
                     name="title"
                     id="title"
                     placeholder="Butter Chicken with Roasted Peanuts"
+                    invalid={formErrors.title.length > 0}
+                    value={title}
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        title: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        title: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        title: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.title}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="cuisine">
@@ -163,7 +198,27 @@ const AddRecipeComponent = () => {
                     name="cuisine"
                     id="cuisine"
                     placeholder="Indian, Udupi, Mexican..."
+                    invalid={formErrors.cuisine.length > 0}
+                    value={cuisine}
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        cuisine: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        cuisine: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        cuisine: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.cuisine}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="diet">
@@ -174,13 +229,44 @@ const AddRecipeComponent = () => {
                     name="diet"
                     id="diet"
                     placeholder="Non Vegetarian"
+                    invalid={formErrors.diet.length > 0}
+                    value={diet}
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        diet: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        diet: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        diet: textValidator(target.value, 3, 50)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.diet}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="course">
                     Course<span style={{color: '#c70011'}}>*</span>
                   </Label>
-                  <Input id="course" name="course" type="select">
+                  <Input
+                    id="course"
+                    name="course"
+                    type="select"
+                    value={course}
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        course: target.value,
+                      });
+                    }}>
                     <option>Appetizers</option>
                     <option defaultChecked>Main Course</option>
                     <option>Fish</option>
@@ -198,7 +284,27 @@ const AddRecipeComponent = () => {
                     name="servings"
                     id="servings"
                     placeholder="3"
+                    invalid={formErrors.servings.length > 0}
+                    value={servings === undefined ? '' : servings.toString()}
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        servings: Number(target.value),
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        servings: numberValidator(target.value)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        servings: numberValidator(target.value)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.servings}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="prepTimeInMins">
@@ -210,7 +316,34 @@ const AddRecipeComponent = () => {
                     name="prepTimeInMins"
                     id="prepTimeInMins"
                     placeholder="15"
+                    invalid={formErrors.prepTimeInMins.length > 0}
+                    value={
+                      prepTimeInMins === undefined
+                        ? ''
+                        : prepTimeInMins.toString()
+                    }
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        prepTimeInMins: Number(target.value),
+                        totalTimeInMins:
+                          (cookTimeInMins ? cookTimeInMins : 0) +
+                          Number(target.value),
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        prepTimeInMins: numberValidator(target.value)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        prepTimeInMins: numberValidator(target.value)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.prepTimeInMins}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="cookTimeInMins">
@@ -222,7 +355,34 @@ const AddRecipeComponent = () => {
                     name="cookTimeInMins"
                     id="cookTimeInMins"
                     placeholder="15"
+                    invalid={formErrors.cookTimeInMins.length > 0}
+                    value={
+                      cookTimeInMins === undefined
+                        ? ''
+                        : cookTimeInMins.toString()
+                    }
+                    onChange={e => {
+                      const {target} = e;
+                      updateFormValues({
+                        ...formValues,
+                        cookTimeInMins: Number(target.value),
+                        totalTimeInMins:
+                          (prepTimeInMins ? prepTimeInMins : 0) +
+                          Number(target.value),
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        cookTimeInMins: numberValidator(target.value)[0],
+                      });
+                    }}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        cookTimeInMins: numberValidator(target.value)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.cookTimeInMins}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="totalTimeInMins">
@@ -235,18 +395,19 @@ const AddRecipeComponent = () => {
                     name="totalTimeInMins"
                     id="totalTimeInMins"
                     placeholder="0"
+                    value={totalTimeInMins}
                   />
                 </FormGroup>
                 <FormGroup className="mb-5">
                   <Label for="poster">
                     Recipe poster
-                    <span style={{color: '#c70011'}}>*</span>
+                    <span style={{color: '#4E9F3D'}}>*</span>
                   </Label>
                   <FormText>
                     <br />
                     Upload an image with at least 1080px width and 720px height.
                     <br />
-                    <span style={{color: '#c70011'}}>
+                    <span style={{color: '#4E9F3D'}}>
                       For Best quality poster upload a picture, whose
                       {` width > 1500px and height > 1080px`}
                     </span>
@@ -256,6 +417,39 @@ const AddRecipeComponent = () => {
                     name="poster"
                     id="poster"
                     accept="image/*"
+                    onChange={e => {
+                      var file = e.target.files;
+                      if (file && file.length > 0) {
+                        const formData = new FormData();
+                        formData.append('image', file[0]);
+                        console.log(formData);
+                        var myHeaders = new Headers();
+                        myHeaders.append(
+                          'Authorization',
+                          'Client-ID f76fa54837f2949',
+                        );
+                        myHeaders.append(
+                          'Content-Type',
+                          'multipart/form-data; boundary=<calculated when request is sent>',
+                        );
+                        myHeaders.append('Access-Control-Allow-Origin', '*');
+                        myHeaders.append(
+                          'Access-Control-Allow-Credentials',
+                          'true',
+                        );
+
+                        var requestOptions = {
+                          method: 'POST',
+                          headers: myHeaders,
+                          body: formData,
+                        };
+
+                        // fetch('https://api.imgur.com/3/image', requestOptions)
+                        //   .then(response => response.text())
+                        //   .then(result => console.log(result))
+                        //   .catch(error => console.log('error', error));
+                      }
+                    }}
                   />
                 </FormGroup>
                 <FormGroup className="mb-5">
@@ -270,7 +464,7 @@ const AddRecipeComponent = () => {
                     intendation
                     <br />
                     Example:{' '}
-                    <span style={{color: '#c70011'}}>
+                    <span style={{color: '#4E9F3D'}}>
                       6 to 8 Spinach Leaves (Palak), 1/4 cup Black beans -
                       soaked overnight and cooked,...
                     </span>
@@ -279,7 +473,10 @@ const AddRecipeComponent = () => {
                     type="textarea"
                     name="ingredients"
                     id="ingredients"
+                    placeholder="500 grams Vellai Poosanikai, 1/2 teaspoon Methi Seeds (Fenugreek Seeds), . . ."
+                    style={{minHeight: 200, maxHeight: 600}}
                     value={formIngredients}
+                    invalid={formErrors.ingredients.length > 0}
                     onChange={e => {
                       var tempVal = e.target.value;
                       updateFormIngredients(tempVal);
@@ -288,10 +485,19 @@ const AddRecipeComponent = () => {
                         ingredients:
                           tempVal.length > 0 ? [...tempVal.split(',')] : [],
                       });
+                      updateFormErrors({
+                        ...formErrors,
+                        ingredients: textValidator(tempVal, 15, 4000)[0],
+                      });
                     }}
-                    placeholder="500 grams Vellai Poosanikai, 1/2 teaspoon Methi Seeds (Fenugreek Seeds), . . ."
-                    style={{minHeight: 200, maxHeight: 600}}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        ingredients: textValidator(target.value, 15, 4000)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.ingredients}</FormFeedback>
                   <FormText>Preview</FormText>
                   <div
                     className="col-12"
@@ -327,7 +533,7 @@ const AddRecipeComponent = () => {
                     intendation
                     <br />
                     Example:{' '}
-                    <span style={{color: '#c70011'}}>
+                    <span style={{color: '#4E9F3D'}}>
                       Layer spinach leaves over the tortilla. Lay it on a
                       plate....
                     </span>
@@ -336,7 +542,11 @@ const AddRecipeComponent = () => {
                     type="textarea"
                     name="instructions"
                     id="instructions"
+                    placeholder="To begin, cooker with little water, turmeric powder and salt for just 1 whistle.
+                    Release the pressure naturally."
+                    style={{minHeight: 200, maxHeight: 600}}
                     value={formInstructions}
+                    invalid={formErrors.instructions.length > 0}
                     onChange={e => {
                       var tempVal = e.target.value;
                       updateFormInstructions(tempVal);
@@ -347,11 +557,19 @@ const AddRecipeComponent = () => {
                             ? [...tempVal.replaceAll('.', '.$').split('$')]
                             : [],
                       });
+                      updateFormErrors({
+                        ...formErrors,
+                        instructions: textValidator(tempVal, 15, 4000)[0],
+                      });
                     }}
-                    placeholder="To begin, cooker with little water, turmeric powder and salt for just 1 whistle.
-                    Release the pressure naturally."
-                    style={{minHeight: 200, maxHeight: 600}}
+                    onBlur={({target}) => {
+                      updateFormErrors({
+                        ...formErrors,
+                        instructions: textValidator(target.value, 15, 4000)[0],
+                      });
+                    }}
                   />
+                  <FormFeedback>{formErrors.instructions}</FormFeedback>
                   <FormText>Preview</FormText>
                   <div
                     className="col-12"
@@ -374,18 +592,88 @@ const AddRecipeComponent = () => {
                     })}
                   </div>
                 </FormGroup>
-                <Col></Col>
+
                 <Col>
                   <Button
-                    // {...signInButtonStyle}
                     color="success"
                     onClick={e => {
                       e.preventDefault();
-                      updateErrorVisible(true);
-                      // dispatch(loadUser(null));
-                      // navigate('/home');
+                      // updateErrorVisible(true);
+
+                      const {
+                        title,
+                        cuisine,
+                        diet,
+                        course,
+                        servings,
+                        prepTimeInMins,
+                        cookTimeInMins,
+                        totalTimeInMins,
+                        imageUrl,
+                        ingredients,
+                        instructions,
+                      } = formValues;
+                      const {textValidator, numberValidator} = FormValidators;
+
+                      if (
+                        textValidator(title, 3, 50)[1] ||
+                        textValidator(cuisine, 3, 50)[1] ||
+                        textValidator(diet, 3, 50)[1] ||
+                        numberValidator(
+                          servings ? servings.toString() : '0',
+                        )[1] ||
+                        numberValidator(
+                          prepTimeInMins ? prepTimeInMins.toString() : '0',
+                        )[1] ||
+                        numberValidator(
+                          cookTimeInMins ? cookTimeInMins.toString() : '0',
+                        )[1] ||
+                        textValidator(formInstructions, 15, 4000)[1] ||
+                        textValidator(formIngredients, 15, 4000)[1]
+                      ) {
+                        updateFormErrors({
+                          ...formErrors,
+                          title: textValidator(title, 3, 50)[0],
+                          cuisine: textValidator(cuisine, 3, 50)[0],
+                          diet: textValidator(diet, 3, 50)[0],
+                          servings: numberValidator(
+                            servings ? servings.toString() : '0',
+                          )[0],
+                          prepTimeInMins: numberValidator(
+                            prepTimeInMins ? prepTimeInMins.toString() : '0',
+                          )[0],
+                          cookTimeInMins: numberValidator(
+                            cookTimeInMins ? cookTimeInMins.toString() : '0',
+                          )[0],
+                          instructions: textValidator(
+                            formInstructions,
+                            15,
+                            4000,
+                          )[0],
+                          ingredients: textValidator(
+                            formIngredients,
+                            15,
+                            4000,
+                          )[0],
+                        });
+                      } else {
+                        dispatch(addingRecipeLoading(true));
+                        setTimeout(() => {
+                          dispatch(addingRecipeLoading(false));
+                          setTimeout(() => {
+                            navigate('/my-profile');
+                          }, 1000);
+                        }, 2000);
+                      }
                     }}>
-                    Submit my recipe
+                    {isAddingRecipe ? (
+                      <div>
+                        <Spinner size="sm" />
+                        <span> Uploading recipe</span>
+                      </div>
+                    ) : (
+                      <span>Submit my recipe</span>
+                    )}
                   </Button>
                   <Button
                     // {...goBackButtonStyle}

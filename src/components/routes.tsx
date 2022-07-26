@@ -24,12 +24,10 @@ import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
 import AddRecipe from './screens/AddRecipe';
 
-const {addRecipes} = actions;
-const {fetchRecipes} = reduxApiCallers;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
-  dispatch(addRecipes(recipes));
+  const navigate = useNavigate();
 
   const HomeRoutes = () => {
     const homePath = [{path: '/home', pathName: 'Home'}];
@@ -74,10 +72,37 @@ const MainRouter = () => {
       {path: '/home', pathName: 'Home'},
       {path: '/my-profile', pathName: 'My Profile'},
     ];
-    console.log('MY PROFINE');
+    const state = useSelector((state: any) => {
+      return {
+        userState: state.userActionReducer,
+        recipeState: state.recipeActionReducer,
+      };
+    });
+    const {userState, recipeState} = state;
+    const {user} = userState;
+    useEffect(() => {
+      console.log('LOCATION', location.pathname);
+      if (
+        user &&
+        !user.isVerified &&
+        (location.pathname === '/my-profile/new' ||
+          location.pathname === '/my-profile/new/')
+      ) {
+        navigate('/my-profile');
+      } else if (!user) {
+        navigate('/home');
+      }
+    }, [location.pathname, user]);
     return (
       <Routes>
-        <Route path="/" element={<MyProfile pathDetails={myProfilePath} />} />
+        <Route
+          path="/"
+          element={
+            <ScrollToTop>
+              <MyProfile pathDetails={myProfilePath} />
+            </ScrollToTop>
+          }
+        />
         <Route
           path="recipeId/:recipeId"
           element={
@@ -86,7 +111,14 @@ const MainRouter = () => {
             </ScrollToTop>
           }
         />
-        <Route path="new/" element={<AddRecipe />} />
+        <Route
+          path="new/"
+          element={
+            <ScrollToTop>
+              <AddRecipe />
+            </ScrollToTop>
+          }
+        />
         <Route
           path="*"
           element={<Navigate to="recipeId/:recipeId" replace />}
@@ -96,20 +128,11 @@ const MainRouter = () => {
   };
 
   const MainRoutes = () => {
-    const navigate = useNavigate();
-    const state = useSelector((state: any) => {
-      return {
-        userState: state.userActionReducer,
-      };
-    });
-    const {userState} = state;
-    const {user} = userState;
     const [isModalOpen, updateModalOpen] = useState(false);
     const toggleModal = () => {
       updateModalOpen(!isModalOpen);
     };
-    var location = useLocation();
-    console.log('LOCS', location.pathname);
+
     return (
       <div>
         {location.pathname !== '/my-profile/new/' &&

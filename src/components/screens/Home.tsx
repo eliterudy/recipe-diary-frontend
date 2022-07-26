@@ -23,11 +23,25 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 import {useNavigate} from 'react-router-dom';
+import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
+
+const {fetchAllRecipes} = reduxApiCallers;
 
 const HomeComponent = (props: any) => {
   const {pathDetails} = props;
   const dispatch: Dispatch<any> = useDispatch();
   const navigate = useNavigate();
+  const state = useSelector((state: any) => {
+    return {
+      userState: state.userActionReducer,
+      recipeState: state.recipeActionReducer,
+    };
+  });
+  const {userState, recipeState} = state;
+  const {user} = userState;
+  useEffect(() => {
+    dispatch(fetchAllRecipes({featured: true}));
+  }, []);
 
   const refToAnimateUsingViewport =
     useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -35,15 +49,6 @@ const HomeComponent = (props: any) => {
     useRef() as React.MutableRefObject<HTMLInputElement>;
   const inViewport = useIntersection(refToAnimateUsingViewport, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
-
-  const state = useSelector((state: any) => {
-    return {
-      recipeState: state.recipeActionReducer,
-      userState: state.userActionReducer,
-    };
-  });
-  const {recipeState, userState} = state;
-  const {user} = userState;
 
   var getspecials = (): RecipeDetails[] => {
     var featuredRecipes = recipeState.recipes.filter(
@@ -58,7 +63,7 @@ const HomeComponent = (props: any) => {
       featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,
-          isFavorite: favoriteRecipes.includes(featuredRecipe.id),
+          isFavorite: favoriteRecipes.includes(featuredRecipe._id),
         });
       });
     }
@@ -129,7 +134,7 @@ const HomeComponent = (props: any) => {
                 <Generic.RecipeCard
                   data={special}
                   index={index}
-                  redirect={`recipeId/${special.id}`}
+                  redirect={`recipeId/${special._id}`}
                 />
               </Animate>
             </div>

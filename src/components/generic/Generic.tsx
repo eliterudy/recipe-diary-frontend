@@ -44,7 +44,7 @@ const Generic = {
     const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
     const {data, index, redirect} = cardProps;
     const {
-      id,
+      _id,
       title,
       ingredients,
       instructions,
@@ -75,12 +75,12 @@ const Generic = {
     return (
       <Link
         to={redirect}
-        state={{recipeId: data.id}}
+        state={{recipeId: data._id}}
         style={{textDecoration: 'none', color: 'black'}}>
         <div
           {...cardHoverStlye}
           onClick={() => {
-            dispatch(addRecipeToRecents(data.id));
+            dispatch(addRecipeToRecents(data._id));
           }}>
           <Card className="noselect  col-12 col-sm-12 ">
             <CardBody className="noselect p-0">
@@ -123,8 +123,8 @@ const Generic = {
                         e.stopPropagation();
                         console.log('her');
                         isFavorite
-                          ? dispatch(deleteRecipeFromFavorites(id))
-                          : dispatch(addRecipeToFavorites(id));
+                          ? dispatch(deleteRecipeFromFavorites(_id))
+                          : dispatch(addRecipeToFavorites(_id));
                       }}
                     />
                   </div>

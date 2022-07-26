@@ -43,15 +43,6 @@ const MyProfileComponent = (props: any) => {
   const {user} = userState;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (
-      (locationParams.pathname === '/my-profile' ||
-        locationParams.pathname === '/my-profile/') &&
-      !user
-    ) {
-      navigate('/home');
-    }
-  });
   const [activeTab, updateActiveTab] = useState(
     user && user.isVerified ? 0 : 1,
   );
@@ -121,7 +112,7 @@ const MyProfileComponent = (props: any) => {
     ) {
       const recipeListForUserProp = user[userProp].recipes;
       results = recipeListForUserProp.map((elem: string) => {
-        var recipe = allRecipes.filter((e: RecipeDetails) => e.id === elem)[0];
+        var recipe = allRecipes.filter((e: RecipeDetails) => e._id === elem)[0];
         recipe = {...recipe, isFavorite: false};
         if (
           user &&
@@ -131,7 +122,7 @@ const MyProfileComponent = (props: any) => {
           var favRecipeList = user.favorites.recipes;
           recipe = {
             ...recipe,
-            isFavorite: favRecipeList.includes(recipe.id),
+            isFavorite: favRecipeList.includes(recipe._id),
           };
 
           return recipe;
@@ -177,7 +168,7 @@ const MyProfileComponent = (props: any) => {
                 <Generic.RecipeCard
                   data={recipe}
                   index={index}
-                  redirect={`recipeId/${recipe.id}`}
+                  redirect={`recipeId/${recipe._id}`}
                 />
               </div>
             ))}

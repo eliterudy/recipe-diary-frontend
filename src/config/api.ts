@@ -1,10 +1,11 @@
-import axios from "axios";
-export const baseURL = "https://localhost:3443/";
+import axios from 'axios';
+export const baseURL = 'https://localhost:3443';
 
 const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json",
-  Origin: baseURL,
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+
+  // Origin: baseURL,
 };
 
 const ApiCaller = axios.create({
@@ -13,31 +14,37 @@ const ApiCaller = axios.create({
   headers: headers,
 });
 ApiCaller.interceptors.request.use(async function (config: any) {
-  let token = await localStorage.getItem("token");
-  config.headers.Authorization = token ? `${token}` : "";
+  let token = await localStorage.getItem('token');
+  config.headers.Authorization = token ? `bearer ${token}` : '';
   return config;
 });
 
 const recipeApiList = {
-  getRecipes: () => {
+  getAllRecipes: (params: any) => {
     return ApiCaller({
       url: `/recipes`,
-      method: "get",
+      method: 'get',
+      params,
     });
   },
- 
- 
+  getRecipe: (recipeId: string) => {
+    return ApiCaller({
+      url: `/recipes/${recipeId}`,
+      method: 'get',
+    });
+  },
+
   getComments: (params: any) => {
     return ApiCaller({
       url: `/comments`,
-      method: "get",
+      method: 'get',
       params,
     });
   },
   postNewComment: (data: any) => {
     return ApiCaller({
       url: `/comments`,
-      method: "post",
+      method: 'post',
       data,
     });
   },
@@ -45,7 +52,7 @@ const recipeApiList = {
   postFeedback: (data: any) => {
     return ApiCaller({
       url: `/feedback`,
-      method: "post",
+      method: 'post',
       data,
     });
   },

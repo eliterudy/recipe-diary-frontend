@@ -8,11 +8,14 @@ import {useMediaQuery} from 'react-responsive';
 import {icons} from '../../config/configuration';
 import {cssHover} from '../generic/hoverProps';
 import actions from '../../redux/actionReducers/index';
+import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 
 const {addRecipeToFavorites, deleteRecipeFromFavorites} = actions;
+const {fetchRecipe} = reduxApiCallers;
 
 const RecipeDetailsComponent = (props: any) => {
   const {pathDetails} = props;
+
   const dispatch: Dispatch<any> = useDispatch();
   const state = useSelector((state: any) => {
     return {
@@ -50,11 +53,17 @@ const RecipeDetailsComponent = (props: any) => {
   console.log('pathSplit', pathSplit);
 
   const recipeId = pathSplit[pathSplit.length - 1];
+  useEffect(() => {
+    console.log('here');
+    dispatch(fetchRecipe(recipeId));
+  }, []);
+
   const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
 
   var getRecipeDetails = (): RecipeDetails => {
-    var details = recipes.filter(
-      (recipe: RecipeDetails) => recipe.id === recipeId,
+    console.log('Recipes', recipes);
+    var details: RecipeDetails = recipes.filter(
+      (recipe: RecipeDetails) => recipe._id === recipeId,
     )[0];
     if (
       userState &&
@@ -65,7 +74,7 @@ const RecipeDetailsComponent = (props: any) => {
       const favoriteRecipes = userState.user.favorites.recipes;
       details = {
         ...details,
-        isFavorite: favoriteRecipes.includes(details.id),
+        isFavorite: favoriteRecipes.includes(details._id),
       };
     }
     return details;
@@ -79,8 +88,9 @@ const RecipeDetailsComponent = (props: any) => {
     }
     return icons.bookmark_unselected;
   };
+
   const {
-    id: recipe_id,
+    _id: recipe_id,
     title,
     ingredients,
     instructions,
@@ -93,7 +103,7 @@ const RecipeDetailsComponent = (props: any) => {
     servings,
     course,
     isFavorite,
-  } = getRecipeDetails();
+  } = getRecipeDetails() || {};
   return (
     <>
       {!isTabletOrMobile && (

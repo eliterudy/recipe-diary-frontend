@@ -1,13 +1,13 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
 
-const recipes: RecipeDetails[] = [];
-
 const initialState = {
   isLoading: true,
   errMess: null,
-  recipes: recipes,
-  
+  recipes: [] as RecipeDetails[],
+  isAddingRecipe: false,
+  limit: 2,
+  offset: 0,
 };
 export const recipeSlice = createSlice({
   name: 'recipes',
@@ -21,15 +21,42 @@ export const recipeSlice = createSlice({
       state.errMess = action.payload;
       state.isLoading = false;
     },
-    addRecipes: (state, action) => {
+    addingRecipeLoading: (state, action) => {
       state.errMess = null;
-      state.isLoading = false;
-      state.recipes = [...action.payload];
+      state.isAddingRecipe = action.payload;
+    },
+    addRecipes: (state, action) => {
+      console.log('addRecipes', action.payload.results);
+      state.errMess = null;
+      state.isAddingRecipe = false;
+      if (action.payload.offset) {
+        state.offset = action.payload.offset;
+      }
+      if (action.payload.limit) {
+        state.limit = action.payload.limit;
+      }
+      var arr = [...state.recipes, ...action.payload.results];
+
+      let unique: any[] = [];
+
+      for (let recipe of arr) {
+        let check = unique.find(
+          e => JSON.stringify(e) === JSON.stringify(recipe),
+        );
+        if (!check) {
+          unique.push(recipe);
+        }
+      }
+      state.recipes = [...unique] as RecipeDetails[];
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {recipesLoading, recipesLoadingFailed, addRecipes} =
-  recipeSlice.actions;
+export const {
+  recipesLoading,
+  recipesLoadingFailed,
+  addRecipes,
+  addingRecipeLoading,
+} = recipeSlice.actions;
 export default recipeSlice.reducer;

@@ -66,7 +66,7 @@ const RecipesComponent = (props: any) => {
       recipesList = recipesList.map((featuredRecipe: RecipeDetails) => {
         return (featuredRecipe = {
           ...featuredRecipe,
-          isFavorite: favoriteRecipes.includes(featuredRecipe.id),
+          isFavorite: favoriteRecipes.includes(featuredRecipe._id),
         });
       });
     }
@@ -86,7 +86,7 @@ const RecipesComponent = (props: any) => {
 
   var getFilters = (recipeFilters: any) => {
     const results = recipeFilters.map((data: any, filterIndex: any) => {
-      var key = data.id;
+      var key = data._id;
       var title = data.title;
       var list = data.list;
 
@@ -188,7 +188,7 @@ const RecipesComponent = (props: any) => {
                 <Generic.RecipeCard
                   data={recipe}
                   index={index}
-                  redirect={`recipeId/${recipe.id}`}
+                  redirect={`recipeId/${recipe._id}`}
                 />
               </div>
             ))}
