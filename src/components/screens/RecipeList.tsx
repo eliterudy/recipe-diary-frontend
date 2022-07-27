@@ -9,10 +9,12 @@ import {
 import Generic from '../generic/Generic';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import {RecipeDetails} from '../../config/types';
+import {RecipeListElement} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
+import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
+import apis from '../../config/api';
 
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
@@ -53,24 +55,56 @@ const RecipesComponent = (props: any) => {
     };
   });
   const {recipeState, userState} = state;
+  const {user} = userState;
+  const limit = 9;
+  const [offset, updateOffset] = useState(0);
+  const [search, updateSearch] = useState('');
+  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>(null);
+  const [recipeLoading, updateRecipesLoading] = useState(false);
+  const [recipeError, updateRecipesError] = useState(null);
+  const [selectedCuisines, updateSelectedCuisines] = useState([]);
+  const [selectedCourses, updateSelectedCourses] = useState([]);
 
-  var getRecipes = (): RecipeDetails[] => {
-    var recipesList = recipeState.recipes;
-    if (
-      userState &&
-      userState.user &&
-      userState.user.favorites !== {} &&
-      userState.user.favorites.hasOwnProperty('recipes')
-    ) {
-      const favoriteRecipes = userState.user.favorites.recipes;
-      recipesList = recipesList.map((featuredRecipe: RecipeDetails) => {
-        return (featuredRecipe = {
-          ...featuredRecipe,
-          isFavorite: favoriteRecipes.includes(featuredRecipe._id),
+  useEffect(() => {
+    getRecipesFromApi();
+  }, []);
+
+  var getRecipesFromApi = () => {
+    updateRecipesLoading(true);
+    setTimeout(() => {
+      apis
+        .getAllRecipes({
+          search,
+          limit,
+          offset,
+          cuisine: selectedCuisines,
+          course: selectedCourses,
+        })
+        .then(async ({data}) => {
+          var recipes = data.results;
+
+          if (
+            user &&
+            user.favorites !== {} &&
+            user.favorites.hasOwnProperty('recipes')
+          ) {
+            const favoriteRecipes = user.favorites.recipes;
+            recipes = recipes.map((recipe: RecipeListElement) => {
+              return (recipe = {
+                ...recipe,
+                isFavorite: favoriteRecipes.includes(recipe._id),
+              });
+            });
+          }
+
+          await updateRecipes(recipes);
+          updateRecipesLoading(false);
+        })
+        .catch((error: any) => {
+          updateRecipesError(error);
+          updateRecipesLoading(false);
         });
-      });
-    }
-    return recipesList;
+    }, 1000);
   };
 
   var addFiltersToList = (
@@ -116,10 +150,27 @@ const RecipesComponent = (props: any) => {
     return results;
   };
 
-  var recipesList = getRecipes();
-
+  const loadRecipes = () => {
+    if (recipeLoading) {
+      return <Generic.Spinner text={'recipes'} />;
+    } else if (!recipeLoading && recipes) {
+      return recipes.map((recipe: RecipeListElement, index: number) => (
+        <div
+          key={index}
+          className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
+          <Generic.RecipeCard
+            data={recipe}
+            index={index}
+            redirect={`recipeId/${recipe._id}`}
+          />
+        </div>
+      ));
+    } else {
+      return <Generic.ListError error={recipeError} />;
+    }
+  };
   return (
-    <>
+    <div className="d-flex h-100 flex-column">
       {!isTabletOrMobile && (
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
@@ -139,9 +190,9 @@ const RecipesComponent = (props: any) => {
         </div>
       )}
 
-      <div className="noselect row">
+      <div className="noselect row flex-grow-1">
         {recipeFilters && (
-          <div className="noselect  col-12 col-md-3 col-lg-2 border-end px-5 bg-white">
+          <div className="noselect  col-12 col-md-3 col-lg-2 border-end ps-5 pe-auto bg-white">
             {getFilters(recipeFilters)}
           </div>
         )}
@@ -158,6 +209,12 @@ const RecipesComponent = (props: any) => {
               <Input
                 placeholder="Search recipes..."
                 style={{borderColor: '#eee'}}
+                value={search}
+                onChange={async e => {
+                  updateSearch(e.target.value);
+                  await updateOffset(0);
+                  getRecipesFromApi();
+                }}
               />
               <Button
                 outline
@@ -180,22 +237,12 @@ const RecipesComponent = (props: any) => {
               {/* <InputGroupText></InputGroupText> */}
             </InputGroup>
           </div>
-          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
-            {recipesList.map((recipe: RecipeDetails, index: number) => (
-              <div
-                key={index}
-                className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
-                <Generic.RecipeCard
-                  data={recipe}
-                  index={index}
-                  redirect={`recipeId/${recipe._id}`}
-                />
-              </div>
-            ))}
+          <div className="noselect  col-12 flex-grow-1  d-flex flex-row flex-wrap pt-5 pe-3">
+            {loadRecipes()}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

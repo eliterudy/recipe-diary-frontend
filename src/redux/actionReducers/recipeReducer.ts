@@ -5,6 +5,7 @@ const initialState = {
   isLoading: true,
   errMess: null,
   recipes: [] as RecipeDetails[],
+  featuredRecipes: [] as RecipeDetails[],
   isAddingRecipe: false,
   limit: 2,
   offset: 0,
@@ -35,7 +36,12 @@ export const recipeSlice = createSlice({
       if (action.payload.limit) {
         state.limit = action.payload.limit;
       }
-      var arr = [...state.recipes, ...action.payload.results];
+      var arr = [];
+      if (action.payload.category === 'featured') {
+        arr = [...state.featuredRecipes, ...action.payload.results];
+      } else {
+        arr = [...state.recipes, ...action.payload.results];
+      }
 
       let unique: any[] = [];
 

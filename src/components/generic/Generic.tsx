@@ -14,6 +14,7 @@ import {
   FormGroup,
   Label,
   Input,
+  Row,
   Card,
   CardBody,
   CardTitle,
@@ -27,6 +28,7 @@ import {icons} from '../../config/configuration';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import actions from '../../redux/actionReducers/index';
+import loadingGif from '../../assets/gifs/loader.gif';
 
 const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
   actions;
@@ -46,8 +48,7 @@ const Generic = {
     const {
       _id,
       title,
-      ingredients,
-      instructions,
+
       imageUrl,
       cuisine,
       totalTimeInMins,
@@ -164,7 +165,33 @@ const Generic = {
       </label>
     );
   },
-  // Filters: (filterProps: FilterProps)
+  Spinner: ({text}: {text: string}) => {
+    return (
+      <div className="container">
+        <div
+          className="d-flex flex-column justify-content-center align-items-center"
+          style={{height: 600}}>
+          <img
+            src={loadingGif}
+            style={{width: 100, height: 80}}
+            alt="loading..."
+          />
+          <p className="text-center mt-3">Loading {text}</p>
+        </div>
+      </div>
+    );
+  },
+  ListError: ({error}: any) => {
+    return (
+      <div
+        className="container"
+        style={{height: 600, justifyContent: 'center', alignItems: 'center'}}>
+        <Row className="justify-content-center">
+          <p className="text-center">Error {error}</p>
+        </Row>
+      </div>
+    );
+  },
 };
 
 export default Generic;

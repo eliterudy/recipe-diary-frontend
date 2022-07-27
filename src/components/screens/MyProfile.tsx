@@ -16,7 +16,7 @@ import {
 import Generic from '../generic/Generic';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import {RecipeDetails} from '../../config/types';
+import {RecipeListElement} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link, useNavigate} from 'react-router-dom';
@@ -102,8 +102,8 @@ const MyProfileComponent = (props: any) => {
     },
   );
 
-  var getRecipes = (userProp: string): RecipeDetails[] => {
-    var results: RecipeDetails[] = [];
+  var getRecipes = (userProp: string): RecipeListElement[] => {
+    var results: RecipeListElement[] = [];
     var allRecipes = recipeState.recipes;
     if (
       user &&
@@ -112,7 +112,9 @@ const MyProfileComponent = (props: any) => {
     ) {
       const recipeListForUserProp = user[userProp].recipes;
       results = recipeListForUserProp.map((elem: string) => {
-        var recipe = allRecipes.filter((e: RecipeDetails) => e._id === elem)[0];
+        var recipe = allRecipes.filter(
+          (e: RecipeListElement) => e._id === elem,
+        )[0];
         recipe = {...recipe, isFavorite: false};
         if (
           user &&
@@ -136,14 +138,14 @@ const MyProfileComponent = (props: any) => {
     var results = recipeState.recipes;
     if (recipeState.recipes) {
       // results = recipeState.recipes.filter(
-      //   (recipe: RecipeDetails) => recipe.author._id === userId,
+      //   (recipe: RecipeListElement) => recipe.author._id === userId,
       // );
     }
 
     return results;
   };
 
-  var loadRecipes = (recipes: RecipeDetails[], recipeType: string) => {
+  var loadRecipes = (recipes: RecipeListElement[], recipeType: string) => {
     var response;
     if (recipes && recipes.length > 0) {
       if (recipeType === 'recents' && recipes.length > 10) {
@@ -161,7 +163,7 @@ const MyProfileComponent = (props: any) => {
           )}
 
           <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4 pe-3">
-            {recipes.map((recipe: RecipeDetails, index: number) => (
+            {recipes.map((recipe: RecipeListElement, index: number) => (
               <div
                 key={index}
                 className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>

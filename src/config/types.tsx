@@ -16,10 +16,27 @@ export interface RecipeDetails {
   featured: boolean;
   isFavorite?: boolean;
   author: User;
+  comments?: any;
+}
+
+export interface RecipeListElement {
+  _id: string;
+  title: string;
+  imageUrl: string;
+  cuisine: string;
+  course: string;
+  diet: string;
+  prepTimeInMins: number;
+  cookTimeInMins: number;
+  totalTimeInMins: number;
+  servings: number;
+  featured: boolean;
+  isFavorite?: boolean;
+  author: User;
 }
 
 export interface RecipeCardProps {
-  data: RecipeDetails;
+  data: RecipeListElement;
   index: number;
   redirect: To;
 }

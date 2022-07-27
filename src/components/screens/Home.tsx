@@ -21,9 +21,10 @@ import {Animate, AnimateGroup} from 'react-simple-animate';
 import useIntersection from '../generic/useIntersection';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import {RecipeDetails} from '../../config/types';
+import {RecipeListElement} from '../../config/types';
 import {useNavigate} from 'react-router-dom';
 import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
+import apis from '../../config/api';
 
 const {fetchAllRecipes} = reduxApiCallers;
 
@@ -39,8 +40,37 @@ const HomeComponent = (props: any) => {
   });
   const {userState, recipeState} = state;
   const {user} = userState;
+  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>(null);
+  const [recipeLoading, updateRecipesLoading] = useState(false);
+  const [recipeError, updateRecipesError] = useState(null);
   useEffect(() => {
-    dispatch(fetchAllRecipes({featured: true}));
+    updateRecipesLoading(true);
+    apis
+      .getAllRecipes({featured: true})
+      .then(async ({data}) => {
+        var recipes = data.results;
+
+        if (
+          user &&
+          user.favorites !== {} &&
+          user.favorites.hasOwnProperty('recipes')
+        ) {
+          const favoriteRecipes = user.favorites.recipes;
+          recipes = recipes.map((recipe: RecipeListElement) => {
+            return (recipe = {
+              ...recipe,
+              isFavorite: favoriteRecipes.includes(recipe._id),
+            });
+          });
+        }
+
+        await updateRecipes(recipes);
+        updateRecipesLoading(false);
+      })
+      .catch((error: any) => {
+        updateRecipesError(error);
+        updateRecipesLoading(false);
+      });
   }, []);
 
   const refToAnimateUsingViewport =
@@ -49,26 +79,6 @@ const HomeComponent = (props: any) => {
     useRef() as React.MutableRefObject<HTMLInputElement>;
   const inViewport = useIntersection(refToAnimateUsingViewport, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
-
-  var getspecials = (): RecipeDetails[] => {
-    var featuredRecipes = recipeState.recipes.filter(
-      (recipe: RecipeDetails) => recipe.featured === true,
-    );
-    if (
-      user &&
-      user.favorites !== {} &&
-      user.favorites.hasOwnProperty('recipes')
-    ) {
-      const favoriteRecipes = user.favorites.recipes;
-      featuredRecipes = featuredRecipes.map((featuredRecipe: RecipeDetails) => {
-        return (featuredRecipe = {
-          ...featuredRecipe,
-          isFavorite: favoriteRecipes.includes(featuredRecipe._id),
-        });
-      });
-    }
-    return featuredRecipes;
-  };
 
   if (inViewport && showSpecials === false) {
     updateShowSpecials(true);
@@ -79,8 +89,37 @@ const HomeComponent = (props: any) => {
       ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };
-  var featuredRecipes = getspecials();
 
+  const loadRecipes = () => {
+    if (recipeLoading) {
+      return <Generic.Spinner text={'recipes'} />;
+    } else if (!recipeLoading && recipes) {
+      return recipes.map((special: RecipeListElement, index: number) => (
+        <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-4 `}>
+          {/* <Animate
+            play={showSpecials}
+            start={{opacity: 0, marginTop: 100}}
+            end={{opacity: 1, marginTop: 0}}
+            duration={0.5}
+            sequenceIndex={index}> */}
+          <Generic.RecipeCard
+            data={special}
+            index={index}
+            redirect={`recipeId/${special._id}`}
+          />
+          {/* </Animate> */}
+        </div>
+      ));
+    } else {
+      return (
+        <div
+          className="container"
+          style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <p>{recipeError}</p>
+        </div>
+      );
+    }
+  };
   return (
     <>
       <div
@@ -123,22 +162,7 @@ const HomeComponent = (props: any) => {
           className="noselect d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
-          {featuredRecipes.map((special: RecipeDetails, index: number) => (
-            <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-4 `}>
-              <Animate
-                play={showSpecials}
-                start={{opacity: 0, marginTop: 100}}
-                end={{opacity: 1, marginTop: 0}}
-                duration={1}
-                sequenceIndex={index}>
-                <Generic.RecipeCard
-                  data={special}
-                  index={index}
-                  redirect={`recipeId/${special._id}`}
-                />
-              </Animate>
-            </div>
-          ))}
+          {loadRecipes()}
           {/* </AnimateGroup> */}
         </div>
       </div>
