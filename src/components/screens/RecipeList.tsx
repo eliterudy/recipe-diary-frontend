@@ -48,21 +48,6 @@ const RecipesComponent = (props: any) => {
   const [recipeError, updateRecipesError] = useState(null);
   // const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
   // const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
-  useEffect(() => {
-    api
-      .getRecipeFilters()
-      .then(({data}: {data: RecipeFilters}) => {
-        var dict = {} as RecipeFilters;
-        dispatch(updateRecipeFilters(data));
-        Object.entries(data).map(
-          ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
-            dict[key as keyof typeof data] = [];
-          },
-        );
-        dispatch(updateSelectedFilters(dict));
-      })
-      .catch(err => {});
-  }, []);
 
   useEffect(() => {
     getRecipesFromApi();

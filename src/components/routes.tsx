@@ -23,11 +23,46 @@ import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
 import AddRecipe from './screens/AddRecipe';
+import apis from '../config/api';
+
+import {RecipeListElement, RecipeFilters} from '../config/types';
+import actionReducers from '../redux/actionReducers/index';
+
+const {updateRecipeFilters, updateSelectedFilters} = actionReducers;
 
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
   const navigate = useNavigate();
+
+  const state = useSelector((state: any) => {
+    return {
+      recipeState: state.recipeActionReducer,
+      userState: state.userActionReducer,
+    };
+  });
+  const {recipeState, userState} = state;
+  const {user} = userState;
+  const {recipeFilters, selectedFilters} = recipeState;
+  useEffect(() => {
+    apis
+      .getRecipeFilters()
+      .then(({data}: {data: RecipeFilters}) => {
+        dispatch(updateRecipeFilters(data));
+        var dict = {} as RecipeFilters;
+        console.log('ROUTES');
+        Object.entries(data).map(
+          ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
+            dict[key as keyof typeof data] = [];
+          },
+        );
+        console.log('selected', selectedFilters);
+        setTimeout(() => {
+          dispatch(updateSelectedFilters(dict));
+        }, 10);
+      })
+      .catch(err => {});
+  }, []);
 
   const HomeRoutes = () => {
     const homePath = [{path: '/home', pathName: 'Home'}];
