@@ -16,6 +16,7 @@ import {useLocation, Link} from 'react-router-dom';
 import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import {DebounceInput} from 'react-debounce-input';
 
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
@@ -50,6 +51,7 @@ const RecipesComponent = (props: any) => {
   const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
   const [isFiltersLoaded, updateFilterLoadStatus] = useState(false);
   const [recipeCount, updateRecipeCount] = useState(0);
+  const [callerCounter, updateCallerCounter] = useState(0);
   // window.onbeforeunload = function () {
   //   window.sessionStorage.removeItem('selectedFilters');
   //   return '';
@@ -60,7 +62,7 @@ const RecipesComponent = (props: any) => {
       .getRecipeFilters()
       .then(async ({data}: {data: RecipeFilters}) => {
         var dict = {} as RecipeFilters;
-        await updateRecipeFilters(data);
+        updateRecipeFilters(data);
         var selectedSaved = window.sessionStorage.getItem('selectedFilters');
         Object.entries(data).map(
           ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
@@ -68,34 +70,25 @@ const RecipesComponent = (props: any) => {
           },
         );
 
-        await updateSelectedFilters(
+        updateSelectedFilters(
           (selectedSaved && JSON.parse(selectedSaved)) || dict,
         );
-        await updateFilterLoadStatus(true);
+        updateFilterLoadStatus(true);
+        updateCallerCounter(callerCounter + 1);
         window.sessionStorage.setItem('selectedFilters', JSON.stringify(dict));
       })
       .catch(err => {});
   }, []);
 
   useEffect(() => {
-    console.log(isFiltersLoaded);
-
-    resetAndCallRecipes();
-  }, [isFiltersLoaded]);
-
-  const resetAndCallRecipes = () => {
-    const loadData = async () => {
-      await updateOffset(0);
-      await updateRecipesLoading(true);
-      await updateRecipes(null);
-      getRecipesFromApi();
-    };
     if (isFiltersLoaded) {
-      loadData();
+      console.log(':here');
+      getRecipesFromApi();
     }
-  };
+  }, [callerCounter]);
 
   var getRecipesFromApi = () => {
+    console.log(offset, selectedFilters.cuisine, search);
     apis
       .getAllRecipes({
         search,
@@ -136,7 +129,7 @@ const RecipesComponent = (props: any) => {
       });
   };
 
-  var getFilters = (filters: RecipeFilters) => {
+  var loadFilters = (filters: RecipeFilters) => {
     return Object.entries(filters).map(
       ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
         var title = key.toLocaleUpperCase();
@@ -160,16 +153,16 @@ const RecipesComponent = (props: any) => {
                         ...(dict[key as keyof typeof filters] as string[]),
                       ];
                       if (tempArr.includes(filterDataElement)) {
-                        await tempArr.splice(
-                          tempArr.indexOf(filterDataElement),
-                          1,
-                        );
+                        tempArr.splice(tempArr.indexOf(filterDataElement), 1);
                       } else {
-                        await tempArr.push(filterDataElement);
+                        tempArr.push(filterDataElement);
                       }
                       dict[key as keyof typeof filters] = [...tempArr];
+                      await updateOffset(0);
+                      await updateRecipes(null);
+                      await updateRecipesLoading(true);
                       await updateSelectedFilters(dict);
-                      resetAndCallRecipes();
+                      await updateCallerCounter(callerCounter + 1);
 
                       window.sessionStorage.setItem(
                         'selectedFilters',
@@ -229,7 +222,7 @@ const RecipesComponent = (props: any) => {
       <div className="noselect row flex-grow-1">
         {recipeFilters && (
           <div className="noselect  col-12 col-md-3 col-lg-2 border-end ps-5 pe-auto bg-white">
-            {getFilters(recipeFilters)}
+            {loadFilters(recipeFilters)}
           </div>
         )}
         <div className="noselect  col-12 col-md-9 col-lg-10 p-0">
@@ -242,19 +235,35 @@ const RecipesComponent = (props: any) => {
               backgroundColor: '#ddd',
             }}>
             <InputGroup>
-              <Input
+              <DebounceInput
+                minLength={2}
+                debounceTimeout={300}
+                style={{
+                  borderColor: '#fff',
+                  border: '0px',
+                  borderRadius: 8,
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+
+                  flex: 1,
+                  padding: 10,
+                }}
                 placeholder="Search recipes..."
-                style={{borderColor: '#eee'}}
-                value={search}
-                onChange={async e => {
+                onChange={async (e: any) => {
+                  updateOffset(0);
+                  updateRecipes(null);
+                  updateRecipesLoading(true);
                   await updateSearch(e.target.value);
-                  resetAndCallRecipes();
+                  await updateCallerCounter(callerCounter + 1);
                 }}
               />
               <Button
                 outline
                 onClick={async () => {
-                  resetAndCallRecipes();
+                  updateOffset(0);
+                  updateRecipes(null);
+                  updateRecipesLoading(true);
+                  await updateCallerCounter(callerCounter + 1);
                 }}
                 onMouseEnter={() => updateSearchHover(true)}
                 onMouseLeave={() => updateSearchHover(false)}
