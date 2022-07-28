@@ -122,7 +122,6 @@ const Generic = {
                       onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        console.log('her');
                         isFavorite
                           ? dispatch(deleteRecipeFromFavorites(_id))
                           : dispatch(addRecipeToFavorites(_id));
@@ -154,15 +153,22 @@ const Generic = {
   Checkbox: (checkboxProps: CheckboxProps) => {
     const {label, value, onChange} = checkboxProps;
     return (
-      <label className="noselect d-flex justify-content-start align-items-start text-wrap">
+      <div className="noselect d-flex justify-content-start align-items-start text-wrap col-12">
         <input
           type="checkbox"
           checked={value}
           onChange={onChange}
-          style={{marginTop: 6, marginRight: 8, marginLeft: 4}}
+          style={{
+            marginTop: 5,
+            cursor: 'pointer',
+          }}
+          className="col-2"
         />
-        {`  ${label}`}
-      </label>
+        <span
+          onClick={onChange}
+          className="text-wrap "
+          style={{cursor: 'pointer'}}>{`  ${label}`}</span>
+      </div>
     );
   },
   Spinner: ({text}: {text: string}) => {

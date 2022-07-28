@@ -27,7 +27,6 @@ export const recipeSlice = createSlice({
       state.isAddingRecipe = action.payload;
     },
     addRecipes: (state, action) => {
-      console.log('addRecipes', action.payload.results);
       state.errMess = null;
       state.isAddingRecipe = false;
       if (action.payload.offset) {

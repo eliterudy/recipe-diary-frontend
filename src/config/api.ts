@@ -29,7 +29,14 @@ const recipeApiList = {
   },
   getRecipe: (recipeId: string) => {
     return ApiCaller({
-      url: `/recipes/${recipeId}`,
+      url: `/recipes/id/${recipeId}`,
+      method: 'get',
+    });
+  },
+
+  getRecipeFilters: () => {
+    return ApiCaller({
+      url: `/recipes/filters`,
       method: 'get',
     });
   },

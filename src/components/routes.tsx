@@ -81,7 +81,6 @@ const MainRouter = () => {
     const {userState, recipeState} = state;
     const {user} = userState;
     useEffect(() => {
-      console.log('LOCATION', location.pathname);
       if (
         user &&
         !user.isVerified &&

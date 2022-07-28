@@ -23,7 +23,6 @@ const RecipeDetailsComponent = (props: any) => {
       .join(' ');
   });
 
-  console.log('_____', pathSplit);
   const buttonHoverStyle = cssHover(
     {
       backgroundColor: '#2b59a1',
@@ -58,7 +57,6 @@ const RecipeDetailsComponent = (props: any) => {
   const [recipeError, updateRecipeError] = useState(null);
 
   useEffect(() => {
-    console.log('here');
     updateRecipeLoading(true);
     apis
       .getRecipe(recipeId)

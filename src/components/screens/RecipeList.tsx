@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, ReactElement} from 'react';
 import {
   Input,
   InputGroup,
@@ -9,12 +9,13 @@ import {
 import Generic from '../generic/Generic';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import {RecipeListElement} from '../../config/types';
+import {RecipeListElement, RecipeFilters} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
 import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 import apis from '../../config/api';
+import api from '../../config/api';
 
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
@@ -26,28 +27,7 @@ const RecipesComponent = (props: any) => {
   var activePath = pathSplit[pathSplit.length - 1];
   activePath =
     activePath.substring(0, 1).toUpperCase() + activePath.substring(1);
-  // console.log(locationParams);
-  const [searchHover, updateSearchHover] = useState(false);
-  const [recipeFilters, updateFilters] = useState([
-    {
-      id: 1,
-      title: 'Cuisines',
-      list: [
-        {title: 'Indian', value: false},
-        {title: 'Mexican', value: false},
-      ],
-    },
-    {
-      id: 2,
-      title: 'Courses',
-      list: [
-        {title: 'Appetizer', value: false},
-        {title: 'Lunch', value: false},
-        {title: 'Main Course', value: false},
-        {title: 'Dinner', value: false},
-      ],
-    },
-  ]);
+
   const state = useSelector((state: any) => {
     return {
       recipeState: state.recipeActionReducer,
@@ -57,28 +37,47 @@ const RecipesComponent = (props: any) => {
   const {recipeState, userState} = state;
   const {user} = userState;
   const limit = 9;
+
+  /* Local states */
+  const [searchHover, updateSearchHover] = useState(false);
   const [offset, updateOffset] = useState(0);
   const [search, updateSearch] = useState('');
-  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>(null);
+  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>();
   const [recipeLoading, updateRecipesLoading] = useState(false);
   const [recipeError, updateRecipesError] = useState(null);
-  const [selectedCuisines, updateSelectedCuisines] = useState([]);
-  const [selectedCourses, updateSelectedCourses] = useState([]);
+  const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
+  const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
+  useEffect(() => {
+    api
+      .getRecipeFilters()
+      .then(({data}: {data: RecipeFilters}) => {
+        var dict = {} as RecipeFilters;
+        updateRecipeFilters(data);
+        Object.entries(data).map(
+          ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
+            dict[key as keyof typeof data] = [];
+          },
+        );
+        updateSelectedFilters(dict);
+      })
+      .catch(err => {});
+  }, []);
 
   useEffect(() => {
     getRecipesFromApi();
-  }, []);
+  }, [search, selectedFilters]);
 
   var getRecipesFromApi = () => {
     updateRecipesLoading(true);
+    updateRecipes(null);
     setTimeout(() => {
       apis
         .getAllRecipes({
           search,
           limit,
           offset,
-          cuisine: selectedCuisines,
-          course: selectedCourses,
+          cuisine: JSON.stringify(selectedFilters.cuisine),
+          course: JSON.stringify(selectedFilters.course),
         })
         .then(async ({data}) => {
           var recipes = data.results;
@@ -107,47 +106,45 @@ const RecipesComponent = (props: any) => {
     }, 1000);
   };
 
-  var addFiltersToList = (
-    filterIndex: number,
-    listIndex: number,
-    value: any,
-  ) => {
-    // console.log(recipeFilters.hasOwnProperty(key));
-    const temp = [...recipeFilters];
-    temp[filterIndex].list[listIndex] = value;
-    updateFilters(temp);
-  };
+  var getFilters = (filters: RecipeFilters) => {
+    return Object.entries(filters).map(
+      ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
+        var title = key.toLocaleUpperCase();
+        var list = value as string[];
 
-  var getFilters = (recipeFilters: any) => {
-    const results = recipeFilters.map((data: any, filterIndex: any) => {
-      var key = data._id;
-      var title = data.title;
-      var list = data.list;
-
-      return (
-        <div className="noselect row my-4">
-          <strong>{title}</strong>
-          {list.map((filterDataElement: any, listIndex: number) => {
-            return (
-              <div className="noselect pt-2" key={listIndex}>
-                <Generic.Checkbox
-                  key={listIndex}
-                  label={filterDataElement.title}
-                  value={filterDataElement.value}
-                  onChange={() =>
-                    addFiltersToList(filterIndex, listIndex, {
-                      ...filterDataElement,
-                      value: !filterDataElement.value,
-                    })
-                  }
-                />
-              </div>
-            );
-          })}
-        </div>
-      );
-    });
-    return results;
+        return (
+          <div className="noselect row my-4" key={objectKeyIndex}>
+            <strong>{title}</strong>
+            {list.map((filterDataElement: any, listIndex: number) => {
+              return (
+                <div className="noselect pt-2" key={listIndex}>
+                  <Generic.Checkbox
+                    key={listIndex}
+                    label={filterDataElement}
+                    value={(
+                      selectedFilters[key as keyof typeof filters] as string[]
+                    ).includes(filterDataElement)}
+                    onChange={() => {
+                      var dict = {...selectedFilters} as RecipeFilters;
+                      var tempArr = dict[
+                        key as keyof typeof filters
+                      ] as string[];
+                      if (tempArr.includes(filterDataElement)) {
+                        tempArr.splice(tempArr.indexOf(filterDataElement), 1);
+                      } else {
+                        tempArr.push(filterDataElement);
+                      }
+                      dict[key as keyof typeof filters] = [...tempArr];
+                      updateSelectedFilters(dict);
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        );
+      },
+    );
   };
 
   const loadRecipes = () => {
@@ -175,8 +172,8 @@ const RecipesComponent = (props: any) => {
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
             {pathDetails &&
-              pathDetails.map((pathDetail: any) => (
-                <BreadcrumbItem>
+              pathDetails.map((pathDetail: any, index: number) => (
+                <BreadcrumbItem key={index}>
                   <Link to={pathDetail.path}>
                     <strong>{pathDetail.pathName}</strong>
                   </Link>
@@ -211,9 +208,8 @@ const RecipesComponent = (props: any) => {
                 style={{borderColor: '#eee'}}
                 value={search}
                 onChange={async e => {
-                  updateSearch(e.target.value);
+                  await updateSearch(e.target.value);
                   await updateOffset(0);
-                  getRecipesFromApi();
                 }}
               />
               <Button

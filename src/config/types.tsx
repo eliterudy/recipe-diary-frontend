@@ -67,3 +67,10 @@ export interface CheckboxProps {
   value: boolean;
   onChange: () => void;
 }
+
+export interface RecipeFilters {
+  cuisine?: string[];
+  course?: string[];
+  diet?: string[];
+  servings?: string[];
+}
