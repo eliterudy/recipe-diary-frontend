@@ -15,6 +15,8 @@ import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
 import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
 
@@ -41,12 +43,13 @@ const RecipesComponent = (props: any) => {
   const [searchHover, updateSearchHover] = useState(false);
   const [offset, updateOffset] = useState(0);
   const [search, updateSearch] = useState('');
-  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>();
+  const [recipes, updateRecipes] = useState<null | RecipeListElement[]>(null);
   const [recipeLoading, updateRecipesLoading] = useState(false);
   const [recipeError, updateRecipesError] = useState(null);
   const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
   const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
   const [isFiltersLoaded, updateFilterLoadStatus] = useState(false);
+  const [recipeCount, updateRecipeCount] = useState(0);
   // window.onbeforeunload = function () {
   //   window.sessionStorage.removeItem('selectedFilters');
   //   return '';
@@ -57,12 +60,9 @@ const RecipesComponent = (props: any) => {
       .getRecipeFilters()
       .then(async ({data}: {data: RecipeFilters}) => {
         var dict = {} as RecipeFilters;
-        updateRecipeFilters(data);
-        var selectedSaved = await window.sessionStorage.getItem(
-          'selectedFilters',
-        );
-        console.log('selectedSaved', selectedSaved);
-        await Object.entries(data).map(
+        await updateRecipeFilters(data);
+        var selectedSaved = window.sessionStorage.getItem('selectedFilters');
+        Object.entries(data).map(
           ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
             dict[key as keyof typeof data] = [];
           },
@@ -71,55 +71,69 @@ const RecipesComponent = (props: any) => {
         await updateSelectedFilters(
           (selectedSaved && JSON.parse(selectedSaved)) || dict,
         );
-        updateFilterLoadStatus(true);
-        // window.sessionStorage.setItem('selectedFilters', JSON.stringify(dict));
+        await updateFilterLoadStatus(true);
+        window.sessionStorage.setItem('selectedFilters', JSON.stringify(dict));
       })
       .catch(err => {});
   }, []);
 
   useEffect(() => {
-    if (isFiltersLoaded) {
+    console.log(isFiltersLoaded);
+
+    resetAndCallRecipes();
+  }, [isFiltersLoaded]);
+
+  const resetAndCallRecipes = () => {
+    const loadData = async () => {
+      await updateOffset(0);
+      await updateRecipesLoading(true);
+      await updateRecipes(null);
       getRecipesFromApi();
+    };
+    if (isFiltersLoaded) {
+      loadData();
     }
-  }, [search, selectedFilters]);
+  };
 
   var getRecipesFromApi = () => {
-    updateRecipesLoading(true);
-    updateRecipes(null);
-    setTimeout(() => {
-      apis
-        .getAllRecipes({
-          search,
-          limit,
-          offset,
-          cuisine: JSON.stringify(selectedFilters.cuisine),
-          course: JSON.stringify(selectedFilters.course),
-        })
-        .then(async ({data}) => {
-          var recipes = data.results;
+    apis
+      .getAllRecipes({
+        search,
+        limit,
+        offset,
+        cuisine: JSON.stringify(selectedFilters.cuisine),
+        course: JSON.stringify(selectedFilters.course),
+      })
+      .then(async ({data}) => {
+        var tempRecipes = data.results;
 
-          if (
-            user &&
-            user.favorites !== {} &&
-            user.favorites.hasOwnProperty('recipes')
-          ) {
-            const favoriteRecipes = user.favorites.recipes;
-            recipes = recipes.map((recipe: RecipeListElement) => {
-              return (recipe = {
-                ...recipe,
-                isFavorite: favoriteRecipes.includes(recipe._id),
-              });
+        if (
+          user &&
+          user.favorites !== {} &&
+          user.favorites.hasOwnProperty('recipes')
+        ) {
+          const favoriteRecipes = user.favorites.recipes;
+          tempRecipes = tempRecipes.map((recipe: RecipeListElement) => {
+            return (recipe = {
+              ...recipe,
+              isFavorite: favoriteRecipes.includes(recipe._id),
             });
-          }
+          });
+        }
+        updateRecipeCount(data.count);
+        updateOffset(data.nextOffset);
 
-          await updateRecipes(recipes);
-          updateRecipesLoading(false);
-        })
-        .catch((error: any) => {
-          updateRecipesError(error);
-          updateRecipesLoading(false);
-        });
-    }, 1000);
+        if (recipes) {
+          updateRecipes([...recipes, ...tempRecipes]);
+        } else {
+          updateRecipes([...tempRecipes]);
+        }
+        updateRecipesLoading(false);
+      })
+      .catch((error: any) => {
+        updateRecipesError(error);
+        updateRecipesLoading(false);
+      });
   };
 
   var getFilters = (filters: RecipeFilters) => {
@@ -140,20 +154,23 @@ const RecipesComponent = (props: any) => {
                     value={(
                       selectedFilters[key as keyof typeof filters] as string[]
                     ).includes(filterDataElement)}
-                    onChange={() => {
-                      console.log('here');
-
+                    onChange={async () => {
                       var dict = {...selectedFilters} as RecipeFilters;
                       var tempArr = [
                         ...(dict[key as keyof typeof filters] as string[]),
                       ];
                       if (tempArr.includes(filterDataElement)) {
-                        tempArr.splice(tempArr.indexOf(filterDataElement), 1);
+                        await tempArr.splice(
+                          tempArr.indexOf(filterDataElement),
+                          1,
+                        );
                       } else {
-                        tempArr.push(filterDataElement);
+                        await tempArr.push(filterDataElement);
                       }
                       dict[key as keyof typeof filters] = [...tempArr];
-                      updateSelectedFilters(dict);
+                      await updateSelectedFilters(dict);
+                      resetAndCallRecipes();
+
                       window.sessionStorage.setItem(
                         'selectedFilters',
                         JSON.stringify(dict),
@@ -231,12 +248,14 @@ const RecipesComponent = (props: any) => {
                 value={search}
                 onChange={async e => {
                   await updateSearch(e.target.value);
-                  await updateOffset(0);
+                  resetAndCallRecipes();
                 }}
               />
               <Button
                 outline
-                onClick={() => {}}
+                onClick={async () => {
+                  resetAndCallRecipes();
+                }}
                 onMouseEnter={() => updateSearchHover(true)}
                 onMouseLeave={() => updateSearchHover(false)}
                 style={{
@@ -255,8 +274,44 @@ const RecipesComponent = (props: any) => {
               {/* <InputGroupText></InputGroupText> */}
             </InputGroup>
           </div>
-          <div className="noselect  col-12 flex-grow-1  d-flex flex-row flex-wrap pt-5 pe-3">
-            {loadRecipes()}
+          <div className="noselect  col-12 flex-grow-1  d-flex flex-row flex-wrap pt-1 pe-3">
+            {recipes && (
+              <div>
+                <div
+                  id="listTop"
+                  className="d-flex flex-column align-items-end py-3">
+                  <em
+                    className="px-2 py-1  me-4"
+                    style={{
+                      border: '0.5px solid #ddd',
+                      backgroundColor: '#eee',
+                      borderRadius: 3,
+                    }}>
+                    Showing: {recipes.length} of {recipeCount} recipes
+                  </em>
+                </div>
+                <InfiniteScroll
+                  dataLength={recipes ? recipes.length : 0} //This is important field to render the next data
+                  next={() => {
+                    getRecipesFromApi();
+                  }}
+                  hasMore={recipeCount > recipes.length}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                  }}
+                  loader={<h4 className="col-12 text-center">Loading...</h4>}
+                  endMessage={
+                    <p className="col-12" style={{textAlign: 'center'}}>
+                      <b>Yay! You have seen it all</b>
+                    </p>
+                  }>
+                  {/* scrollableTarget="listTop"> */}
+                  {loadRecipes()}
+                </InfiniteScroll>
+              </div>
+            )}
           </div>
         </div>
       </div>
