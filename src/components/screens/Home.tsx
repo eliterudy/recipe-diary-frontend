@@ -26,8 +26,6 @@ import {useNavigate} from 'react-router-dom';
 import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 import apis from '../../config/api';
 
-const {fetchAllRecipes} = reduxApiCallers;
-
 const HomeComponent = (props: any) => {
   const {pathDetails} = props;
   const dispatch: Dispatch<any> = useDispatch();

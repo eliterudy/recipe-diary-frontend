@@ -21,7 +21,6 @@ import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
 
-const {loadUser, removeUser, addingRecipeLoading} = actions;
 const required = (val: any) => val && val.length > 0;
 const maxLength = (val: any, len: any) => val.length < len;
 const minLength = (val: any, len: any) => val.length >= len;
@@ -657,9 +656,7 @@ const AddRecipeComponent = () => {
                           )[0],
                         });
                       } else {
-                        dispatch(addingRecipeLoading(true));
                         setTimeout(() => {
-                          dispatch(addingRecipeLoading(false));
                           setTimeout(() => {
                             navigate('/my-profile');
                           }, 1000);

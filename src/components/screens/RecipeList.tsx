@@ -13,10 +13,10 @@ import {RecipeListElement, RecipeFilters} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
-import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
+import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
 import api from '../../config/api';
-
+const {updateRecipeFilters, updateSelectedFilters} = actionReducers;
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
 
@@ -36,6 +36,7 @@ const RecipesComponent = (props: any) => {
   });
   const {recipeState, userState} = state;
   const {user} = userState;
+  const {recipeFilters, selectedFilters} = recipeState;
   const limit = 9;
 
   /* Local states */
@@ -45,20 +46,20 @@ const RecipesComponent = (props: any) => {
   const [recipes, updateRecipes] = useState<null | RecipeListElement[]>();
   const [recipeLoading, updateRecipesLoading] = useState(false);
   const [recipeError, updateRecipesError] = useState(null);
-  const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
-  const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
+  // const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
+  // const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
   useEffect(() => {
     api
       .getRecipeFilters()
       .then(({data}: {data: RecipeFilters}) => {
         var dict = {} as RecipeFilters;
-        updateRecipeFilters(data);
+        dispatch(updateRecipeFilters(data));
         Object.entries(data).map(
           ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
             dict[key as keyof typeof data] = [];
           },
         );
-        updateSelectedFilters(dict);
+        dispatch(updateSelectedFilters(dict));
       })
       .catch(err => {});
   }, []);
@@ -125,17 +126,19 @@ const RecipesComponent = (props: any) => {
                       selectedFilters[key as keyof typeof filters] as string[]
                     ).includes(filterDataElement)}
                     onChange={() => {
+                      console.log('here');
+
                       var dict = {...selectedFilters} as RecipeFilters;
-                      var tempArr = dict[
-                        key as keyof typeof filters
-                      ] as string[];
+                      var tempArr = [
+                        ...(dict[key as keyof typeof filters] as string[]),
+                      ];
                       if (tempArr.includes(filterDataElement)) {
                         tempArr.splice(tempArr.indexOf(filterDataElement), 1);
                       } else {
                         tempArr.push(filterDataElement);
                       }
                       dict[key as keyof typeof filters] = [...tempArr];
-                      updateSelectedFilters(dict);
+                      dispatch(updateSelectedFilters(dict));
                     }}
                   />
                 </div>
