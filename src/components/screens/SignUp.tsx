@@ -15,63 +15,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
-
-const required = (val: any) => val && val.length > 0;
-const maxLength = (val: any, len: any) => val.length < len;
-const minLength = (val: any, len: any) => val.length >= len;
-const isNumber = (val: any) => !isNaN(Number(val));
-const validEmail = (val: any) =>
-  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
-
-const FormValidators = {
-  nameValidator: (value: string): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!minLength(value, 2)) {
-      error = `Should be atleast ${2} characters!`;
-    } else if (!maxLength(value, 20)) {
-      error = `Should be at most ${20} characters!`;
-    }
-    return [error, error.length > 0];
-  },
-  emailValidator: (value: string): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!validEmail(value)) {
-      error = 'Should be a valid email.';
-    }
-    return [error, error.length > 0];
-  },
-  passwordValidator: (value: string): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!minLength(value, 6)) {
-      error = `Should be atleast ${6} characters!`;
-    } else if (!maxLength(value, 15)) {
-      error = `Should be at most ${15} characters!`;
-    }
-    return [error, error.length > 0];
-  },
-  confirmPasswordValidator: (
-    value: string,
-    matchTo: string,
-  ): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!minLength(value, 6)) {
-      error = `Should be atleast ${6} characters!`;
-    } else if (!maxLength(value, 15)) {
-      error = `Should be at most ${15} characters!`;
-    } else if (value !== matchTo) {
-      error = `Passwords dont match!`;
-    }
-    return [error, error.length > 0];
-  },
-};
+import FormValidators from '../generic/FormValidators';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -116,7 +60,7 @@ const SignUpComponent = () => {
     confirmPassword: '',
   });
   const {
-    nameValidator,
+    textValidator,
     emailValidator,
     passwordValidator,
     confirmPasswordValidator,
@@ -161,13 +105,13 @@ const SignUpComponent = () => {
                         });
                         updateFormErrors({
                           ...formErrors,
-                          firstname: nameValidator(target.value)[0],
+                          firstname: textValidator(target.value, 3, 20)[0],
                         });
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          firstname: nameValidator(target.value)[0],
+                          firstname: textValidator(target.value, 3, 20)[0],
                         });
                       }}
                     />
@@ -190,13 +134,13 @@ const SignUpComponent = () => {
                         });
                         updateFormErrors({
                           ...formErrors,
-                          lastname: nameValidator(target.value)[0],
+                          lastname: textValidator(target.value, 3, 20)[0],
                         });
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          lastname: nameValidator(target.value)[0],
+                          lastname: textValidator(target.value, 3, 20)[0],
                         });
                       }}
                     />
@@ -247,13 +191,13 @@ const SignUpComponent = () => {
                         });
                         updateFormErrors({
                           ...formErrors,
-                          password: passwordValidator(target.value)[0],
+                          password: passwordValidator(target.value, 6, 20)[0],
                         });
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          password: passwordValidator(target.value)[0],
+                          password: passwordValidator(target.value, 6, 20)[0],
                         });
                       }}
                     />
@@ -277,6 +221,8 @@ const SignUpComponent = () => {
                           ...formErrors,
                           confirmPassword: confirmPasswordValidator(
                             target.value,
+                            6,
+                            20,
                             formValues.password,
                           )[0],
                         });
@@ -286,6 +232,8 @@ const SignUpComponent = () => {
                           ...formErrors,
                           confirmPassword: confirmPasswordValidator(
                             target.value,
+                            6,
+                            20,
                             formValues.password,
                           )[0],
                         });
@@ -305,41 +253,34 @@ const SignUpComponent = () => {
                         confirmPassword,
                       } = formValues;
                       const {
-                        nameValidator,
+                        textValidator,
                         emailValidator,
                         passwordValidator,
                         confirmPasswordValidator,
                       } = FormValidators;
-                      console.log(
-                        nameValidator(firstname)[1],
-                        nameValidator(lastname)[1],
-                        emailValidator(email)[1],
-                        passwordValidator(password)[1],
-                        confirmPasswordValidator(confirmPassword, password)[1],
-                        nameValidator(firstname)[1] &&
-                          nameValidator(lastname)[1] &&
-                          emailValidator(email)[1] &&
-                          passwordValidator(password)[1] &&
-                          confirmPasswordValidator(
-                            confirmPassword,
-                            password,
-                          )[1],
-                      );
+
                       if (
-                        nameValidator(firstname)[1] ||
-                        nameValidator(lastname)[1] ||
+                        textValidator(firstname, 3, 20)[1] ||
+                        textValidator(lastname, 3, 20)[1] ||
                         emailValidator(email)[1] ||
-                        passwordValidator(password)[1] ||
-                        confirmPasswordValidator(confirmPassword, password)[1]
+                        passwordValidator(password, 6, 20)[1] ||
+                        confirmPasswordValidator(
+                          confirmPassword,
+                          6,
+                          20,
+                          password,
+                        )[1]
                       ) {
                         updateFormErrors({
                           ...formErrors,
-                          firstname: nameValidator(firstname)[0],
-                          lastname: nameValidator(lastname)[0],
+                          firstname: textValidator(firstname, 3, 20)[0],
+                          lastname: textValidator(lastname, 3, 20)[0],
                           email: emailValidator(email)[0],
-                          password: passwordValidator(password)[0],
+                          password: passwordValidator(password, 6, 20)[0],
                           confirmPassword: confirmPasswordValidator(
                             confirmPassword,
+                            6,
+                            20,
                             password,
                           )[0],
                         });

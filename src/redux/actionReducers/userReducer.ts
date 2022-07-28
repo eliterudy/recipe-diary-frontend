@@ -62,22 +62,7 @@ export const userSlice = createSlice({
         );
     },
     loadUser: (state, action) => {
-      state.user = {
-        _id: 1,
-        firstname: 'Harvey',
-        lastname: 'Spectre',
-        fullname: 'Harvey Spectre',
-        favorites: {
-          recipes: [],
-        },
-        isAdmin: false,
-        username: 'hvspectre',
-        email: 'hello@abc.com',
-        recents: {
-          recipes: [],
-        },
-        isVerified: false,
-      };
+      state.user = action.payload;
     },
     removeUser: state => {
       state.user = null;

@@ -20,39 +20,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
-
-const required = (val: any) => val && val.length > 0;
-const maxLength = (val: any, len: any) => val.length < len;
-const minLength = (val: any, len: any) => val.length >= len;
-const isNumber = (val: any) => !isNaN(Number(val)) && Number(val) > 0;
-
-const FormValidators = {
-  textValidator: (
-    value: string,
-    minLen: number,
-    maxLen: number,
-  ): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!minLength(value, minLen)) {
-      error = `Should be atleast ${minLen} characters!`;
-    } else if (!maxLength(value, maxLen)) {
-      error = `Should be at most ${maxLen} characters!`;
-    }
-    return [error, error.length > 0];
-  },
-
-  numberValidator: (value: string): [string, boolean] => {
-    var error = '';
-    if (!required(value)) {
-      error = 'Required!';
-    } else if (!isNumber(value)) {
-      error = `Should be a positive number greater than zero`;
-    }
-    return [error, error.length > 0];
-  },
-};
+import FormValidators from '../generic/FormValidators';
 
 const AddRecipeComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -421,7 +389,6 @@ const AddRecipeComponent = () => {
                       if (file && file.length > 0) {
                         const formData = new FormData();
                         formData.append('image', file[0]);
-                        console.log(formData);
                         var myHeaders = new Headers();
                         myHeaders.append(
                           'Authorization',

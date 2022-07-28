@@ -16,6 +16,8 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
+import apis from '../../config/api';
+import FormValidators from '../generic/FormValidators';
 
 const {loadUser, removeUser} = actions;
 
@@ -25,6 +27,14 @@ const SignInComponent = () => {
   const navigate = useNavigate();
 
   const [isErrorVisible, updateErrorVisible] = useState(false);
+  const [formValues, updateFormValues] = useState({
+    username: '',
+    password: '',
+  });
+  const [formErrors, updateFormErrors] = useState({
+    username: '',
+    password: '',
+  });
 
   const state = useSelector((state: any) => {
     return {
@@ -70,6 +80,35 @@ const SignInComponent = () => {
     },
   );
 
+  const submitLoginDetailsToApi = () => {
+    // alert('Either username or password is not entered');
+    const {username, password} = formValues;
+    const {textValidator, passwordValidator} = FormValidators;
+    if (
+      textValidator(username, 3, 20)[1] ||
+      passwordValidator(password, 6, 20)[1]
+    ) {
+      updateFormErrors({
+        ...formErrors,
+        username: textValidator(username, 3, 20)[0],
+        password: passwordValidator(password, 6, 20)[0],
+      });
+    } else {
+      apis
+        .login({username: formValues.username, password: formValues.password})
+        .then(({data}) => {
+          if (data.success) {
+            dispatch(loadUser(data.user));
+            navigate('/home');
+          }
+        })
+        .catch(err => {
+          updateErrorVisible(true);
+        });
+    }
+  };
+
+  const {textValidator, passwordValidator} = FormValidators;
   return (
     <div className="p-3">
       <div className="noselect col-12 d-flex flex-row justify-content-center my-5  ">
@@ -114,30 +153,52 @@ const SignInComponent = () => {
                 <FormGroup className="mb-4">
                   <Label for="password">Username</Label>
                   <Input
+                    invalid={formErrors.username.length > 0}
                     type="text"
                     name="username"
                     id="username"
-                    placeholder=""
+                    placeholder="John"
+                    value={formValues.username}
+                    onChange={({target}) => {
+                      updateFormValues({
+                        ...formValues,
+                        username: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        username: textValidator(target.value, 3, 20)[0],
+                      });
+                    }}
                   />
-                  <FormText>Example: john</FormText>
+                  <FormFeedback>{formErrors.username}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="password">Password</Label>
                   <Input
+                    invalid={formErrors.password.length > 0}
                     type="password"
                     name="password"
                     id="password"
-                    placeholder=""
+                    placeholder="***"
+                    value={formValues.password}
+                    onChange={({target}) => {
+                      updateFormValues({
+                        ...formValues,
+                        password: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        password: passwordValidator(target.value, 6, 20)[0],
+                      });
+                    }}
                   />
-                  <FormText>Example: ****</FormText>
+                  <FormFeedback>{formErrors.password}</FormFeedback>
                 </FormGroup>
                 <Button
                   {...signInButtonStyle}
                   onClick={e => {
                     e.preventDefault();
-                    updateErrorVisible(true);
-                    dispatch(loadUser(null));
-                    navigate('/home');
+                    submitLoginDetailsToApi();
                   }}>
                   Sign In
                 </Button>

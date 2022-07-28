@@ -82,13 +82,11 @@ const RecipesComponent = (props: any) => {
 
   useEffect(() => {
     if (isFiltersLoaded) {
-      console.log(':here');
       getRecipesFromApi();
     }
   }, [callerCounter]);
 
   var getRecipesFromApi = () => {
-    console.log(offset, selectedFilters.cuisine, search);
     apis
       .getAllRecipes({
         search,
@@ -221,11 +219,11 @@ const RecipesComponent = (props: any) => {
 
       <div className="noselect row flex-grow-1">
         {recipeFilters && (
-          <div className="noselect  col-12 col-md-3 col-lg-2 border-end ps-5 pe-auto bg-white">
+          <div className="noselect  col-12 col-sm-3 col-lg-2 border-end ps-5 pe-auto bg-white">
             {loadFilters(recipeFilters)}
           </div>
         )}
-        <div className="noselect  col-12 col-md-9 col-lg-10 p-0">
+        <div className="noselect  col-12 col-sm-9 col-lg-10 p-0">
           <div
             className="noselect col-12 border-bottom"
             style={{
@@ -283,7 +281,7 @@ const RecipesComponent = (props: any) => {
               {/* <InputGroupText></InputGroupText> */}
             </InputGroup>
           </div>
-          <div className="noselect  col-12 flex-grow-1  d-flex flex-row flex-wrap pt-1 pe-3">
+          <div className="noselect  col-12   pt-1 pe-3">
             {recipes && (
               <div>
                 <div

@@ -55,12 +55,14 @@ const recipeApiList = {
       data,
     });
   },
+};
 
-  postFeedback: (data: any) => {
+const userApiList = {
+  login: (payload: any) => {
     return ApiCaller({
-      url: `/feedback`,
+      url: `/users/login`,
       method: 'post',
-      data,
+      data: payload,
     });
   },
 };
@@ -68,4 +70,5 @@ const recipeApiList = {
 export default {
   ApiCaller,
   ...recipeApiList,
+  ...userApiList,
 };
