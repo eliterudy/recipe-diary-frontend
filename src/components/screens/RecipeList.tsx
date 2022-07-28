@@ -15,8 +15,6 @@ import {useMediaQuery} from 'react-responsive';
 import {useLocation, Link} from 'react-router-dom';
 import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
-import api from '../../config/api';
-const {updateRecipeFilters, updateSelectedFilters} = actionReducers;
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
 
@@ -36,7 +34,7 @@ const RecipesComponent = (props: any) => {
   });
   const {recipeState, userState} = state;
   const {user} = userState;
-  const {recipeFilters, selectedFilters} = recipeState;
+  // const {recipeFilters, selectedFilters} = recipeState;
   const limit = 9;
 
   /* Local states */
@@ -46,26 +44,43 @@ const RecipesComponent = (props: any) => {
   const [recipes, updateRecipes] = useState<null | RecipeListElement[]>();
   const [recipeLoading, updateRecipesLoading] = useState(false);
   const [recipeError, updateRecipesError] = useState(null);
-  // const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
-  // const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
+  const [recipeFilters, updateRecipeFilters] = useState<RecipeFilters>({});
+  const [selectedFilters, updateSelectedFilters] = useState<RecipeFilters>({});
+  const [isFiltersLoaded, updateFilterLoadStatus] = useState(false);
+  // window.onbeforeunload = function () {
+  //   window.sessionStorage.removeItem('selectedFilters');
+  //   return '';
+  // };
+
   useEffect(() => {
-    api
+    apis
       .getRecipeFilters()
-      .then(({data}: {data: RecipeFilters}) => {
+      .then(async ({data}: {data: RecipeFilters}) => {
         var dict = {} as RecipeFilters;
-        dispatch(updateRecipeFilters(data));
-        Object.entries(data).map(
+        updateRecipeFilters(data);
+        var selectedSaved = await window.sessionStorage.getItem(
+          'selectedFilters',
+        );
+        console.log('selectedSaved', selectedSaved);
+        await Object.entries(data).map(
           ([key, value]: [key: string, value: string[]], objectKeyIndex) => {
             dict[key as keyof typeof data] = [];
           },
         );
-        dispatch(updateSelectedFilters(dict));
+
+        await updateSelectedFilters(
+          (selectedSaved && JSON.parse(selectedSaved)) || dict,
+        );
+        updateFilterLoadStatus(true);
+        // window.sessionStorage.setItem('selectedFilters', JSON.stringify(dict));
       })
       .catch(err => {});
   }, []);
 
   useEffect(() => {
-    getRecipesFromApi();
+    if (isFiltersLoaded) {
+      getRecipesFromApi();
+    }
   }, [search, selectedFilters]);
 
   var getRecipesFromApi = () => {
@@ -138,7 +153,11 @@ const RecipesComponent = (props: any) => {
                         tempArr.push(filterDataElement);
                       }
                       dict[key as keyof typeof filters] = [...tempArr];
-                      dispatch(updateSelectedFilters(dict));
+                      updateSelectedFilters(dict);
+                      window.sessionStorage.setItem(
+                        'selectedFilters',
+                        JSON.stringify(dict),
+                      );
                     }}
                   />
                 </div>
