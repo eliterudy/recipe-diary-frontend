@@ -16,7 +16,7 @@ const FormValidators = {
       error = 'Required!';
     } else if (!minLength(value, minLen)) {
       error = `Should be atleast ${minLen} characters!`;
-    } else if (!maxLength(value, maxLen)) {
+    } else if (!maxLength(value, maxLen + 1)) {
       error = `Should be at most ${maxLen} characters!`;
     }
     return [error, error.length > 0];
@@ -50,7 +50,7 @@ const FormValidators = {
       error = 'Required!';
     } else if (!minLength(value, minLen)) {
       error = `Should be atleast ${minLen} characters!`;
-    } else if (!maxLength(value, maxLen)) {
+    } else if (!maxLength(value, maxLen + 1)) {
       error = `Should be at most ${maxLen} characters!`;
     }
     return [error, error.length > 0];
@@ -67,7 +67,7 @@ const FormValidators = {
     } else if (!minLength(value, minLen)) {
       error = `Should be atleast ${minLen} characters!`;
     } else if (!maxLength(value, maxLen)) {
-      error = `Should be at most ${maxLen} characters!`;
+      error = `Should be at most ${maxLen + 1} characters!`;
     } else if (value !== matchTo) {
       error = `Passwords dont match!`;
     }
