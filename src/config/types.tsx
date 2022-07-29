@@ -48,6 +48,9 @@ export interface Favorites {
 export interface Recents {
   recipes: string[];
 }
+export interface Published {
+  recipes: string[];
+}
 
 export interface User {
   _id: number;
@@ -57,6 +60,7 @@ export interface User {
   username: string;
   favorites: Favorites;
   recents: Recents;
+  published: Published;
   isAdmin: boolean;
   isVerified?: boolean;
   email: string;

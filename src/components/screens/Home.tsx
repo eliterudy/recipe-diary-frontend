@@ -48,20 +48,6 @@ const HomeComponent = (props: any) => {
       .then(async ({data}) => {
         var recipes = data.results;
 
-        if (
-          user &&
-          user.favorites !== {} &&
-          user.favorites.hasOwnProperty('recipes')
-        ) {
-          const favoriteRecipes = user.favorites.recipes;
-          recipes = recipes.map((recipe: RecipeListElement) => {
-            return (recipe = {
-              ...recipe,
-              isFavorite: favoriteRecipes.includes(recipe._id),
-            });
-          });
-        }
-
         await updateRecipes(recipes);
         updateRecipesLoading(false);
       })
@@ -88,11 +74,11 @@ const HomeComponent = (props: any) => {
     }
   };
 
-  const loadRecipes = () => {
+  const loadRecipes = (localRecipes: RecipeListElement[]) => {
     if (recipeLoading) {
       return <Generic.Spinner text={'recipes'} />;
-    } else if (!recipeLoading && recipes) {
-      return recipes.map((special: RecipeListElement, index: number) => (
+    } else if (!recipeLoading && localRecipes) {
+      return localRecipes.map((special: RecipeListElement, index: number) => (
         <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-4 `}>
           {/* <Animate
             play={showSpecials}
@@ -118,6 +104,23 @@ const HomeComponent = (props: any) => {
       );
     }
   };
+
+  var localRecipes = recipes;
+  if (
+    user &&
+    user.favorites !== {} &&
+    user.favorites.hasOwnProperty('recipes')
+  ) {
+    const favoriteRecipes = user.favorites.recipes;
+    localRecipes =
+      localRecipes &&
+      localRecipes.map((recipe: RecipeListElement) => {
+        return (recipe = {
+          ...recipe,
+          isFavorite: favoriteRecipes.includes(recipe._id),
+        });
+      });
+  }
   return (
     <>
       <div
@@ -160,7 +163,7 @@ const HomeComponent = (props: any) => {
           className="noselect d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
-          {loadRecipes()}
+          {localRecipes && loadRecipes(localRecipes)}
           {/* </AnimateGroup> */}
         </div>
       </div>

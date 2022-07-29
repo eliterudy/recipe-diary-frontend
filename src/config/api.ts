@@ -65,6 +65,35 @@ const userApiList = {
       data: payload,
     });
   },
+
+  getUserDetails: () => {
+    return ApiCaller({
+      url: `/users/userDetails`,
+      method: 'get',
+    });
+  },
+  getRecipesByCategory: (params: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'get',
+      params,
+    });
+  },
+  postToCategory: (payload: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
+  deleteFromCategory: (payload: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'delete',
+      data: payload,
+    });
+  },
 };
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {

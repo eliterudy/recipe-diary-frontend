@@ -16,6 +16,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import FormValidators from '../generic/FormValidators';
+import {DebounceInput} from 'react-debounce-input';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -46,6 +47,7 @@ const SignUpComponent = () => {
   const {userState} = state;
 
   const [formValues, updateFormValues] = useState({
+    username: '',
     firstname: '',
     lastname: '',
     email: '',
@@ -53,6 +55,7 @@ const SignUpComponent = () => {
     confirmPassword: '',
   });
   const [formErrors, updateFormErrors] = useState({
+    username: '',
     firstname: '',
     lastname: '',
     email: '',
@@ -89,6 +92,38 @@ const SignUpComponent = () => {
               </div>
               <div className="col-12  mt-3  p-3 ">
                 <Form>
+                  <FormGroup className="mb-4">
+                    <Label for="username">Username</Label>
+                    <Input
+                      invalid={formErrors.username.length > 0}
+                      type="text"
+                      name="username"
+                      id="username"
+                      placeholder="johndoe321"
+                      value={formValues.username}
+                      onChange={({target}) => {
+                        updateFormValues({
+                          ...formValues,
+                          username: target.value,
+                        });
+                        updateFormErrors({
+                          ...formErrors,
+                          username: textValidator(target.value, 3, 20)[0],
+                        });
+                        if (formErrors.username == '') {
+                          console.log('here');
+                        }
+                      }}
+                      onBlur={({target}) => {
+                        updateFormErrors({
+                          ...formErrors,
+                          username: textValidator(target.value, 3, 20)[0],
+                        });
+                      }}
+                    />
+
+                    <FormFeedback>{formErrors.username}</FormFeedback>
+                  </FormGroup>
                   <FormGroup className="mb-4">
                     <Label for="firstname">First name</Label>
                     <Input

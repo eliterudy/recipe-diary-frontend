@@ -25,7 +25,7 @@ import {randomColorGenerator} from '../../config/configuration';
 import {cssHover} from '../generic/hoverProps';
 import classnames from 'classnames';
 import actions from '../../redux/actionReducers/index';
-
+import apis from '../../config/api';
 const {verifyUser} = actions;
 
 const avatarColor = randomColorGenerator();
@@ -46,6 +46,56 @@ const MyProfileComponent = (props: any) => {
   const [activeTab, updateActiveTab] = useState(
     user && user.isVerified ? 0 : 1,
   );
+  const [myRecipes, updateMyRecipes] = useState<null | RecipeListElement[]>(
+    null,
+  );
+  const [myRecipeLoading, updateMyRecipeLoading] = useState(false);
+  const [myRecipeError, updateMyRecipeError] = useState(null);
+  const [recents, updateRecents] = useState<null | RecipeListElement[]>(null);
+  const [recentsLoading, updateRecentsLoading] = useState(false);
+  const [recentsError, updateRecentsError] = useState(null);
+  const [favoriteRecipes, updateFavoriteRecipes] = useState<
+    null | RecipeListElement[]
+  >(null);
+  const [favoriteRecipesLoading, updateFavoriteRecipesLoading] =
+    useState(false);
+  const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
+
+  useEffect(() => {
+    apis
+      .getRecipesByCategory({property: 'favorites', category: 'recipes'})
+      .then(({data}) => {
+        console.log('FAV', data);
+        updateFavoriteRecipes(data);
+        updateFavoriteRecipesLoading(false);
+      })
+      .catch(err => {
+        updateFavoriteRecipesError(err);
+      });
+  }, [user.favorites.recipes]);
+  useEffect(() => {
+    apis
+      .getRecipesByCategory({property: 'recents', category: 'recipes'})
+      .then(({data}) => {
+        updateRecents(data);
+        updateRecentsLoading(false);
+      })
+      .catch(err => {
+        updateRecentsError(err);
+      });
+  }, [user.recents.recipes]);
+  useEffect(() => {
+    apis
+      .getRecipesByCategory({property: 'published', category: 'recipes'})
+      .then(({data}) => {
+        updateMyRecipes(data);
+        updateMyRecipeLoading(false);
+      })
+      .catch(err => {
+        updateMyRecipeError(err);
+      });
+  }, [user.published.recipes]);
+
   const tabs = ['My Recipes', 'Recently Viewed', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -145,55 +195,99 @@ const MyProfileComponent = (props: any) => {
     return results;
   };
 
-  var loadRecipes = (recipes: RecipeListElement[], recipeType: string) => {
+  var loadRecipes = (
+    recipes: RecipeListElement[] | null,
+    loading: boolean,
+    error: string | null,
+    recipeType: string,
+  ) => {
     var response;
-    if (recipes && recipes.length > 0) {
-      if (recipeType === 'recents' && recipes.length > 10) {
-        recipes = recipes.slice(0, 10);
-      }
-      response = (
-        <div>
-          {recipeType === 'recents' && (
-            <em>
-              <small className="ps-4 mb-0 pb-0 text-muted">
-                Top {recipes.length > 10 ? 10 : recipes.length} recipes you
-                recently checked out...
-              </small>
-            </em>
-          )}
+    if (loading) {
+      return <Generic.Spinner text={recipeType} />;
+    }
+    if (!loading && recipes) {
+      if (recipes.length > 0) {
+        if (recipeType === 'recents' && recipes.length > 10) {
+          recipes = recipes.slice(0, 10);
+        }
+        response = (
+          <div>
+            {recipeType === 'recents' && (
+              <em>
+                <small className="ps-4 mb-0 pb-0 text-muted">
+                  Top {recipes.length > 10 ? 10 : recipes.length} recipes you
+                  recently checked out...
+                </small>
+              </em>
+            )}
 
-          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4 pe-3">
-            {recipes.map((recipe: RecipeListElement, index: number) => (
-              <div
-                key={index}
-                className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>
-                <Generic.RecipeCard
-                  data={recipe}
-                  index={index}
-                  redirect={`recipeId/${recipe._id}`}
-                />
-              </div>
-            ))}
+            <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4 pe-3">
+              {recipes.map((recipe: RecipeListElement, index: number) => (
+                <div
+                  key={index}
+                  className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>
+                  <Generic.RecipeCard
+                    data={recipe}
+                    index={index}
+                    redirect={`recipeId/${recipe._id}`}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else {
+        response = (
+          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
+            <span className="col-12 text-center">
+              {`No ${recipeType} recipes`}
+            </span>
+          </div>
+        );
+      }
     } else {
-      response = (
-        <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
-          <span className="col-12 text-center">
-            {`No ${recipeType} recipes`}
-          </span>
-        </div>
-      );
+      return <Generic.ListError error={error} />;
     }
 
     return response;
   };
 
-  var savedRecipes = getRecipes('favorites');
-  var recentRecipes = getRecipes('recents');
-  var myrecipes = getMyRecipes(user && user._id);
-
+  var localFavRecipes = favoriteRecipes;
+  var localRecents = recents;
+  var localMyRecipes = myRecipes;
+  if (
+    user &&
+    user.favorites !== {} &&
+    user.favorites.hasOwnProperty('recipes')
+  ) {
+    const favRecipeList = user.favorites.recipes;
+    localFavRecipes =
+      localFavRecipes &&
+      localFavRecipes.map((favRecipe: RecipeListElement) => {
+        return (favRecipe = {
+          ...favRecipe,
+          isFavorite: favRecipeList.includes(favRecipe._id),
+        });
+      });
+    const recentRecipeList = user.recents.recipes;
+    localRecents =
+      localRecents &&
+      localRecents.map((recentRecipe: RecipeListElement) => {
+        return (recentRecipe = {
+          ...recentRecipe,
+          isFavorite: recentRecipeList.includes(recentRecipe._id),
+        });
+      });
+    const publishRecipeList = user.published.recipes;
+    localMyRecipes =
+      localMyRecipes &&
+      localMyRecipes.map((publishRecipe: RecipeListElement) => {
+        return (publishRecipe = {
+          ...publishRecipe,
+          isFavorite: publishRecipeList.includes(publishRecipe._id),
+        });
+      });
+  }
   return (
     <>
       {user && (
@@ -301,14 +395,29 @@ const MyProfileComponent = (props: any) => {
                       + New Recipe
                     </Button>
                   </Col>
-                  {loadRecipes(myrecipes, 'myrecipes')}
+                  {loadRecipes(
+                    localMyRecipes,
+                    myRecipeLoading,
+                    myRecipeError,
+                    'Shared Recipes',
+                  )}
                 </TabPane>
                 <TabPane tabId={1}>
-                  {loadRecipes(recentRecipes, 'recents')}
+                  {loadRecipes(
+                    localRecents,
+                    recentsLoading,
+                    recentsError,
+                    'Recents',
+                  )}
                 </TabPane>
 
                 <TabPane tabId={2}>
-                  {loadRecipes(savedRecipes, 'saved')}
+                  {loadRecipes(
+                    localFavRecipes,
+                    favoriteRecipesLoading,
+                    favoriteRecipesError,
+                    'Favorite Recipes',
+                  )}
                 </TabPane>
               </TabContent>
             </div>

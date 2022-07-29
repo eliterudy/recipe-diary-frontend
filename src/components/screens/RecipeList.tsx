@@ -177,11 +177,11 @@ const RecipesComponent = (props: any) => {
     );
   };
 
-  const loadRecipes = () => {
+  const loadRecipes = (localRecipes: RecipeListElement[]) => {
     if (recipeLoading) {
       return <Generic.Spinner text={'recipes'} />;
-    } else if (!recipeLoading && recipes) {
-      return recipes.map((recipe: RecipeListElement, index: number) => (
+    } else if (!recipeLoading && localRecipes) {
+      return localRecipes.map((recipe: RecipeListElement, index: number) => (
         <div
           key={index}
           className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
@@ -196,6 +196,23 @@ const RecipesComponent = (props: any) => {
       return <Generic.ListError error={recipeError} />;
     }
   };
+
+  var localRecipes = recipes;
+  if (
+    user &&
+    user.favorites !== {} &&
+    user.favorites.hasOwnProperty('recipes')
+  ) {
+    const favoriteRecipes = user.favorites.recipes;
+    localRecipes =
+      localRecipes &&
+      localRecipes.map((recipe: RecipeListElement) => {
+        return (recipe = {
+          ...recipe,
+          isFavorite: favoriteRecipes.includes(recipe._id),
+        });
+      });
+  }
   return (
     <div className="d-flex h-100 flex-column">
       {!isTabletOrMobile && (
@@ -286,9 +303,9 @@ const RecipesComponent = (props: any) => {
               <div>
                 <div
                   id="listTop"
-                  className="d-flex flex-column align-items-end py-3">
+                  className="d-flex flex-column align-items-end pt-3">
                   <em
-                    className="px-2 py-1  me-4"
+                    className="px-2 pt-1  me-4"
                     style={{
                       border: '0.5px solid #ddd',
                       backgroundColor: '#eee',
@@ -298,6 +315,7 @@ const RecipesComponent = (props: any) => {
                   </em>
                 </div>
                 <InfiniteScroll
+                  className="pt-4"
                   dataLength={recipes ? recipes.length : 0} //This is important field to render the next data
                   next={() => {
                     getRecipesFromApi();
@@ -315,7 +333,7 @@ const RecipesComponent = (props: any) => {
                     </p>
                   }>
                   {/* scrollableTarget="listTop"> */}
-                  {loadRecipes()}
+                  {localRecipes && loadRecipes(localRecipes)}
                 </InfiniteScroll>
               </div>
             )}

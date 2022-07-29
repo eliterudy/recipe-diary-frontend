@@ -17,18 +17,33 @@ import {useSelector, useDispatch} from 'react-redux';
 import reduxApiCallers from '../redux/thunks/reduxApiCallers';
 import actions from '../redux/actionReducers/index';
 import {Dispatch} from '@reduxjs/toolkit';
-import {recipes} from '../shared/datasets';
+// import {recipes} from '../shared/datasets';
 import ScrollToTop from './generic/scrollToTop';
 import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
 import AddRecipe from './screens/AddRecipe';
-
+import api from '../config/api';
+const {loadUser, removeUser} = actions;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    console.log('RUN BOY RUN');
+    api
+      .getUserDetails()
+      .then(({data}) => {
+        console.log('here', data);
+        dispatch(loadUser(data));
+      })
+      .catch(err => {
+        console.log('here too');
+        alert('failed to load user. Please login');
+        dispatch(removeUser());
+        navigate('/');
+      });
+  }, []);
   const HomeRoutes = () => {
     const homePath = [{path: '/home', pathName: 'Home'}];
     const homeRecipeDetailsPath = [{path: '/home', pathName: 'Home'}];

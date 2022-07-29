@@ -98,6 +98,7 @@ const SignInComponent = () => {
         .login({username: formValues.username, password: formValues.password})
         .then(({data}) => {
           if (data.success) {
+            localStorage.setItem('token', data.token);
             dispatch(loadUser(data.user));
             navigate('/home');
           }

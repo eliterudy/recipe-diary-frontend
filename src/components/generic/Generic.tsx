@@ -29,6 +29,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import actions from '../../redux/actionReducers/index';
 import loadingGif from '../../assets/gifs/loader.gif';
+import api from '../../config/api';
 
 const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
   actions;
@@ -81,7 +82,21 @@ const Generic = {
         <div
           {...cardHoverStlye}
           onClick={() => {
-            dispatch(addRecipeToRecents(data._id));
+            api
+              .postToCategory({
+                property: 'recents',
+                category: 'recipes',
+                id: data._id,
+              })
+              .then(({data}) => {
+                console.log('addRecipeToRecents', data);
+                dispatch(addRecipeToRecents(data._id));
+              })
+              .catch(err => {
+                alert(
+                  'Oops! Something went wrong. Could not add this recipe to recents',
+                );
+              });
           }}>
           <Card className="noselect  col-12 col-sm-12 ">
             <CardBody className="noselect p-0">
@@ -120,11 +135,32 @@ const Generic = {
                       width={45}
                       alt="Recipe Diary"
                       onClick={e => {
+                        console.log('here', isFavorite);
                         e.preventDefault();
                         e.stopPropagation();
                         isFavorite
-                          ? dispatch(deleteRecipeFromFavorites(_id))
-                          : dispatch(addRecipeToFavorites(_id));
+                          ? api
+                              .deleteFromCategory({
+                                property: 'favorites',
+                                category: 'recipes',
+                                id: _id,
+                              })
+                              .then(({data}) => {
+                                console.log('delete', data);
+
+                                dispatch(deleteRecipeFromFavorites(_id));
+                              })
+                          : api
+                              .postToCategory({
+                                property: 'favorites',
+                                category: 'recipes',
+                                id: data._id,
+                              })
+                              .then(({data}) => {
+                                console.log('post', data);
+                                dispatch(addRecipeToFavorites(_id));
+                              })
+                              .catch(err => {});
                       }}
                     />
                   </div>

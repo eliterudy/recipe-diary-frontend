@@ -33,9 +33,6 @@ export const userSlice = createSlice({
         state.user.favorites.recipes.push(action.payload);
     },
     addRecipeToRecents: (state, action) => {
-      state.errMessUser = null;
-      state.isLoadingUser = false;
-
       if (
         state.user &&
         state.user.recents &&
