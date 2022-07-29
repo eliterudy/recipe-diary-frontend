@@ -89,7 +89,6 @@ const Generic = {
                 id: data._id,
               })
               .then(({data}) => {
-                console.log('addRecipeToRecents', data);
                 dispatch(addRecipeToRecents(data._id));
               })
               .catch(err => {
@@ -135,7 +134,6 @@ const Generic = {
                       width={45}
                       alt="Recipe Diary"
                       onClick={e => {
-                        console.log('here', isFavorite);
                         e.preventDefault();
                         e.stopPropagation();
                         isFavorite
@@ -146,8 +144,6 @@ const Generic = {
                                 id: _id,
                               })
                               .then(({data}) => {
-                                console.log('delete', data);
-
                                 dispatch(deleteRecipeFromFavorites(_id));
                               })
                           : api
@@ -157,7 +153,6 @@ const Generic = {
                                 id: data._id,
                               })
                               .then(({data}) => {
-                                console.log('post', data);
                                 dispatch(addRecipeToFavorites(_id));
                               })
                               .catch(err => {});
