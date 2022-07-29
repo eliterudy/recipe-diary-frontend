@@ -65,6 +65,7 @@ const Header = ({modalCallback}: any) => {
   const navigate = useNavigate();
   const [isNavOpen, updateNavOpen] = useState(false);
   const [isDropdownOpen, updateDropdown] = useState(false);
+  const [myProfileDropdown, updateMyProfileDropdown] = useState(false);
 
   const toggleNav = () => {
     updateNavOpen(!isNavOpen);
@@ -159,7 +160,10 @@ const Header = ({modalCallback}: any) => {
               {user ? (
                 <Dropdown
                   isOpen={isDropdownOpen}
-                  toggle={() => updateDropdown(!isDropdownOpen)}>
+                  toggle={() => {
+                    console.log('myProfileDropdown', myProfileDropdown);
+                    updateDropdown(!isDropdownOpen);
+                  }}>
                   <DropdownToggle
                     style={{
                       backgroundColor: avatarColor,
@@ -170,12 +174,63 @@ const Header = ({modalCallback}: any) => {
                     }}>
                     <Avatar size={'md'} name={user.fullname} />
                   </DropdownToggle>
+
                   <DropdownMenu style={{marginTop: 14, marginRight: -15}}>
-                    <DropdownItem>My Profile</DropdownItem>
-                    <DropdownItem>Recent Recipes</DropdownItem>
-                    <DropdownItem>Saved Recipes</DropdownItem>
+                    <div
+                      className="mx-3 mt-1 mb-2"
+                      onClick={() =>
+                        updateMyProfileDropdown(!myProfileDropdown)
+                      }
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <span> My Profile </span>
+                      {myProfileDropdown ? (
+                        <i className="fa fa-chevron-down " />
+                      ) : (
+                        <i className="fa fa-chevron-right " />
+                      )}
+                    </div>
+
+                    {myProfileDropdown && (
+                      <div>
+                        <DropdownItem divider />
+
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/my-profile/', {
+                              state: {tab: 0},
+                            });
+                          }}>
+                          My Recipes
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/my-profile/', {
+                              state: {tab: 1},
+                            });
+                          }}>
+                          Recent Viewed
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/my-profile/', {
+                              state: {tab: 2},
+                            });
+                          }}>
+                          Saved Recipes
+                        </DropdownItem>
+                      </div>
+                    )}
                     <DropdownItem divider />
-                    <DropdownItem onClick={() => dispatch(removeUser())}>
+                    <DropdownItem
+                      onClick={() => {
+                        localStorage.setItem('token', '');
+
+                        dispatch(removeUser());
+                      }}>
                       Logout
                     </DropdownItem>
                   </DropdownMenu>
