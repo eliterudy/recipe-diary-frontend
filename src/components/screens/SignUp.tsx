@@ -9,6 +9,7 @@ import {
   FormText,
   FormFeedback,
   Button,
+  Spinner,
 } from 'reactstrap';
 import {useNavigate, Link} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
@@ -16,7 +17,8 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import FormValidators from '../generic/FormValidators';
-import {DebounceInput} from 'react-debounce-input';
+import debounce from 'lodash.debounce';
+import api from '../../config/api';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -62,6 +64,11 @@ const SignUpComponent = () => {
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(() => {
+    if (!textValidator(formValues.username, 5, 20)[1]) {
+    }
+  }, [formValues.username]);
   const {
     textValidator,
     emailValidator,
@@ -101,23 +108,20 @@ const SignUpComponent = () => {
                       id="username"
                       placeholder="johndoe321"
                       value={formValues.username}
-                      onChange={({target}) => {
+                      onChange={async ({target}) => {
                         updateFormValues({
                           ...formValues,
                           username: target.value,
                         });
-                        updateFormErrors({
+                        await updateFormErrors({
                           ...formErrors,
-                          username: textValidator(target.value, 3, 20)[0],
+                          username: textValidator(target.value, 5, 20)[0],
                         });
-                        if (formErrors.username == '') {
-                          console.log('here');
-                        }
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          username: textValidator(target.value, 3, 20)[0],
+                          username: textValidator(target.value, 5, 20)[0],
                         });
                       }}
                     />
@@ -140,13 +144,13 @@ const SignUpComponent = () => {
                         });
                         updateFormErrors({
                           ...formErrors,
-                          firstname: textValidator(target.value, 3, 20)[0],
+                          firstname: textValidator(target.value, 4, 20)[0],
                         });
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          firstname: textValidator(target.value, 3, 20)[0],
+                          firstname: textValidator(target.value, 4, 20)[0],
                         });
                       }}
                     />
@@ -169,13 +173,13 @@ const SignUpComponent = () => {
                         });
                         updateFormErrors({
                           ...formErrors,
-                          lastname: textValidator(target.value, 3, 20)[0],
+                          lastname: textValidator(target.value, 4, 20)[0],
                         });
                       }}
                       onBlur={({target}) => {
                         updateFormErrors({
                           ...formErrors,
-                          lastname: textValidator(target.value, 3, 20)[0],
+                          lastname: textValidator(target.value, 4, 20)[0],
                         });
                       }}
                     />
@@ -281,6 +285,7 @@ const SignUpComponent = () => {
                     onClick={e => {
                       e.preventDefault();
                       const {
+                        username,
                         firstname,
                         lastname,
                         email,
@@ -295,8 +300,9 @@ const SignUpComponent = () => {
                       } = FormValidators;
 
                       if (
-                        textValidator(firstname, 3, 20)[1] ||
-                        textValidator(lastname, 3, 20)[1] ||
+                        textValidator(username, 5, 20)[1] ||
+                        textValidator(firstname, 4, 20)[1] ||
+                        textValidator(lastname, 4, 20)[1] ||
                         emailValidator(email)[1] ||
                         passwordValidator(password, 6, 20)[1] ||
                         confirmPasswordValidator(
@@ -308,8 +314,9 @@ const SignUpComponent = () => {
                       ) {
                         updateFormErrors({
                           ...formErrors,
-                          firstname: textValidator(firstname, 3, 20)[0],
-                          lastname: textValidator(lastname, 3, 20)[0],
+                          username: textValidator(username, 5, 20)[0],
+                          firstname: textValidator(firstname, 4, 20)[0],
+                          lastname: textValidator(lastname, 4, 20)[0],
                           email: emailValidator(email)[0],
                           password: passwordValidator(password, 6, 20)[0],
                           confirmPassword: confirmPasswordValidator(
@@ -320,7 +327,26 @@ const SignUpComponent = () => {
                           )[0],
                         });
                       } else {
-                        navigate('/');
+                        var tempSubmit: any = {
+                          ...formValues,
+                          fullname:
+                            formValues.firstname + ' ' + formValues.lastname,
+                        };
+                        delete tempSubmit['confirmPassword'];
+
+                        console.log('tempSubmit', tempSubmit);
+                        api
+                          .signup(formValues)
+                          .then(({data}) => {
+                            console.log('data', data);
+                            alert(
+                              'Account sucessfully created! Redirecting to Login',
+                            );
+                            navigate('/auth/signin');
+                          })
+                          .catch(err => {
+                            console.log(err);
+                          });
                       }
                     }}>
                     Sign Up

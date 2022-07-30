@@ -34,6 +34,14 @@ const recipeApiList = {
     });
   },
 
+  // postRecipe: (payload: any) => {
+  //   return ApiCaller({
+  //     url: `/users/verifyUser`,
+  //     method: 'post',
+  //     // data: payload,
+  //   });
+  // },
+
   getRecipeFilters: () => {
     return ApiCaller({
       url: `/recipes/filters`,
@@ -66,6 +74,14 @@ const userApiList = {
     });
   },
 
+  signup: (payload: any) => {
+    return ApiCaller({
+      url: `/users/signup`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
   getUserDetails: () => {
     return ApiCaller({
       url: `/users/userDetails`,
@@ -92,6 +108,14 @@ const userApiList = {
       url: `/users/category`,
       method: 'delete',
       data: payload,
+    });
+  },
+
+  postVerifyUser: (payload: any) => {
+    return ApiCaller({
+      url: `/users/verifyUser`,
+      method: 'post',
+      // data: payload,
     });
   },
 };

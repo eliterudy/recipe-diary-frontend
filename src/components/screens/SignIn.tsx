@@ -85,12 +85,12 @@ const SignInComponent = () => {
     const {username, password} = formValues;
     const {textValidator, passwordValidator} = FormValidators;
     if (
-      textValidator(username, 3, 20)[1] ||
+      textValidator(username, 4, 20)[1] ||
       passwordValidator(password, 6, 20)[1]
     ) {
       updateFormErrors({
         ...formErrors,
-        username: textValidator(username, 3, 20)[0],
+        username: textValidator(username, 4, 20)[0],
         password: passwordValidator(password, 6, 20)[0],
       });
     } else {
@@ -167,7 +167,7 @@ const SignInComponent = () => {
                       });
                       updateFormErrors({
                         ...formErrors,
-                        username: textValidator(target.value, 3, 20)[0],
+                        username: textValidator(target.value, 4, 20)[0],
                       });
                     }}
                   />
