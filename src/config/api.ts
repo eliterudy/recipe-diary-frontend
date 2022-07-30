@@ -82,6 +82,14 @@ const userApiList = {
     });
   },
 
+  usernameCheck: (payload: any) => {
+    return ApiCaller({
+      url: `/users/usernameCheck`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
   getUserDetails: () => {
     return ApiCaller({
       url: `/users/userDetails`,

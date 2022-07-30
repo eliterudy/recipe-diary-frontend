@@ -19,6 +19,7 @@ import {useMediaQuery} from 'react-responsive';
 import FormValidators from '../generic/FormValidators';
 import debounce from 'lodash.debounce';
 import api from '../../config/api';
+import {update} from 'lodash';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -65,8 +66,34 @@ const SignUpComponent = () => {
     confirmPassword: '',
   });
 
+  const [usernameAvailableMessage, updateUsernameAvailableMessage] =
+    useState('');
+
+  const [usernameAvailableStatus, updateUsernameAvailableStatus] =
+    useState(false);
+
   useEffect(() => {
     if (!textValidator(formValues.username, 5, 20)[1]) {
+      updateUsernameAvailableMessage('');
+      api
+        .usernameCheck({
+          username: formValues.username,
+        })
+        .then(({data}) => {
+          if (data.status === 'failed') {
+            updateUsernameAvailableStatus(false);
+            updateUsernameAvailableMessage(data.message);
+          } else {
+            if (data.status === 'success') {
+              updateUsernameAvailableStatus(true);
+
+              updateUsernameAvailableMessage(data.message);
+            }
+          }
+        })
+        .catch(err => {
+          updateUsernameAvailableMessage('data.message');
+        });
     }
   }, [formValues.username]);
   const {
@@ -81,7 +108,7 @@ const SignUpComponent = () => {
         <div
           className="noselect col-12 col-sm-10 col-md-10 col-lg-8 col-xl-8 m-2 row"
           style={isTabletOrMobile ? {} : {border: '1px solid #eee'}}>
-          <div className="col-12 col-sm-7">
+          <div className="col-12 col-md-7">
             <div className="col-12  p-2 ">
               <div className=" mx-5 mt-3 d-flex flex-column align-items-center">
                 {isTabletOrMobile && (
@@ -100,7 +127,7 @@ const SignUpComponent = () => {
               <div className="col-12  mt-3  p-3 ">
                 <Form>
                   <FormGroup className="mb-4">
-                    <Label for="username">Username</Label>
+                    <Label for="username">Username </Label>
                     <Input
                       invalid={formErrors.username.length > 0}
                       type="text"
@@ -125,10 +152,28 @@ const SignUpComponent = () => {
                         });
                       }}
                     />
+                    <FormText>
+                      {usernameAvailableMessage.length > 0 &&
+                        formErrors.username.length === 0 && (
+                          <em
+                            className={`text-${
+                              usernameAvailableStatus ? 'success' : 'danger'
+                            }`}>
+                            <i
+                              className={`fa  ${
+                                usernameAvailableStatus
+                                  ? 'fa-check-circle-o'
+                                  : 'fa-ban'
+                              }`}
+                            />
 
+                            <span> {usernameAvailableMessage}</span>
+                          </em>
+                        )}
+                    </FormText>
                     <FormFeedback>{formErrors.username}</FormFeedback>
                   </FormGroup>
-                  <FormGroup className="mb-4">
+                  <FormGroup className="mb-4 fa fa-cance">
                     <Label for="firstname">First name</Label>
                     <Input
                       invalid={formErrors.firstname.length > 0}
