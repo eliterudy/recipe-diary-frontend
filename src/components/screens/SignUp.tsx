@@ -18,8 +18,7 @@ import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import FormValidators from '../generic/FormValidators';
 import debounce from 'lodash.debounce';
-import api from '../../config/api';
-import {update} from 'lodash';
+import apis from '../../config/api';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -75,7 +74,7 @@ const SignUpComponent = () => {
   useEffect(() => {
     if (!textValidator(formValues.username, 5, 20)[1]) {
       updateUsernameAvailableMessage('');
-      api
+      apis
         .usernameCheck({
           username: formValues.username,
         })
@@ -380,7 +379,7 @@ const SignUpComponent = () => {
                         delete tempSubmit['confirmPassword'];
 
                         console.log('tempSubmit', tempSubmit);
-                        api
+                        apis
                           .signup(formValues)
                           .then(({data}) => {
                             console.log('data', data);

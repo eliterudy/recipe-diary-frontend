@@ -29,7 +29,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import actions from '../../redux/actionReducers/index';
 import loadingGif from '../../assets/gifs/loader.gif';
-import api from '../../config/api';
+import apis from '../../config/api';
 
 const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
   actions;
@@ -82,7 +82,7 @@ const Generic = {
         <div
           {...cardHoverStlye}
           onClick={() => {
-            api
+            apis
               .postToCategory({
                 property: 'recents',
                 category: 'recipes',
@@ -137,7 +137,7 @@ const Generic = {
                         e.preventDefault();
                         e.stopPropagation();
                         isFavorite
-                          ? api
+                          ? apis
                               .deleteFromCategory({
                                 property: 'favorites',
                                 category: 'recipes',
@@ -146,7 +146,7 @@ const Generic = {
                               .then(({data}) => {
                                 dispatch(deleteRecipeFromFavorites(_id));
                               })
-                          : api
+                          : apis
                               .postToCategory({
                                 property: 'favorites',
                                 category: 'recipes',

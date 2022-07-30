@@ -23,7 +23,7 @@ import SignUpComponent from './screens/SignUp';
 import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
 import AddRecipe from './screens/AddRecipe';
-import api from '../config/api';
+import apis from '../config/api';
 const {loadUser, removeUser} = actions;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -33,7 +33,7 @@ const MainRouter = () => {
     var userToken = localStorage.getItem('token');
     userToken &&
       userToken.length > 0 &&
-      api
+      apis
         .getUserDetails()
         .then(({data}) => {
           dispatch(loadUser(data));

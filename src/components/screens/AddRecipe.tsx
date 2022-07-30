@@ -21,6 +21,8 @@ import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
 import FormValidators from '../generic/FormValidators';
+import apis from '../../config/api';
+import api from '../../config/api';
 
 const AddRecipeComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -57,7 +59,7 @@ const AddRecipeComponent = () => {
     title: '',
     cuisine: '',
     diet: '',
-    course: '',
+    course: 'Appetizers',
     servings: undefined as number | undefined,
     prepTimeInMins: undefined as number | undefined,
     cookTimeInMins: undefined as number | undefined,
@@ -229,6 +231,7 @@ const AddRecipeComponent = () => {
                     value={course}
                     onChange={e => {
                       const {target} = e;
+
                       updateFormValues({
                         ...formValues,
                         course: target.value,
@@ -388,32 +391,20 @@ const AddRecipeComponent = () => {
                       var file = e.target.files;
                       if (file && file.length > 0) {
                         const formData = new FormData();
-                        formData.append('image', file[0]);
-                        var myHeaders = new Headers();
-                        myHeaders.append(
-                          'Authorization',
-                          'Client-ID f76fa54837f2949',
-                        );
-                        myHeaders.append(
-                          'Content-Type',
-                          'multipart/form-data; boundary=<calculated when request is sent>',
-                        );
-                        myHeaders.append('Access-Control-Allow-Origin', '*');
-                        myHeaders.append(
-                          'Access-Control-Allow-Credentials',
-                          'true',
-                        );
+                        formData.append('file', file[0]);
 
-                        var requestOptions = {
-                          method: 'POST',
-                          headers: myHeaders,
-                          body: formData,
-                        };
-
-                        // fetch('https://api.imgur.com/3/image', requestOptions)
-                        //   .then(response => response.text())
-                        //   .then(result => console.log(result))
-                        //   .catch(error => console.log('error', error));
+                        apis
+                          .postRecipeImage(formData, {folder: 'recipes'})
+                          .then(({data}) => {
+                            console.log(data);
+                            updateFormValues({
+                              ...formValues,
+                              imageUrl: data.url,
+                            });
+                          })
+                          .catch(err => {
+                            console.log(err);
+                          });
                       }
                     }}
                   />
@@ -552,7 +543,9 @@ const AddRecipeComponent = () => {
                             color: '#666',
                             marginBottom: 3,
                           }}>
-                          {`${index + 1}. ${instruction} `}
+                          {instruction &&
+                            instruction.length > 0 &&
+                            `${index + 1}. ${instruction} `}
                         </p>
                       );
                     })}
@@ -623,11 +616,16 @@ const AddRecipeComponent = () => {
                           )[0],
                         });
                       } else {
-                        setTimeout(() => {
-                          setTimeout(() => {
+                        var temp = {...formValues};
+                        temp.instructions.filter(e => e.length > 0);
+                        console.log('temp', temp);
+                        api
+                          .postRecipe(formValues)
+                          .then(({data}) => {
+                            console.log(data);
                             navigate('/my-profile');
-                          }, 1000);
-                        }, 2000);
+                          })
+                          .catch(err => {});
                       }
                     }}>
                     {isAddingRecipe ? (

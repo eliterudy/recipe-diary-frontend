@@ -4,7 +4,6 @@ export const baseURL = 'https://localhost:3443';
 const headers = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
-
   // Origin: baseURL,
 };
 
@@ -49,16 +48,18 @@ const recipeApiList = {
     });
   },
 
-  getComments: (params: any) => {
+  postRecipeImage: (data: any, params: any) => {
     return ApiCaller({
-      url: `/comments`,
-      method: 'get',
+      url: `/uploads/recipe`,
+      method: 'post',
+      data,
       params,
     });
   },
-  postNewComment: (data: any) => {
+
+  postRecipe: (data: any) => {
     return ApiCaller({
-      url: `/comments`,
+      url: `/recipes`,
       method: 'post',
       data,
     });

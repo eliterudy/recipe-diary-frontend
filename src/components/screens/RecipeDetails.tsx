@@ -194,6 +194,7 @@ const RecipeDetailsComponent = (props: any) => {
                 alt={title}
                 style={{
                   objectFit: 'cover',
+                  maxHeight: 1200,
                 }}
               />
               {isTabletOrMobile &&
