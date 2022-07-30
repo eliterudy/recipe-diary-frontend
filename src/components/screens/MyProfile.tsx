@@ -39,6 +39,7 @@ const MyProfileComponent = (props: any) => {
     };
   });
   let locationParams = useLocation();
+
   const {recipeState, userState} = state;
   const {user} = userState;
   const navigate = useNavigate();
@@ -62,17 +63,23 @@ const MyProfileComponent = (props: any) => {
   const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
 
   useEffect(() => {
+    if (locationParams && locationParams.state) {
+      var tabState = locationParams.state as {tab: number};
+      updateActiveTab(tabState.tab);
+    }
+  }, []);
+
+  useEffect(() => {
     apis
       .getRecipesByCategory({property: 'favorites', category: 'recipes'})
       .then(({data}) => {
-        console.log('FAV', data);
         updateFavoriteRecipes(data);
         updateFavoriteRecipesLoading(false);
       })
       .catch(err => {
         updateFavoriteRecipesError(err);
       });
-  }, [user.favorites.recipes]);
+  }, [user && user.favorites.recipes]);
   useEffect(() => {
     apis
       .getRecipesByCategory({property: 'recents', category: 'recipes'})
@@ -83,7 +90,7 @@ const MyProfileComponent = (props: any) => {
       .catch(err => {
         updateRecentsError(err);
       });
-  }, [user.recents.recipes]);
+  }, [user && user.recents.recipes]);
   useEffect(() => {
     apis
       .getRecipesByCategory({property: 'published', category: 'recipes'})
@@ -94,7 +101,7 @@ const MyProfileComponent = (props: any) => {
       .catch(err => {
         updateMyRecipeError(err);
       });
-  }, [user.published.recipes]);
+  }, [user && user.published.recipes]);
 
   const tabs = ['My Recipes', 'Recently Viewed', 'Saved Recipes'];
   const dispatch: Dispatch<any> = useDispatch();
@@ -151,49 +158,6 @@ const MyProfileComponent = (props: any) => {
       backgroundColor: 'white',
     },
   );
-
-  var getRecipes = (userProp: string): RecipeListElement[] => {
-    var results: RecipeListElement[] = [];
-    var allRecipes = recipeState.recipes;
-    if (
-      user &&
-      user[userProp] !== {} &&
-      user[userProp].hasOwnProperty('recipes')
-    ) {
-      const recipeListForUserProp = user[userProp].recipes;
-      results = recipeListForUserProp.map((elem: string) => {
-        var recipe = allRecipes.filter(
-          (e: RecipeListElement) => e._id === elem,
-        )[0];
-        recipe = {...recipe, isFavorite: false};
-        if (
-          user &&
-          user['favorites'] !== {} &&
-          user['favorites'].hasOwnProperty('recipes')
-        ) {
-          var favRecipeList = user.favorites.recipes;
-          recipe = {
-            ...recipe,
-            isFavorite: favRecipeList.includes(recipe._id),
-          };
-
-          return recipe;
-        }
-      });
-    }
-    return results.reverse();
-  };
-
-  var getMyRecipes = (userId: any) => {
-    var results = recipeState.recipes;
-    if (recipeState.recipes) {
-      // results = recipeState.recipes.filter(
-      //   (recipe: RecipeListElement) => recipe.author._id === userId,
-      // );
-    }
-
-    return results;
-  };
 
   var loadRecipes = (
     recipes: RecipeListElement[] | null,
@@ -260,7 +224,7 @@ const MyProfileComponent = (props: any) => {
     user.favorites !== {} &&
     user.favorites.hasOwnProperty('recipes')
   ) {
-    const favRecipeList = user.favorites.recipes;
+    var favRecipeList = user.favorites.recipes;
     localFavRecipes =
       localFavRecipes &&
       localFavRecipes.map((favRecipe: RecipeListElement) => {
@@ -269,22 +233,22 @@ const MyProfileComponent = (props: any) => {
           isFavorite: favRecipeList.includes(favRecipe._id),
         });
       });
-    const recentRecipeList = user.recents.recipes;
+    var favRecipeList = user.favorites.recipes;
     localRecents =
       localRecents &&
       localRecents.map((recentRecipe: RecipeListElement) => {
         return (recentRecipe = {
           ...recentRecipe,
-          isFavorite: recentRecipeList.includes(recentRecipe._id),
+          isFavorite: favRecipeList.includes(recentRecipe._id),
         });
       });
-    const publishRecipeList = user.published.recipes;
+    var favRecipeList = user.favorites.recipes;
     localMyRecipes =
       localMyRecipes &&
       localMyRecipes.map((publishRecipe: RecipeListElement) => {
         return (publishRecipe = {
           ...publishRecipe,
-          isFavorite: publishRecipeList.includes(publishRecipe._id),
+          isFavorite: favRecipeList.includes(publishRecipe._id),
         });
       });
   }
@@ -337,12 +301,12 @@ const MyProfileComponent = (props: any) => {
                     padding: 10,
                     overflowWrap: 'break-word',
                   }}>{`${user.firstname} ${user.lastname}`}</h4>
-                <Button
+                {/* <Button
                   className="col-12 mb-5"
                   {...editProfileButtonStyle}
                   outline>
                   Edit Profile
-                </Button>
+                </Button> */}
                 <Col className="col-12 ">
                   {!user.isVerified && (
                     <div className="py-4" {...verifyCardHoverStyle}>
@@ -355,8 +319,13 @@ const MyProfileComponent = (props: any) => {
                         {...getVerifiedButtonStyle}
                         className="col-12 "
                         onClick={() => {
-                          dispatch(verifyUser(true));
-                          updateActiveTab(0);
+                          apis
+                            .postVerifyUser({})
+                            .then(({data}) => {
+                              dispatch(verifyUser(true));
+                              // updateActiveTab(0);
+                            })
+                            .catch(err => alert('Oops! Something went wrong'));
                         }}>
                         <span>Get Verified</span>
                       </Button>
@@ -416,7 +385,7 @@ const MyProfileComponent = (props: any) => {
                     localFavRecipes,
                     favoriteRecipesLoading,
                     favoriteRecipesError,
-                    'Favorite Recipes',
+                    'Saved ',
                   )}
                 </TabPane>
               </TabContent>
