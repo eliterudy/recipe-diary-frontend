@@ -30,20 +30,21 @@ const MainRouter = () => {
   let location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log('RUN BOY RUN');
-    api
-      .getUserDetails()
-      .then(({data}) => {
-        console.log('here', data);
-        dispatch(loadUser(data));
-      })
-      .catch(err => {
-        console.log('here too');
-        alert('failed to load user. Please login');
-        dispatch(removeUser());
-        navigate('/');
-      });
+    var userToken = localStorage.getItem('token');
+    userToken &&
+      userToken.length > 0 &&
+      api
+        .getUserDetails()
+        .then(({data}) => {
+          dispatch(loadUser(data));
+        })
+        .catch(err => {
+          // alert('failed to load user. Please login');
+          dispatch(removeUser());
+          navigate('/');
+        });
   }, []);
+
   const HomeRoutes = () => {
     const homePath = [{path: '/home', pathName: 'Home'}];
     const homeRecipeDetailsPath = [{path: '/home', pathName: 'Home'}];
@@ -87,26 +88,7 @@ const MainRouter = () => {
       {path: '/home', pathName: 'Home'},
       {path: '/my-profile', pathName: 'My Profile'},
     ];
-    const state = useSelector((state: any) => {
-      return {
-        userState: state.userActionReducer,
-        recipeState: state.recipeActionReducer,
-      };
-    });
-    const {userState, recipeState} = state;
-    const {user} = userState;
-    useEffect(() => {
-      if (
-        user &&
-        !user.isVerified &&
-        (location.pathname === '/my-profile/new' ||
-          location.pathname === '/my-profile/new/')
-      ) {
-        navigate('/my-profile');
-      } else if (!user) {
-        navigate('/home');
-      }
-    }, [location.pathname, user]);
+
     return (
       <Routes>
         <Route
@@ -146,6 +128,27 @@ const MainRouter = () => {
     const toggleModal = () => {
       updateModalOpen(!isModalOpen);
     };
+
+    const state = useSelector((state: any) => {
+      return {
+        userState: state.userActionReducer,
+        recipeState: state.recipeActionReducer,
+      };
+    });
+    const {userState, recipeState} = state;
+    const {user} = userState;
+    useEffect(() => {
+      if (
+        user &&
+        !user.isVerified &&
+        (location.pathname === '/my-profile/new' ||
+          location.pathname === '/my-profile/new/')
+      ) {
+        navigate('/my-profile');
+      } else if (!user && location.pathname.match('/my-profile')) {
+        navigate('/home');
+      }
+    }, [location.pathname, user]);
 
     return (
       <div>
