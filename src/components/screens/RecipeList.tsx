@@ -184,11 +184,11 @@ const RecipesComponent = (props: any) => {
       return localRecipes.map((recipe: RecipeListElement, index: number) => (
         <div
           key={index}
-          className={`col-12  col-sm-6 col-lg-4 col-xl-4 mb-5 px-4 `}>
+          className={`col-12 col-sm-6 col-lg-4 col-xl-4 mb-5 px-3 `}>
           <Generic.RecipeCard
             data={recipe}
             index={index}
-            redirect={`recipeId/${recipe._id}`}
+            redirect={`/main/recipes/recipeId/${recipe._id}`}
           />
         </div>
       ));
@@ -214,7 +214,7 @@ const RecipesComponent = (props: any) => {
       });
   }
   return (
-    <div className="d-flex h-100 flex-column">
+    <div className="d-flex h-100 flex-column col-12">
       {!isTabletOrMobile && (
         <div className="noselect  border-bottom">
           <Breadcrumb className="noselect mt-3 mx-5">
@@ -234,7 +234,7 @@ const RecipesComponent = (props: any) => {
         </div>
       )}
 
-      <div className="noselect row flex-grow-1">
+      <div className="noselect row flex-grow-1 col-12">
         {recipeFilters && (
           <div className="noselect  col-12 col-sm-3 col-lg-2 border-end ps-5 pe-auto bg-white">
             {loadFilters(recipeFilters)}
@@ -245,11 +245,9 @@ const RecipesComponent = (props: any) => {
             className="noselect col-12 border-bottom"
             style={{
               padding: 20,
-              paddingLeft: 25,
-              paddingRight: 40,
               backgroundColor: '#ddd',
             }}>
-            <InputGroup>
+            <InputGroup className="col-12">
               <DebounceInput
                 minLength={2}
                 debounceTimeout={300}

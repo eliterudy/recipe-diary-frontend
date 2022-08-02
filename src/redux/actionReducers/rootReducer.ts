@@ -1,23 +1,22 @@
+import {createSlice} from '@reduxjs/toolkit';
 
-import { createSlice } from "@reduxjs/toolkit";
+export interface initialStateUser {
+  isServerDown: boolean;
+}
 
-export const initialState = {
-
+const initialState: initialStateUser = {
+  isServerDown: false,
 };
-
-export const rootSlice = createSlice({
-  name: "root",
+export const userSlice = createSlice({
+  name: 'root',
   initialState,
   reducers: {
-    increment: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
+    updateServerDownModal: (state, action) => {
+      state.isServerDown = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment } = rootSlice.actions;
-export default rootSlice.reducer;
+export const {updateServerDownModal} = userSlice.actions;
+export default userSlice.reducer;

@@ -27,7 +27,7 @@ import {useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
-import {randomColorGenerator} from '../../config/configuration';
+import {icons, randomColorGenerator} from '../../config/configuration';
 import actions from '../../redux/actionReducers/index';
 
 const {loadUser, removeUser} = actions;
@@ -80,7 +80,7 @@ const Header = ({modalCallback}: any) => {
   const {user} = userState;
 
   return (
-    <>
+    <div className="col-12">
       {/* Show toggle button when size is smaller than md */}
       <Navbar light expand="md" className="noselect border-bottom">
         <div
@@ -94,13 +94,13 @@ const Header = ({modalCallback}: any) => {
           />
           <NavbarBrand
             className="noselect col-8 col-sm-3 m-sm-0 p-sm-0"
-            href="/">
+            href="/main/home">
             <div
               className="noselect d-flex flex-row align-items-center"
               style={{marginLeft: 12}}>
               <img
                 className="noselect col-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={50}
                 width={50}
                 alt="Recipe Diary"
@@ -118,12 +118,18 @@ const Header = ({modalCallback}: any) => {
             {/* Navigation */}
             <Nav navbar>
               <NavItem className="noselect me-2">
-                <NavLink tag={RRNavLink} className={'nav-link '} to="/home">
+                <NavLink
+                  tag={RRNavLink}
+                  className={'nav-link '}
+                  to="/main/home">
                   <strong>Home</strong>
                 </NavLink>
               </NavItem>
               <NavItem className="noselect mx-sm-1">
-                <NavLink tag={RRNavLink} className={'nav-link '} to="/recipes">
+                <NavLink
+                  tag={RRNavLink}
+                  className={'nav-link '}
+                  to="/main/recipes">
                   <strong>Recipes</strong>
                 </NavLink>
               </NavItem>
@@ -142,7 +148,7 @@ const Header = ({modalCallback}: any) => {
                   <NavLink
                     tag={RRNavLink}
                     className={'nav-link '}
-                    to="/my-profile">
+                    to="/main/my-profile">
                     <strong>My Profile</strong>
                   </NavLink>
                 </NavItem>
@@ -151,7 +157,7 @@ const Header = ({modalCallback}: any) => {
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
-                  to="/contact-us">
+                  to="/main/contact-us">
                   <strong>Contact Us</strong>
                 </NavLink>
               </NavItem>
@@ -161,7 +167,6 @@ const Header = ({modalCallback}: any) => {
                 <Dropdown
                   isOpen={isDropdownOpen}
                   toggle={() => {
-                    console.log('myProfileDropdown', myProfileDropdown);
                     updateDropdown(!isDropdownOpen);
                   }}>
                   <DropdownToggle
@@ -200,7 +205,7 @@ const Header = ({modalCallback}: any) => {
 
                         <DropdownItem
                           onClick={() => {
-                            navigate('/my-profile/', {
+                            navigate('/main/my-profile/', {
                               state: {tab: 0},
                             });
                           }}>
@@ -208,7 +213,7 @@ const Header = ({modalCallback}: any) => {
                         </DropdownItem>
                         <DropdownItem
                           onClick={() => {
-                            navigate('/my-profile/', {
+                            navigate('/main/my-profile/', {
                               state: {tab: 1},
                             });
                           }}>
@@ -216,7 +221,7 @@ const Header = ({modalCallback}: any) => {
                         </DropdownItem>
                         <DropdownItem
                           onClick={() => {
-                            navigate('/my-profile/', {
+                            navigate('/main/my-profile/', {
                               state: {tab: 2},
                             });
                           }}>
@@ -241,7 +246,7 @@ const Header = ({modalCallback}: any) => {
                     outline
                     onClick={() => {
                       // dispatch(loadUser(null));
-                      navigate('auth/signin');
+                      navigate('/auth/signin');
                     }}
                     {...signInButtonStyle}>
                     <span className="noselect">{` Sign In`}</span>
@@ -252,7 +257,7 @@ const Header = ({modalCallback}: any) => {
           </Collapse>
         </div>
       </Navbar>
-    </>
+    </div>
   );
 };
 

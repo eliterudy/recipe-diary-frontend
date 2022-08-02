@@ -28,8 +28,8 @@ import {icons} from '../../config/configuration';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import actions from '../../redux/actionReducers/index';
-import loadingGif from '../../assets/gifs/loader.gif';
 import apis from '../../config/api';
+import {gifs} from '../../config/configuration';
 
 const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
   actions;
@@ -43,6 +43,7 @@ const Generic = {
       };
     });
     const {userState} = state;
+    const {user} = userState;
 
     const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
     const {data, index, redirect} = cardProps;
@@ -82,20 +83,21 @@ const Generic = {
         <div
           {...cardHoverStlye}
           onClick={() => {
-            apis
-              .postToCategory({
-                property: 'recents',
-                category: 'recipes',
-                id: data._id,
-              })
-              .then(({data}) => {
-                dispatch(addRecipeToRecents(data._id));
-              })
-              .catch(err => {
-                alert(
-                  'Oops! Something went wrong. Could not add this recipe to recents',
-                );
-              });
+            user &&
+              apis
+                .postToCategory({
+                  property: 'recents',
+                  category: 'recipes',
+                  id: data._id,
+                })
+                .then(({data}) => {
+                  dispatch(addRecipeToRecents(data._id));
+                })
+                .catch(err => {
+                  alert(
+                    'Oops! Something went wrong. Could not add this recipe to recents',
+                  );
+                });
           }}>
           <Card className="noselect  col-12 col-sm-12 ">
             <CardBody className="noselect p-0">
@@ -113,11 +115,10 @@ const Generic = {
                   backgroundPosition: 'center',
                   display: 'flex',
                   flexDirection: 'column',
-                  justifyContent:
-                    userState && userState.user ? 'space-between' : 'flex-end',
+                  justifyContent: user ? 'space-between' : 'flex-end',
                   alignItems: 'flex-end',
                 }}>
-                {userState && userState.user && (
+                {user && (
                   <div
                     className="noselect  "
                     style={{
@@ -209,7 +210,7 @@ const Generic = {
           className="d-flex flex-column justify-content-center align-items-center"
           style={{height: 600}}>
           <img
-            src={loadingGif}
+            src={gifs.loadingGif}
             style={{width: 100, height: 80}}
             alt="loading..."
           />

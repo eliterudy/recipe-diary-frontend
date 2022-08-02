@@ -19,6 +19,7 @@ import {useMediaQuery} from 'react-responsive';
 import FormValidators from '../generic/FormValidators';
 import debounce from 'lodash.debounce';
 import apis from '../../config/api';
+import {icons} from '../../config/configuration';
 
 const SignUpComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -113,7 +114,7 @@ const SignUpComponent = () => {
                 {isTabletOrMobile && (
                   <img
                     className="noselect m-auto"
-                    src="../../assets/icons/app_logo.png"
+                    src={icons.app_logo}
                     height={100}
                     width={100}
                     alt="Recipe Diary"
@@ -378,19 +379,15 @@ const SignUpComponent = () => {
                         };
                         delete tempSubmit['confirmPassword'];
 
-                        console.log('tempSubmit', tempSubmit);
                         apis
                           .signup(formValues)
                           .then(({data}) => {
-                            console.log('data', data);
                             alert(
                               'Account sucessfully created! Redirecting to Login',
                             );
                             navigate('/auth/signin');
                           })
-                          .catch(err => {
-                            console.log(err);
-                          });
+                          .catch(err => {});
                       }
                     }}>
                     Sign Up
@@ -411,7 +408,7 @@ const SignUpComponent = () => {
             <div className="col-12 col-sm-5 d-flex justify-content-center align-items-center">
               <img
                 className="noselect m-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={160}
                 width={160}
                 alt="Recipe Diary"

@@ -9,13 +9,13 @@ const Footer = () => {
           <div className="noselect col-12 col-sm-4 align-items-center ">
             <ul className="noselect list-unstyled d-flex flex-row col-12 justify-content-center align-items-center mb-0  ">
               <li className="noselect me-2">
-                <Link to="/home">Home</Link>
+                <Link to="/">Home</Link>
               </li>
               <li className="noselect me-2">
-                <Link to="/contactus">My Profile</Link>
+                <Link to="/main/my-profile">My Profile</Link>
               </li>
               <li className="noselect me-2">
-                <Link to="/contactus">Contact Us</Link>
+                <Link to="/main/contact-us">Contact Us</Link>
               </li>
             </ul>
           </div>

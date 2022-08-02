@@ -23,6 +23,7 @@ import actions from '../../redux/actionReducers/index';
 import FormValidators from '../generic/FormValidators';
 import apis from '../../config/api';
 import api from '../../config/api';
+import {icons} from '../../config/configuration';
 
 const AddRecipeComponent = () => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
@@ -96,7 +97,7 @@ const AddRecipeComponent = () => {
             <div className=" mx-5 d-flex flex-column align-items-center">
               <img
                 className="noselect m-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={100}
                 width={100}
                 alt="Recipe Diary"
@@ -396,15 +397,12 @@ const AddRecipeComponent = () => {
                         apis
                           .postRecipeImage(formData, {folder: 'recipes'})
                           .then(({data}) => {
-                            console.log(data);
                             updateFormValues({
                               ...formValues,
                               imageUrl: data.url,
                             });
                           })
-                          .catch(err => {
-                            console.log(err);
-                          });
+                          .catch(err => {});
                       }
                     }}
                   />
@@ -563,14 +561,9 @@ const AddRecipeComponent = () => {
                         title,
                         cuisine,
                         diet,
-                        course,
                         servings,
                         prepTimeInMins,
                         cookTimeInMins,
-                        totalTimeInMins,
-                        imageUrl,
-                        ingredients,
-                        instructions,
                       } = formValues;
                       const {textValidator, numberValidator} = FormValidators;
 
@@ -618,12 +611,10 @@ const AddRecipeComponent = () => {
                       } else {
                         var temp = {...formValues};
                         temp.instructions.filter(e => e.length > 0);
-                        console.log('temp', temp);
                         api
                           .postRecipe(formValues)
                           .then(({data}) => {
-                            console.log(data);
-                            navigate('/my-profile');
+                            navigate('/main/my-profile');
                           })
                           .catch(err => {});
                       }

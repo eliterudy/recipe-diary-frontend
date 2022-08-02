@@ -23,7 +23,9 @@ const NotFound = () => {
         <h3>Page not found! </h3>
         <br /> <h6> You may have entered a wrong url!</h6>
       </span>
-      <Button className="bg-success my-4" onClick={() => navigate('/')}>
+      <Button
+        className="bg-success my-4"
+        onClick={() => navigate('/main/home')}>
         Take Me Home
       </Button>
     </div>

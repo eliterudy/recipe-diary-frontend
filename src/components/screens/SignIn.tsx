@@ -18,6 +18,7 @@ import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
 import apis from '../../config/api';
 import FormValidators from '../generic/FormValidators';
+import {icons} from '../../config/configuration';
 
 const {loadUser, removeUser} = actions;
 
@@ -100,7 +101,7 @@ const SignInComponent = () => {
           if (data.success) {
             localStorage.setItem('token', data.token);
             dispatch(loadUser(data.user));
-            navigate('/home');
+            navigate('/');
           }
         })
         .catch(err => {
@@ -120,7 +121,7 @@ const SignInComponent = () => {
             <div className=" mx-5 d-flex flex-column align-items-center">
               <img
                 className="noselect m-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={100}
                 width={100}
                 alt="Recipe Diary"

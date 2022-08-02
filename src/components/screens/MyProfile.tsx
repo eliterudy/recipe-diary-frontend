@@ -185,15 +185,15 @@ const MyProfileComponent = (props: any) => {
               </em>
             )}
 
-            <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4 pe-3">
+            <div className="noselect  col-12  d-flex flex-row flex-wrap pt-4">
               {recipes.map((recipe: RecipeListElement, index: number) => (
                 <div
                   key={index}
-                  className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-4 `}>
+                  className={`col-12  col-md-6 col-lg-6 col-xl-4 mb-5 px-3 `}>
                   <Generic.RecipeCard
                     data={recipe}
                     index={index}
-                    redirect={`recipeId/${recipe._id}`}
+                    redirect={`/main/my-profile/recipeId/${recipe._id}`}
                   />
                 </div>
               ))}
@@ -253,7 +253,7 @@ const MyProfileComponent = (props: any) => {
       });
   }
   return (
-    <>
+    <div className="col-12">
       {user && (
         <div>
           {!isTabletOrMobile && (
@@ -273,7 +273,7 @@ const MyProfileComponent = (props: any) => {
               </Breadcrumb>
             </div>
           )}
-          <div className="noselect row">
+          <div className="noselect row col-12 m-0">
             <div className="noselect  col-12 col-md-4 col-xl-3 border-end  px-5 bg-white ">
               <div
                 className="d-flex flex-column align-items-center pt-5"
@@ -356,11 +356,11 @@ const MyProfileComponent = (props: any) => {
               </Nav>
               <TabContent activeTab={activeTab} className="m-3">
                 <TabPane tabId={0}>
-                  <Col>
+                  <Col className="m-0">
                     <Button
                       color="success"
-                      className="ms-4 ps-3 pe-3"
-                      onClick={() => navigate('new')}>
+                      className="ms-3 ps-3 pe-3"
+                      onClick={() => navigate('/main/my-profile/new')}>
                       + New Recipe
                     </Button>
                   </Col>
@@ -393,7 +393,7 @@ const MyProfileComponent = (props: any) => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

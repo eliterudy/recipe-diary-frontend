@@ -25,6 +25,7 @@ import {RecipeListElement} from '../../config/types';
 import {useNavigate} from 'react-router-dom';
 import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 import apis from '../../config/api';
+import {images} from '../../config/configuration';
 
 const HomeComponent = (props: any) => {
   const {pathDetails} = props;
@@ -52,7 +53,7 @@ const HomeComponent = (props: any) => {
         updateRecipesLoading(false);
       })
       .catch((error: any) => {
-        updateRecipesError(error);
+        updateRecipesError(error.message);
         updateRecipesLoading(false);
       });
   }, []);
@@ -74,12 +75,12 @@ const HomeComponent = (props: any) => {
     }
   };
 
-  const loadRecipes = (localRecipes: RecipeListElement[]) => {
+  const loadRecipes = (localRecipes: RecipeListElement[] | null) => {
     if (recipeLoading) {
       return <Generic.Spinner text={'recipes'} />;
     } else if (!recipeLoading && localRecipes) {
       return localRecipes.map((special: RecipeListElement, index: number) => (
-        <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-4 `}>
+        <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-3 `}>
           {/* <Animate
             play={showSpecials}
             start={{opacity: 0, marginTop: 100}}
@@ -89,7 +90,7 @@ const HomeComponent = (props: any) => {
           <Generic.RecipeCard
             data={special}
             index={index}
-            redirect={`recipeId/${special._id}`}
+            redirect={`/main/home/recipeId/${special._id}`}
           />
           {/* </Animate> */}
         </div>
@@ -126,14 +127,14 @@ const HomeComponent = (props: any) => {
       <div
         id="intro"
         style={{
-          backgroundImage: 'url(../../assets/images/food-background-1.jpg)',
+          backgroundImage: `url(${images.food_background})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-        className="noselect bg-image shadow-5-strong vh-100 vw-100">
+        className="noselect bg-image shadow-5-strong vh-100 col-12">
         <div
-          className="noselect mask vh-100 vw-100"
+          className="noselect mask vh-100 col-12"
           style={{backgroundColor: 'rgba(0, 0, 0, 0.85)'}}>
           <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
             <div className="noselect text-white">
@@ -143,7 +144,7 @@ const HomeComponent = (props: any) => {
               </h5>
               <div
                 className="noselect btn btn-outline-light btn-lg m-2"
-                onClick={() => navigate('/recipes')}>
+                onClick={() => navigate('/main/recipes')}>
                 Explore
               </div>
               <div
@@ -163,7 +164,7 @@ const HomeComponent = (props: any) => {
           className="noselect d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>
           {/* <AnimateGroup play={showSpecials}> */}
-          {localRecipes && loadRecipes(localRecipes)}
+          {loadRecipes(localRecipes)}
           {/* </AnimateGroup> */}
         </div>
       </div>

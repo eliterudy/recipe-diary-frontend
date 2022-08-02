@@ -24,7 +24,10 @@ import SignInComponent from './screens/SignIn';
 import MyProfile from './screens/MyProfile';
 import AddRecipe from './screens/AddRecipe';
 import apis from '../config/api';
-const {loadUser, removeUser} = actions;
+import NotFound from './generic/NotFound';
+import ServerDown from './generic/ServerDown';
+
+const {loadUser, removeUser, updateServerDownModal} = actions;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
@@ -41,32 +44,35 @@ const MainRouter = () => {
         .catch(err => {
           // alert('failed to load user. Please login');
           dispatch(removeUser());
-          navigate('/');
+          // navigate('/serverdown');
         });
+    // navigate('/main/home');
   }, []);
 
   const HomeRoutes = () => {
-    const homePath = [{path: '/home', pathName: 'Home'}];
-    const homeRecipeDetailsPath = [{path: '/home', pathName: 'Home'}];
+    const homePath = [{path: '/main/home', pathName: 'Home'}];
+    const homeRecipeDetailsPath = [{path: '/main/home', pathName: 'Home'}];
     return (
       <Routes>
         <Route path="/" element={<Home pathDetails={homePath} />} />
         <Route
-          path="recipeId/:recipeId"
+          path="/recipeId/:recipeId"
           element={
             <ScrollToTop>
               <RecipeDetails pathDetails={homeRecipeDetailsPath} />
             </ScrollToTop>
           }
         />
+        {/* default route */}
+        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
       </Routes>
     );
   };
   const RecipeRoutes = () => {
-    const recipePath = [{path: '/home', pathName: 'Home'}];
+    const recipePath = [{path: '/main/home', pathName: 'Home'}];
     const recipeRecipeDetailsPath = [
-      {path: '/home', pathName: 'Home'},
-      {path: '/recipes', pathName: 'Recipes'},
+      {path: '/main/home', pathName: 'Home'},
+      {path: '/main/recipes', pathName: 'Recipes'},
     ];
     return (
       <Routes>
@@ -79,14 +85,16 @@ const MainRouter = () => {
             </ScrollToTop>
           }
         />
+        {/* default route */}
+        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
       </Routes>
     );
   };
   const MyProfileRoutes = () => {
-    const myProfilePath = [{path: '/home', pathName: 'Home'}];
+    const myProfilePath = [{path: '/main/home', pathName: 'Home'}];
     const myProfileRecipeDetailsPath = [
-      {path: '/home', pathName: 'Home'},
-      {path: '/my-profile', pathName: 'My Profile'},
+      {path: '/main/home', pathName: 'Home'},
+      {path: '/main/my-profile', pathName: 'My Profile'},
     ];
 
     return (
@@ -115,10 +123,8 @@ const MainRouter = () => {
             </ScrollToTop>
           }
         />
-        <Route
-          path="*"
-          element={<Navigate to="recipeId/:recipeId" replace />}
-        />
+        {/* default route */}
+        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
       </Routes>
     );
   };
@@ -141,12 +147,12 @@ const MainRouter = () => {
       if (
         user &&
         !user.isVerified &&
-        (location.pathname === '/my-profile/new' ||
-          location.pathname === '/my-profile/new/')
+        (location.pathname === 'main/my-profile/new' ||
+          location.pathname === 'main/my-profile/new/')
       ) {
-        navigate('/my-profile');
-      } else if (!user && location.pathname.match('/my-profile')) {
-        navigate('/home');
+        navigate('/main/my-profile');
+      } else if (!user && location.pathname.match('main/my-profile')) {
+        navigate('/main/home');
       }
     }, [location.pathname, user]);
 
@@ -164,13 +170,13 @@ const MainRouter = () => {
           <Route path="recipes/*" element={<RecipeRoutes />} />
 
           {/* My Stuff */}
-          <Route path="/my-profile/*" element={<MyProfileRoutes />} />
+          <Route path="my-profile/*" element={<MyProfileRoutes />} />
 
           {/* Contact Us */}
           <Route path="contact-us/*" element={<RecipeRoutes />} />
 
           {/* default route */}
-          <Route path="*" element={<Navigate to="home/" replace />} />
+          {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
         </Routes>
         <Footer />
         <Modal
@@ -213,8 +219,8 @@ const MainRouter = () => {
         <Routes>
           <Route path="signin" element={<SignInComponent />} />
           <Route path="signup" element={<SignUpComponent />} />
-
-          {/* <Route path="*" element={<Navigate to="signup" replace />} /> */}
+          {/* default route */}
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </div>
     );
@@ -224,8 +230,9 @@ const MainRouter = () => {
     <div>
       <Routes>
         <Route path={'auth/*'} element={<AuthRoutes />} />
-        <Route path="/*" element={<MainRoutes />} />
-        <Route path="*" element={<Navigate to="/*" replace />} />
+        <Route path={'main/*'} element={<MainRoutes />} />
+        <Route path={'not-found'} element={<NotFound />} />
+        <Route path="*" element={<Navigate to="main/home" replace />} />
       </Routes>
     </div>
   );

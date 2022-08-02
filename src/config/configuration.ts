@@ -8,6 +8,17 @@ const icons: any = {
   bookmark_unselected: require('../assets/icons/bookmark_unselected.png'),
   search_black: require('../assets/icons/search_black.png'),
   search_white: require('../assets/icons/search_white.png'),
+  app_logo: require('../assets/icons/app_logo.png'),
+};
+
+const images: any = {
+  route_not_found: require('../assets/images/404-error.png'),
+  server_down: require('../assets/images/server-down.jpg'),
+  food_background: require('../assets/images/food-background-1.jpg'),
+};
+
+const gifs: any = {
+  loadingGif: '../assets/gifs/loader.gif',
 };
 
 const randomColorGenerator: any = () => {
@@ -33,7 +44,7 @@ const randomColorGenerator: any = () => {
     '#334756',
   ];
 
-  return colors[Math.floor(Math.random() * colors.length)]
+  return colors[Math.floor(Math.random() * colors.length)];
 };
 
-export {colorCodes, icons, randomColorGenerator};
+export {colorCodes, icons, randomColorGenerator, images, gifs};
