@@ -64,7 +64,7 @@ const MainRouter = () => {
           }
         />
         {/* default route */}
-        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
     );
   };
@@ -86,7 +86,7 @@ const MainRouter = () => {
           }
         />
         {/* default route */}
-        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
     );
   };
@@ -124,7 +124,7 @@ const MainRouter = () => {
           }
         />
         {/* default route */}
-        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
+        <Route path="*" element={<Navigate to="/not-found" replace />} />
       </Routes>
     );
   };
@@ -176,7 +176,7 @@ const MainRouter = () => {
           <Route path="contact-us/*" element={<RecipeRoutes />} />
 
           {/* default route */}
-          {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
         <Footer />
         <Modal
