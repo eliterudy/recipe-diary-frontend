@@ -65,12 +65,14 @@ const HomeComponent = (props: any) => {
   const inViewport = useIntersection(refToAnimateUsingViewport, '0px'); // Trigger as soon as the element becomes visible
   const [showSpecials, updateShowSpecials] = useState(false);
 
-  if (inViewport && showSpecials === false) {
+  if (!inViewport && showSpecials === false) {
     updateShowSpecials(true);
   }
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current /* + other conditions */) {
+      console.log('ref', ref.current);
+
       ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };
@@ -156,10 +158,12 @@ const HomeComponent = (props: any) => {
           </div>
         </div>
       </div>
-      <div
-        className="noselect container pt-5"
-        ref={refToSpecialsUsingSmoothScroll}>
-        <h1 className="noselect text-center mb-5">Todays Specials</h1>
+      <div className="noselect container pt-5">
+        <h1
+          className="noselect text-center mb-5"
+          ref={refToSpecialsUsingSmoothScroll}>
+          Todays Specials
+        </h1>
         <div
           className="noselect d-flex flex-row flex-wrap"
           ref={refToAnimateUsingViewport}>

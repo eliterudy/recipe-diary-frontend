@@ -216,7 +216,7 @@ const RecipesComponent = (props: any) => {
   return (
     <div className="d-flex h-100 flex-column col-12">
       {!isTabletOrMobile && (
-        <div className="noselect  border-bottom">
+        <div className="noselect  border-bottom col-12">
           <Breadcrumb className="noselect mt-3 mx-5">
             {pathDetails &&
               pathDetails.map((pathDetail: any, index: number) => (
@@ -234,13 +234,13 @@ const RecipesComponent = (props: any) => {
         </div>
       )}
 
-      <div className="noselect row flex-grow-1 col-12">
+      <div className="noselect row col-12 m-0 p-0">
         {recipeFilters && (
-          <div className="noselect  col-12 col-sm-3 col-lg-2 border-end ps-5 pe-auto bg-white">
+          <div className="noselect  col-12 col-sm-3 col-lg-2 border-end p-4 bg-white">
             {loadFilters(recipeFilters)}
           </div>
         )}
-        <div className="noselect  col-12 col-sm-9 col-lg-10 p-0">
+        <div className="noselect  col-12 col-sm-9 col-lg-10 m-0 p-0">
           <div
             className="noselect col-12 border-bottom"
             style={{

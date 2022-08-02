@@ -82,7 +82,7 @@ const Header = ({modalCallback}: any) => {
   return (
     <div className="col-12">
       {/* Show toggle button when size is smaller than md */}
-      <Navbar light expand="md" className="noselect border-bottom">
+      <Navbar light expand="md" className="noselect border-bottom col-12">
         <div
           className="noselect container-fluid px-sm-4 row mx-sm-0"
           // style={{display: 'flex', flexDirection: 'row'}}
