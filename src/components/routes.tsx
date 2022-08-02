@@ -144,6 +144,8 @@ const MainRouter = () => {
     const {userState, recipeState} = state;
     const {user} = userState;
     useEffect(() => {
+      var userToken = localStorage.getItem('token');
+
       if (
         user &&
         !user.isVerified &&
@@ -151,7 +153,11 @@ const MainRouter = () => {
           location.pathname === 'main/my-profile/new/')
       ) {
         navigate('/main/my-profile');
-      } else if (!user && location.pathname.match('main/my-profile')) {
+      } else if (
+        (!userToken || (userToken && userToken.length < 1)) &&
+        location.pathname.match('main/my-profile')
+      ) {
+        console.log('user', user, !user);
         navigate('/main/home');
       }
     }, [location.pathname, user]);
