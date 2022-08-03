@@ -79,3 +79,30 @@
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
 }
+
+
+.hide {
+  display: none;
+}
+
+#error-symbol {
+    font-size: 50px;
+    border: 1px solid;
+    border-radius: 50%;
+    height: 55px;
+    width: 55px;
+    margin: auto;
+}
+
+.internet-error {
+  height: 40px;
+  background: #ff8100;
+  margin-top: 0;
+  
+}
+
+.internet-error p {
+  font-size: 15px;
+  color: #fff;
+  margin: 0;
+}

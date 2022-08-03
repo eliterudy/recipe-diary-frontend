@@ -26,12 +26,19 @@ import AddRecipe from './screens/AddRecipe';
 import apis from '../config/api';
 import NotFound from './generic/NotFound';
 import ServerDown from './generic/ServerDown';
+import NoInternetWrapper from './generic/NoInternetWrapper';
 
-const {loadUser, removeUser, updateServerDownModal} = actions;
+const {loadUser, removeUser} = actions;
 const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
   const navigate = useNavigate();
+  const state = useSelector((state: any) => {
+    return {
+      rootState: state.rootActionReducer,
+    };
+  });
+  const {rootState} = state;
   useEffect(() => {
     var userToken = localStorage.getItem('token');
     userToken &&
@@ -244,4 +251,4 @@ const MainRouter = () => {
   );
 };
 
-export default MainRouter;
+export default NoInternetWrapper(MainRouter);
