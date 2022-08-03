@@ -402,7 +402,17 @@ const AddRecipeComponent = () => {
                               imageUrl: data.url,
                             });
                           })
-                          .catch(err => {});
+                          .catch(err => {
+                            if (
+                              err &&
+                              err.message &&
+                              err.message === 'Network Error'
+                            ) {
+                              navigate('/server-down', {
+                                state: {redirectPath: '/main/my-profile/new/'},
+                              });
+                            }
+                          });
                       }
                     }}
                   />
@@ -616,7 +626,17 @@ const AddRecipeComponent = () => {
                           .then(({data}) => {
                             navigate('/main/my-profile');
                           })
-                          .catch(err => {});
+                          .catch(err => {
+                            if (
+                              err &&
+                              err.message &&
+                              err.message === 'Network Error'
+                            ) {
+                              navigate('/server-down', {
+                                state: {redirectPath: '/main/my-profile/new/'},
+                              });
+                            }
+                          });
                       }
                     }}>
                     {isAddingRecipe ? (

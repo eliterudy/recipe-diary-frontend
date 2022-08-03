@@ -105,7 +105,13 @@ const SignInComponent = () => {
           }
         })
         .catch(err => {
-          updateErrorVisible(true);
+          if (err && err.message && err.message === 'Network Error') {
+            navigate('/server-down', {
+              state: {redirectPath: '/auth/signin'},
+            });
+          } else {
+            updateErrorVisible(true);
+          }
         });
     }
   };

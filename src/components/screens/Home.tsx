@@ -52,9 +52,15 @@ const HomeComponent = (props: any) => {
         await updateRecipes(recipes);
         updateRecipesLoading(false);
       })
-      .catch((error: any) => {
-        updateRecipesError(error.message);
-        updateRecipesLoading(false);
+      .catch(err => {
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/main/my-profile/new/'},
+          });
+        } else {
+          updateRecipesError(err.message);
+          updateRecipesLoading(false);
+        }
       });
   }, []);
 

@@ -21,7 +21,7 @@ import {
   CardSubtitle,
   CardText,
 } from 'reactstrap';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {cssHover} from './hoverProps';
 import {RecipeCardProps, CheckboxProps} from '../../config/types';
 import {icons} from '../../config/configuration';
@@ -37,6 +37,8 @@ const {addRecipeToFavorites, deleteRecipeFromFavorites, addRecipeToRecents} =
 const Generic = {
   RecipeCard: (cardProps: RecipeCardProps) => {
     const dispatch: Dispatch<any> = useDispatch();
+    const navigate = useNavigate();
+
     const state = useSelector((state: any) => {
       return {
         userState: state.userActionReducer,
@@ -147,6 +149,19 @@ const Generic = {
                               .then(({data}) => {
                                 dispatch(deleteRecipeFromFavorites(_id));
                               })
+                              .catch(err => {
+                                if (
+                                  err &&
+                                  err.message &&
+                                  err.message === 'Network Error'
+                                ) {
+                                  navigate('/server-down', {
+                                    state: {redirectPath: '/'},
+                                  });
+                                } else {
+                                  alert('Oops! Something went wrong');
+                                }
+                              })
                           : apis
                               .postToCategory({
                                 property: 'favorites',
@@ -156,7 +171,19 @@ const Generic = {
                               .then(({data}) => {
                                 dispatch(addRecipeToFavorites(_id));
                               })
-                              .catch(err => {});
+                              .catch(err => {
+                                if (
+                                  err &&
+                                  err.message &&
+                                  err.message === 'Network Error'
+                                ) {
+                                  navigate('/server-down', {
+                                    state: {redirectPath: '/'},
+                                  });
+                                } else {
+                                  alert('Oops! Something went wrong');
+                                }
+                              });
                       }}
                     />
                   </div>

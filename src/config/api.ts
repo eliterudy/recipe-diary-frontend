@@ -128,9 +128,19 @@ const userApiList = {
     });
   },
 };
+
+const apiDefault = {
+  checkServerConnection: () => {
+    return ApiCaller({
+      url: `/checkConnection`,
+      method: 'get',
+    });
+  },
+};
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   ApiCaller,
   ...recipeApiList,
   ...userApiList,
+  ...apiDefault,
 };

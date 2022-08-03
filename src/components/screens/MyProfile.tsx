@@ -77,7 +77,13 @@ const MyProfileComponent = (props: any) => {
         updateFavoriteRecipesLoading(false);
       })
       .catch(err => {
-        updateFavoriteRecipesError(err);
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/main/my-profile/'},
+          });
+        } else {
+          updateFavoriteRecipesError(err);
+        }
       });
   }, [user && user.favorites.recipes]);
   useEffect(() => {
@@ -88,7 +94,13 @@ const MyProfileComponent = (props: any) => {
         updateRecentsLoading(false);
       })
       .catch(err => {
-        updateRecentsError(err);
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/main/my-profile/'},
+          });
+        } else {
+          updateFavoriteRecipesError(err);
+        }
       });
   }, [user && user.recents.recipes]);
   useEffect(() => {
@@ -99,7 +111,13 @@ const MyProfileComponent = (props: any) => {
         updateMyRecipeLoading(false);
       })
       .catch(err => {
-        updateMyRecipeError(err);
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/main/my-profile/'},
+          });
+        } else {
+          updateFavoriteRecipesError(err);
+        }
       });
   }, [user && user.published.recipes]);
 
@@ -325,7 +343,19 @@ const MyProfileComponent = (props: any) => {
                               dispatch(verifyUser(true));
                               // updateActiveTab(0);
                             })
-                            .catch(err => alert('Oops! Something went wrong'));
+                            .catch(err => {
+                              if (
+                                err &&
+                                err.message &&
+                                err.message === 'Network Error'
+                              ) {
+                                navigate('/server-down', {
+                                  state: {redirectPath: '/main/my-profile/'},
+                                });
+                              } else {
+                                alert('Oops! Something went wrong');
+                              }
+                            });
                         }}>
                         <span>Get Verified</span>
                       </Button>

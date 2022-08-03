@@ -92,7 +92,13 @@ const SignUpComponent = () => {
           }
         })
         .catch(err => {
-          updateUsernameAvailableMessage('data.message');
+          if (err && err.message && err.message === 'Network Error') {
+            navigate('/server-down', {
+              state: {redirectPath: '/auth/signup'},
+            });
+          } else {
+            updateUsernameAvailableMessage('data.message');
+          }
         });
     }
   }, [formValues.username]);
@@ -387,7 +393,18 @@ const SignUpComponent = () => {
                             );
                             navigate('/auth/signin');
                           })
-                          .catch(err => {});
+                          .catch(err => {
+                            if (
+                              err &&
+                              err.message &&
+                              err.message === 'Network Error'
+                            ) {
+                              navigate('/server-down', {
+                                state: {redirectPath: '/auth/signup'},
+                              });
+                            } else {
+                            }
+                          });
                       }
                     }}>
                     Sign Up

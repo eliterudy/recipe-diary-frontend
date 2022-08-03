@@ -12,7 +12,7 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeListElement, RecipeFilters} from '../../config/types';
 import {icons} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
-import {useLocation, Link} from 'react-router-dom';
+import {useLocation, Link, useNavigate} from 'react-router-dom';
 import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -20,7 +20,7 @@ import {DebounceInput} from 'react-debounce-input';
 
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
-
+  const navigate = useNavigate();
   const dispatch: Dispatch<any> = useDispatch();
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
   const locationParams = useLocation();
@@ -77,7 +77,13 @@ const RecipesComponent = (props: any) => {
         updateCallerCounter(callerCounter + 1);
         window.sessionStorage.setItem('selectedFilters', JSON.stringify(dict));
       })
-      .catch(err => {});
+      .catch(err => {
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/main/recipes'},
+          });
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -121,9 +127,16 @@ const RecipesComponent = (props: any) => {
         }
         updateRecipesLoading(false);
       })
-      .catch((error: any) => {
-        updateRecipesError(error);
-        updateRecipesLoading(false);
+
+      .catch(err => {
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/'},
+          });
+        } else {
+          updateRecipesError(err);
+          updateRecipesLoading(false);
+        }
       });
   };
 

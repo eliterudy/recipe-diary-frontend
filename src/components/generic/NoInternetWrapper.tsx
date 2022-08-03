@@ -41,7 +41,7 @@ export default function (ComposedComponent: React.FunctionComponent) {
               );
             })
             .catch(error => console.log(error));
-        }, 2000);
+        }, 1000);
         return;
       } else if (condition === 'offline') {
         this.setState(

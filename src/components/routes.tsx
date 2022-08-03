@@ -50,8 +50,10 @@ const MainRouter = () => {
         })
         .catch(err => {
           // alert('failed to load user. Please login');
-          dispatch(removeUser());
-          // navigate('/serverdown');
+          // dispatch(removeUser());
+          if (err && err.message && err.message === 'Network Error') {
+            navigate('/server-down', {state: {redirectPath: '/'}});
+          }
         });
     // navigate('/main/home');
   }, []);
@@ -150,6 +152,7 @@ const MainRouter = () => {
     });
     const {userState, recipeState} = state;
     const {user} = userState;
+
     useEffect(() => {
       var userToken = localStorage.getItem('token');
 
@@ -245,7 +248,8 @@ const MainRouter = () => {
         <Route path={'auth/*'} element={<AuthRoutes />} />
         <Route path={'main/*'} element={<MainRoutes />} />
         <Route path={'not-found'} element={<NotFound />} />
-        <Route path="*" element={<Navigate to="main/home" replace />} />
+        <Route path={'server-down'} element={<ServerDown />} />
+        <Route path="*" element={<Navigate to="/main/home" replace />} />
       </Routes>
     </div>
   );

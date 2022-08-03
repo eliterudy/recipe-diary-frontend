@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {Breadcrumb, BreadcrumbItem, Row, Col} from 'reactstrap';
-import {useLocation, Link} from 'react-router-dom';
+import {useLocation, Link, useNavigate} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {RecipeDetails} from '../../config/types';
@@ -22,7 +22,7 @@ const RecipeDetailsComponent = (props: any) => {
       .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
       .join(' ');
   });
-
+  var navigate = useNavigate();
   const buttonHoverStyle = cssHover(
     {
       backgroundColor: '#2b59a1',
@@ -65,9 +65,15 @@ const RecipeDetailsComponent = (props: any) => {
         updateRecipeDetails(recipeDetails);
         updateRecipeLoading(false);
       })
-      .catch((error: any) => {
-        updateRecipeLoading(true);
-        updateRecipeError(error);
+      .catch(err => {
+        if (err && err.message && err.message === 'Network Error') {
+          navigate('/server-down', {
+            state: {redirectPath: '/'},
+          });
+        } else {
+          updateRecipeLoading(true);
+          updateRecipeError(err);
+        }
       });
   }, []);
 
