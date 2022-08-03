@@ -117,7 +117,7 @@ const Header = ({modalCallback}: any) => {
             navbar>
             {/* Navigation */}
             <Nav navbar>
-              <NavItem className="noselect me-2">
+              <NavItem className="noselect ms-sm-4">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
@@ -125,7 +125,7 @@ const Header = ({modalCallback}: any) => {
                   <strong>Home</strong>
                 </NavLink>
               </NavItem>
-              <NavItem className="noselect mx-sm-1">
+              <NavItem className="noselect ms-sm-1">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}

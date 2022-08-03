@@ -278,8 +278,8 @@ const MyProfileComponent = (props: any) => {
             <div className="noselect  border-bottom">
               <Breadcrumb className="noselect mt-3 mx-5">
                 {pathDetails &&
-                  pathDetails.map((pathDetail: any) => (
-                    <BreadcrumbItem>
+                  pathDetails.map((pathDetail: any, index: number) => (
+                    <BreadcrumbItem key={index}>
                       <Link to={pathDetail.path}>
                         <strong>{pathDetail.pathName}</strong>
                       </Link>

@@ -14,7 +14,7 @@ import {
 } from 'reactstrap';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
-import {icons} from '../../config/configuration';
+import {images} from '../../config/configuration';
 import apis from '../../config/api';
 import actions from '../../redux/actionReducers/index';
 const {loadUser, removeUser} = actions;
@@ -44,20 +44,21 @@ const ServerDown = () => {
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
-        src={icons.server_down}
-        style={{width: 600, height: 600}}
-        className="mt-5 pt-5"
+        src={images.server_down}
+        style={{width: 600}}
+        className="mt-5 pt-5 img-fluid"
       />
       <span className="text-center">
         <h3>Server under maintainance! </h3>
         <br />{' '}
-        <h6>
-          The server seems to be currenly down due to maintainance purposes.
-          Please try again later
+        <h6 className="col-12 px-3">
+          Sorry for the inconvenience, we're currently experiencing server
+          issues. Our team is working on it and have the server running back in
+          no time.
         </h6>
       </span>
       <Button
-        className="bg-success my-4"
+        className="bg-success my-4 px-5"
         onClick={() => {
           apis
             .checkServerConnection()
@@ -81,7 +82,7 @@ const ServerDown = () => {
               ),
             );
         }}>
-        Try Now
+        TRY AGAIN
       </Button>
     </div>
   );

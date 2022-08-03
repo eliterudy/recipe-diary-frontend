@@ -55,7 +55,7 @@ const HomeComponent = (props: any) => {
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
           navigate('/server-down', {
-            state: {redirectPath: '/main/my-profile/new/'},
+            state: {redirectPath: '/main/home/'},
           });
         } else {
           updateRecipesError(err.message);
@@ -146,10 +146,17 @@ const HomeComponent = (props: any) => {
           style={{backgroundColor: 'rgba(0, 0, 0, 0.85)'}}>
           <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
             <div className="noselect text-white">
-              <h1 className="noselect mb-3">Learn Healthy and Tasty Recipes</h1>
-              <h5 className="noselect mb-4">
-                Easy & Professional Indian recipes
-              </h5>
+              <h1
+                className="noselect mb-3"
+                style={{
+                  fontFamily: 'Kaushan Script',
+                  fontWeight: 400,
+                  fontSize: 46,
+                }}>
+                Learn Healthy and Tasty Recipes
+              </h1>
+              <h5 className="noselect mb-4">Classic Recipes for Home Cooks</h5>
+
               <div
                 className="noselect btn btn-outline-light btn-lg m-2"
                 onClick={() => navigate('/main/recipes')}>
