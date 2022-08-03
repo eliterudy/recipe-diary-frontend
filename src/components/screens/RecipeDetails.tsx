@@ -48,7 +48,7 @@ const RecipeDetailsComponent = (props: any) => {
       userState: state.userActionReducer,
     };
   });
-  const {userState} = state;
+  const {user} = state.userState;
   const [recipeDetails, updateRecipeDetails] = useState<null | RecipeDetails>(
     null,
   );
@@ -62,18 +62,6 @@ const RecipeDetailsComponent = (props: any) => {
       .getRecipe(recipeId)
       .then(({data}) => {
         var recipeDetails: RecipeDetails = data;
-        if (
-          userState &&
-          userState.user &&
-          userState.user.favorites !== {} &&
-          userState.user.favorites.hasOwnProperty('recipes')
-        ) {
-          const favoriteRecipes = userState.user.favorites.recipes;
-          recipeDetails = {
-            ...recipeDetails,
-            isFavorite: favoriteRecipes.includes(data._id),
-          };
-        }
         updateRecipeDetails(recipeDetails);
         updateRecipeLoading(false);
       })
@@ -88,6 +76,18 @@ const RecipeDetailsComponent = (props: any) => {
   if (recipeLoading) {
     return <Generic.Spinner text={'recipes'} />;
   } else if (recipeDetails) {
+    var localRecipeDetails: RecipeDetails = recipeDetails;
+    if (
+      user &&
+      user.favorites !== {} &&
+      user.favorites.hasOwnProperty('recipes')
+    ) {
+      const favoriteRecipes = user.favorites.recipes;
+      localRecipeDetails = {
+        ...localRecipeDetails,
+        isFavorite: favoriteRecipes.includes(localRecipeDetails._id),
+      };
+    }
     const {
       _id: recipe_id,
       title,
@@ -102,7 +102,7 @@ const RecipeDetailsComponent = (props: any) => {
       servings,
       course,
       isFavorite,
-    } = recipeDetails;
+    } = localRecipeDetails;
     var bookmarkIcon = () => {
       if (isMouseHoveredOnBookmarkButton) {
         return icons.bookmark_hover;
@@ -166,26 +166,23 @@ const RecipeDetailsComponent = (props: any) => {
                   {diet}
                 </p>
               </div>
-              {!isTabletOrMobile &&
-                userState &&
-                userState.user &&
-                userState.user.favorites && (
-                  <div className="noselect col-12 col-md-6 d-flex justify-content-end align-items-end">
-                    <div
-                      onClick={e => {
-                        e.preventDefault();
-                        isFavorite
-                          ? dispatch(deleteRecipeFromFavorites(recipe_id))
-                          : dispatch(addRecipeToFavorites(recipe_id));
-                      }}
-                      className="noselect px-4 py-1"
-                      {...buttonHoverStyle}>
-                      <span className="noselect ">
-                        {isFavorite ? 'Remove bookmark' : 'Add to Bookmarks'}
-                      </span>
-                    </div>
+              {!isTabletOrMobile && user && user.favorites && (
+                <div className="noselect col-12 col-md-6 d-flex justify-content-end align-items-end">
+                  <div
+                    onClick={e => {
+                      e.preventDefault();
+                      isFavorite
+                        ? dispatch(deleteRecipeFromFavorites(recipe_id))
+                        : dispatch(addRecipeToFavorites(recipe_id));
+                    }}
+                    className="noselect px-4 py-1"
+                    {...buttonHoverStyle}>
+                    <span className="noselect ">
+                      {isFavorite ? 'Remove bookmark' : 'Add to Bookmarks'}
+                    </span>
                   </div>
-                )}
+                </div>
+              )}
             </div>
             <div className="noselect " style={{position: 'relative'}}>
               <img
@@ -197,36 +194,33 @@ const RecipeDetailsComponent = (props: any) => {
                   maxHeight: 1200,
                 }}
               />
-              {isTabletOrMobile &&
-                userState &&
-                userState.user &&
-                userState.user.favorites && (
-                  <div
-                    className="noselect  "
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      right: 0,
-                      marginTop: 3,
-                      padding: 5,
-                    }}>
-                    <img
-                      onMouseDown={() => changeMouseStatus(true)}
-                      onMouseUp={() => changeMouseStatus(false)}
-                      className="noselect col-auto "
-                      src={bookmarkIcon()}
-                      height={45}
-                      width={45}
-                      alt="The Cook Book"
-                      onClick={e => {
-                        e.preventDefault();
-                        isFavorite
-                          ? dispatch(deleteRecipeFromFavorites(recipe_id))
-                          : dispatch(addRecipeToFavorites(recipe_id));
-                      }}
-                    />
-                  </div>
-                )}
+              {isTabletOrMobile && user && user.favorites && (
+                <div
+                  className="noselect  "
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    marginTop: 3,
+                    padding: 5,
+                  }}>
+                  <img
+                    onMouseDown={() => changeMouseStatus(true)}
+                    onMouseUp={() => changeMouseStatus(false)}
+                    className="noselect col-auto "
+                    src={bookmarkIcon()}
+                    height={45}
+                    width={45}
+                    alt="The Cook Book"
+                    onClick={e => {
+                      e.preventDefault();
+                      isFavorite
+                        ? dispatch(deleteRecipeFromFavorites(recipe_id))
+                        : dispatch(addRecipeToFavorites(recipe_id));
+                    }}
+                  />
+                </div>
+              )}
             </div>
             <div className="noselect row  mx-0">
               <div className="noselect  col-4 d-flex flex-column align-items-center p-2 ">

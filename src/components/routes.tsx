@@ -86,7 +86,7 @@ const MainRouter = () => {
           }
         />
         {/* default route */}
-        <Route path="*" element={<Navigate to="/not-found" replace />} />
+        {/* <Route path="*" element={<Navigate to="/not-found" replace />} /> */}
       </Routes>
     );
   };
