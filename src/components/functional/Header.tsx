@@ -153,14 +153,15 @@ const Header = ({modalCallback}: any) => {
                   </NavLink>
                 </NavItem>
               )}
-              <NavItem className="noselect mx-sm-1">
+              {/* For v2 */}
+              {/* <NavItem className="noselect mx-sm-1">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
                   to="/main/contact-us">
                   <strong>Contact Us</strong>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </Nav>
             <Nav className="noselect ml-auto" navbar>
               {user ? (
