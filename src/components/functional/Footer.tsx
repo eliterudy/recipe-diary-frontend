@@ -14,9 +14,11 @@ const Footer = () => {
               <li className="noselect me-2">
                 <Link to="/main/my-profile">My Profile</Link>
               </li>
-              <li className="noselect me-2">
+              {/* For v2 */}
+
+              {/* <li className="noselect me-2">
                 <Link to="/main/contact-us">Contact Us</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="noselect col-12 col-sm-4 align-items-center justify-content-around">

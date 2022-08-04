@@ -61,13 +61,11 @@ const MyProfileComponent = (props: any) => {
   const [favoriteRecipesLoading, updateFavoriteRecipesLoading] =
     useState(false);
   const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
-
-  useEffect(() => {
-    if (locationParams && locationParams.state) {
-      var tabState = locationParams.state as {tab: number};
-      updateActiveTab(tabState.tab);
-    }
-  }, []);
+  console.log('locationParams', locationParams);
+  if (locationParams && locationParams.state) {
+    const {tab} = locationParams.state as any;
+    updateActiveTab(tab);
+  }
 
   useEffect(() => {
     apis
@@ -319,13 +317,14 @@ const MyProfileComponent = (props: any) => {
                     padding: 10,
                     overflowWrap: 'break-word',
                   }}>{`${user.firstname} ${user.lastname}`}</h4>
+                {/* For v2 */}
                 {/* <Button
                   className="col-12 mb-5"
                   {...editProfileButtonStyle}
                   outline>
                   Edit Profile
                 </Button> */}
-                <Col className="col-12 ">
+                {/* <Col className="col-12 ">
                   {!user.isVerified && (
                     <div className="py-4" {...verifyCardHoverStyle}>
                       <p style={{color: '#ECDBBA', marginBottom: 20}}>
@@ -361,7 +360,7 @@ const MyProfileComponent = (props: any) => {
                       </Button>
                     </div>
                   )}
-                </Col>
+                </Col> */}
               </div>
             </div>
             <div className="noselect  col-12 col-md-8 col-xl-9  p-2">
@@ -385,7 +384,8 @@ const MyProfileComponent = (props: any) => {
                   })}
               </Nav>
               <TabContent activeTab={activeTab} className="m-3">
-                <TabPane tabId={0}>
+                {/* For v2 */}
+                {/* <TabPane tabId={0}>
                   <Col className="m-0">
                     <Button
                       color="success"
@@ -400,7 +400,7 @@ const MyProfileComponent = (props: any) => {
                     myRecipeError,
                     'Shared Recipes',
                   )}
-                </TabPane>
+                </TabPane> */}
                 <TabPane tabId={1}>
                   {loadRecipes(
                     localRecents,

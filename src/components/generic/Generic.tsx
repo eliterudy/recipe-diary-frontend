@@ -52,7 +52,6 @@ const Generic = {
     const {
       _id,
       title,
-
       imageUrl,
       cuisine,
       totalTimeInMins,
@@ -150,6 +149,8 @@ const Generic = {
                                 dispatch(deleteRecipeFromFavorites(_id));
                               })
                               .catch(err => {
+                                console.log(err);
+
                                 if (
                                   err &&
                                   err.message &&
@@ -172,6 +173,7 @@ const Generic = {
                                 dispatch(addRecipeToFavorites(_id));
                               })
                               .catch(err => {
+                                console.log(err);
                                 if (
                                   err &&
                                   err.message &&

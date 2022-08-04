@@ -33,12 +33,7 @@ const MainRouter = () => {
   const dispatch: Dispatch<any> = useDispatch();
   let location = useLocation();
   const navigate = useNavigate();
-  const state = useSelector((state: any) => {
-    return {
-      rootState: state.rootActionReducer,
-    };
-  });
-  const {rootState} = state;
+
   useEffect(() => {
     var userToken = localStorage.getItem('token');
     userToken &&

@@ -100,6 +100,7 @@ const RecipesComponent = (props: any) => {
         offset,
         cuisine: JSON.stringify(selectedFilters.cuisine),
         course: JSON.stringify(selectedFilters.course),
+        diet: JSON.stringify(selectedFilters.diet),
       })
       .then(async ({data}) => {
         var tempRecipes = data.results;
