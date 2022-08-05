@@ -2,6 +2,7 @@
   "name": "recipe-diary",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://build-my-stack.github.io/recipe-diary-frontend",
   "dependencies": {
     "@chakra-ui/avatar": "^2.0.5",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -41,6 +42,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -65,6 +68,7 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-typescript-to-proptypes": "^2.0.0"
+    "babel-plugin-typescript-to-proptypes": "^2.0.0",
+    "gh-pages": "^4.0.0"
   }
 }
