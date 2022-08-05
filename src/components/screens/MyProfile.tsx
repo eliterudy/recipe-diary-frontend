@@ -61,10 +61,12 @@ const MyProfileComponent = (props: any) => {
   const [favoriteRecipesLoading, updateFavoriteRecipesLoading] =
     useState(false);
   const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
-  if (locationParams && locationParams.state) {
-    const {tab} = locationParams.state as any;
-    updateActiveTab(tab);
-  }
+  useEffect(() => {
+    if (locationParams && locationParams.state) {
+      const {tab} = locationParams.state as any;
+      updateActiveTab(tab);
+    }
+  }, []);
 
   useEffect(() => {
     apis
@@ -75,9 +77,15 @@ const MyProfileComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          navigate('/server-down', {
-            state: {redirectPath: '/main/my-profile/'},
-          });
+          if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          } else {
+            navigate('/no-internet', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          }
         } else {
           updateFavoriteRecipesError(err);
         }
@@ -92,9 +100,15 @@ const MyProfileComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          navigate('/server-down', {
-            state: {redirectPath: '/main/my-profile/'},
-          });
+          if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          } else {
+            navigate('/no-internet', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          }
         } else {
           updateFavoriteRecipesError(err);
         }
@@ -109,9 +123,15 @@ const MyProfileComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          navigate('/server-down', {
-            state: {redirectPath: '/main/my-profile/'},
-          });
+          if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          } else {
+            navigate('/no-internet', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          }
         } else {
           updateFavoriteRecipesError(err);
         }
@@ -217,7 +237,9 @@ const MyProfileComponent = (props: any) => {
         );
       } else {
         response = (
-          <div className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3">
+          <div
+            className="noselect  col-12  d-flex flex-row flex-wrap pt-5 pe-3"
+            style={{marginBottom: isTabletOrMobile ? 500 : 600}}>
             <span className="col-12 text-center">
               {`No ${recipeType} recipes`}
             </span>
@@ -292,7 +314,7 @@ const MyProfileComponent = (props: any) => {
             <div className="noselect  col-12 col-md-4 col-xl-3 border-end  px-5 bg-white ">
               <div
                 className="d-flex flex-column align-items-center pt-5"
-                style={{marginBottom: 600}}>
+                style={{marginBottom: isTabletOrMobile ? 30 : 600}}>
                 <div
                   className=""
                   style={{

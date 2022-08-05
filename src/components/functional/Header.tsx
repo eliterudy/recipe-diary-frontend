@@ -29,12 +29,14 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {icons, randomColorGenerator} from '../../config/configuration';
 import actions from '../../redux/actionReducers/index';
+import {useMediaQuery} from 'react-responsive';
 
 const {loadUser, removeUser} = actions;
 
 const avatarColor = randomColorGenerator();
 const Header = ({modalCallback}: any) => {
   const dispatch: Dispatch<any> = useDispatch();
+  const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
 
   const myStuffNavItemStyle = cssHover(
     {
@@ -116,8 +118,8 @@ const Header = ({modalCallback}: any) => {
             isOpen={isNavOpen}
             navbar>
             {/* Navigation */}
-            <Nav navbar>
-              <NavItem className="noselect ms-sm-4">
+            <Nav navbar className={isTabletOrMobile ? 'offset-0' : 'offset-2'}>
+              <NavItem className="noselect ms-sm-4 ">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
@@ -125,7 +127,7 @@ const Header = ({modalCallback}: any) => {
                   <strong>Home</strong>
                 </NavLink>
               </NavItem>
-              <NavItem className="noselect ms-sm-1">
+              <NavItem className="noselect ms-sm-4">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
@@ -144,7 +146,7 @@ const Header = ({modalCallback}: any) => {
                 </div>
               )}
               {user && (
-                <NavItem className="noselect mx-sm-1">
+                <NavItem className="noselect ms-sm-4">
                   <NavLink
                     tag={RRNavLink}
                     className={'nav-link '}

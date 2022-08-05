@@ -27,6 +27,7 @@ import apis from '../config/api';
 import NotFound from './generic/NotFound';
 import ServerDown from './generic/ServerDown';
 import NoInternetWrapper from './generic/NoInternetWrapper';
+import NoInternet from './generic/NoInternet';
 
 const {loadUser, removeUser} = actions;
 const MainRouter = () => {
@@ -50,9 +51,7 @@ const MainRouter = () => {
             if (navigator.onLine) {
               navigate('/server-down', {state: {redirectPath: '/'}});
             } else {
-              // alert(
-              //   'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
-              // );
+              navigate('/no-internet', {state: {redirectPath: '/'}});
             }
           }
         });
@@ -249,6 +248,8 @@ const MainRouter = () => {
         <Route path={'main/*'} element={<MainRoutes />} />
         <Route path={'not-found'} element={<NotFound />} />
         <Route path={'server-down'} element={<ServerDown />} />
+        <Route path={'no-internet'} element={<NoInternet />} />
+
         <Route path="*" element={<Navigate to="/main/home" replace />} />
       </Routes>
     </div>

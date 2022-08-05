@@ -14,6 +14,7 @@ const icons: any = {
 const images: any = {
   route_not_found: require('../assets/images/404-error.png'),
   server_down: require('../assets/images/server-down.jpg'),
+  no_internet: require('../assets/images/no_internet.png'),
   food_background: require('../assets/images/food-background-1.jpg'),
 };
 

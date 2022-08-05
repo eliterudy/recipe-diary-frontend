@@ -19,7 +19,7 @@ import apis from '../../config/api';
 import actions from '../../redux/actionReducers/index';
 const {loadUser, removeUser} = actions;
 
-const ServerDown = () => {
+const NoInternet = () => {
   const navigate = useNavigate();
   let location = useLocation();
   const dispatch: Dispatch<any> = useDispatch();
@@ -44,7 +44,7 @@ const ServerDown = () => {
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
-        src={images.server_down}
+        src={images.no_internet}
         style={{width: 600}}
         className="mt-5 pt-5 img-fluid"
       />
@@ -52,33 +52,29 @@ const ServerDown = () => {
         <h3>Server under maintainance! </h3>
         <br />{' '}
         <h6 className="col-12 px-3">
-          Sorry for the inconvenience, we're currently experiencing server
-          issues. Our team is working on it and have the server running back in
-          no time.
+          Looks like you device has lost internet connection. Please connect to
+          a strong internet connections and try again.
         </h6>
       </span>
       <Button
         className="bg-success my-4 px-5"
         onClick={() => {
-          apis
-            .checkServerConnection()
-            .then(resp => {
-              if (location && location.state) {
-                const {redirectPath} = location.state as {redirectPath: string};
-                if (redirectPath === '/routes') {
-                  validateUser(redirectPath);
-                } else {
-                  navigate(redirectPath);
-                }
+          if (navigator.onLine) {
+            if (location && location.state) {
+              const {redirectPath} = location.state as {redirectPath: string};
+              if (redirectPath === '/routes') {
+                validateUser(redirectPath);
               } else {
-                navigate('/');
+                navigate(redirectPath);
               }
-            })
-            .catch(err =>
-              alert(
-                'Server is not up yet! Please try again later or in a few minutes',
-              ),
+            } else {
+              navigate('/');
+            }
+          } else {
+            alert(
+              'Server is not up yet! Please try again later or in a few minutes',
             );
+          }
         }}>
         TRY AGAIN
       </Button>
@@ -86,4 +82,4 @@ const ServerDown = () => {
   );
 };
 
-export default ServerDown;
+export default NoInternet;

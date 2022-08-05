@@ -54,15 +54,11 @@ const HomeComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          // if (navigator.onLine) {
-          navigate('/server-down', {
-            state: {redirectPath: '/main/home/'},
-          });
-          // } else {
-          // alert(
-          //   'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
-          // );
-          // }
+          if (navigator.onLine) {
+            navigate('/server-down', {state: {redirectPath: '/'}});
+          } else {
+            navigate('/no-internet', {state: {redirectPath: '/'}});
+          }
         } else {
           updateRecipesError(err.message);
           updateRecipesLoading(false);
