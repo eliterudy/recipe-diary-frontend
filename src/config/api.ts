@@ -1,5 +1,4 @@
 import axios from 'axios';
-// export const baseURL = 'https://localhost:3443';
 export const baseURL = 'https://staging-recipediary.herokuapp.com';
 
 const headers = {
