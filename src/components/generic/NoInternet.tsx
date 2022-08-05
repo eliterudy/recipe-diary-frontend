@@ -45,11 +45,11 @@ const NoInternet = () => {
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
         src={images.no_internet}
-        style={{width: 600}}
+        style={{width: 400}}
         className="mt-5 pt-5 img-fluid"
       />
       <span className="text-center">
-        <h3>Server under maintainance! </h3>
+        <h3>Internet Connection Lost! </h3>
         <br />{' '}
         <h6 className="col-12 px-3">
           Looks like you device has lost internet connection. Please connect to

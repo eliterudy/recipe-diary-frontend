@@ -16,6 +16,7 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
+
     "@types/react-dom": "^18.0.0",
     "@types/redux-logger": "^3.0.9",
     "axios": "^0.27.2",
@@ -45,7 +46,7 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

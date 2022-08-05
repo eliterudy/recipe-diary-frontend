@@ -45,7 +45,7 @@ const ServerDown = () => {
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
         src={images.server_down}
-        style={{width: 600}}
+        style={{width: 400}}
         className="mt-5 pt-5 img-fluid"
       />
       <span className="text-center">
