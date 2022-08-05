@@ -79,9 +79,15 @@ const RecipesComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          navigate('/server-down', {
-            state: {redirectPath: '/main/recipes'},
-          });
+          if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/recipes'},
+            });
+          } else {
+            alert(
+              'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+            );
+          }
         }
       });
   }, []);
@@ -131,9 +137,15 @@ const RecipesComponent = (props: any) => {
 
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
-          navigate('/server-down', {
-            state: {redirectPath: '/'},
-          });
+          if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/recipes'},
+            });
+          } else {
+            alert(
+              'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+            );
+          }
         } else {
           updateRecipesError(err);
           updateRecipesLoading(false);

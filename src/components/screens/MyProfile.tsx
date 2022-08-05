@@ -61,7 +61,6 @@ const MyProfileComponent = (props: any) => {
   const [favoriteRecipesLoading, updateFavoriteRecipesLoading] =
     useState(false);
   const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
-  console.log('locationParams', locationParams);
   if (locationParams && locationParams.state) {
     const {tab} = locationParams.state as any;
     updateActiveTab(tab);
@@ -348,9 +347,15 @@ const MyProfileComponent = (props: any) => {
                                 err.message &&
                                 err.message === 'Network Error'
                               ) {
-                                navigate('/server-down', {
-                                  state: {redirectPath: '/main/my-profile/'},
-                                });
+                                if (navigator.onLine) {
+            navigate('/server-down', {
+              state: {redirectPath: '/main/my-profile/'},
+            });
+          } else {
+            alert(
+              'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+            );
+          }
                               } else {
                                 alert('Oops! Something went wrong');
                               }

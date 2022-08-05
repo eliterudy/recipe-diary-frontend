@@ -408,9 +408,17 @@ const AddRecipeComponent = () => {
                               err.message &&
                               err.message === 'Network Error'
                             ) {
-                              navigate('/server-down', {
-                                state: {redirectPath: '/main/my-profile/new/'},
-                              });
+                              if (navigator.onLine) {
+                                navigate('/server-down', {
+                                  state: {
+                                    redirectPath: '/main/my-profile/new/',
+                                  },
+                                });
+                              } else {
+                                alert(
+                                  'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+                                );
+                              }
                             }
                           });
                       }
@@ -632,9 +640,17 @@ const AddRecipeComponent = () => {
                               err.message &&
                               err.message === 'Network Error'
                             ) {
-                              navigate('/server-down', {
-                                state: {redirectPath: '/main/my-profile/new/'},
-                              });
+                              if (navigator.onLine) {
+                                navigate('/server-down', {
+                                  state: {
+                                    redirectPath: '/main/my-profile/new/',
+                                  },
+                                });
+                              } else {
+                                alert(
+                                  'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+                                );
+                              }
                             }
                           });
                       }

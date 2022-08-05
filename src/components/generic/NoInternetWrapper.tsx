@@ -40,7 +40,7 @@ export default function (ComposedComponent: React.FunctionComponent) {
                 }),
               );
             })
-            .catch(error => console.log(error));
+            .catch(error => {});
         }, 1000);
         return;
       } else if (condition === 'offline') {

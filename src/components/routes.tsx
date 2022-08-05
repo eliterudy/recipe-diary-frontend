@@ -47,7 +47,13 @@ const MainRouter = () => {
           // alert('failed to load user. Please login');
           // dispatch(removeUser());
           if (err && err.message && err.message === 'Network Error') {
-            navigate('/server-down', {state: {redirectPath: '/'}});
+            if (navigator.onLine) {
+              navigate('/server-down', {state: {redirectPath: '/'}});
+            } else {
+              // alert(
+              //   'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+              // );
+            }
           }
         });
     // navigate('/main/home');
@@ -162,7 +168,6 @@ const MainRouter = () => {
         (!userToken || (userToken && userToken.length < 1)) &&
         location.pathname.match('main/my-profile')
       ) {
-        console.log('user', user, !user);
         navigate('/main/home');
       }
     }, [location.pathname, user]);

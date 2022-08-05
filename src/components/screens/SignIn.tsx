@@ -106,9 +106,15 @@ const SignInComponent = () => {
         })
         .catch(err => {
           if (err && err.message && err.message === 'Network Error') {
-            navigate('/server-down', {
-              state: {redirectPath: '/auth/signin'},
-            });
+            if (navigator.onLine) {
+              navigate('/server-down', {
+                state: {redirectPath: '/auth/signin'},
+              });
+            } else {
+              alert(
+                'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+              );
+            }
           } else {
             updateErrorVisible(true);
           }

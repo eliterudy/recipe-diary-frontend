@@ -64,8 +64,6 @@ const ServerDown = () => {
             .checkServerConnection()
             .then(resp => {
               if (location && location.state) {
-                console.log('hereee', location);
-
                 const {redirectPath} = location.state as {redirectPath: string};
                 if (redirectPath === '/') {
                   validateUser(redirectPath);

@@ -149,16 +149,20 @@ const Generic = {
                                 dispatch(deleteRecipeFromFavorites(_id));
                               })
                               .catch(err => {
-                                console.log(err);
-
                                 if (
                                   err &&
                                   err.message &&
                                   err.message === 'Network Error'
                                 ) {
-                                  navigate('/server-down', {
-                                    state: {redirectPath: '/'},
-                                  });
+                                  if (navigator.onLine) {
+                                    navigate('/server-down', {
+                                      state: {redirectPath: '/'},
+                                    });
+                                  } else {
+                                    alert(
+                                      'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+                                    );
+                                  }
                                 } else {
                                   alert('Oops! Something went wrong');
                                 }
@@ -173,15 +177,20 @@ const Generic = {
                                 dispatch(addRecipeToFavorites(_id));
                               })
                               .catch(err => {
-                                console.log(err);
                                 if (
                                   err &&
                                   err.message &&
                                   err.message === 'Network Error'
                                 ) {
-                                  navigate('/server-down', {
-                                    state: {redirectPath: '/'},
-                                  });
+                                  if (navigator.onLine) {
+                                    navigate('/server-down', {
+                                      state: {redirectPath: '/'},
+                                    });
+                                  } else {
+                                    alert(
+                                      'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+                                    );
+                                  }
                                 } else {
                                   alert('Oops! Something went wrong');
                                 }

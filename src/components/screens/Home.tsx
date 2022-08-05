@@ -54,9 +54,15 @@ const HomeComponent = (props: any) => {
       })
       .catch(err => {
         if (err && err.message && err.message === 'Network Error') {
+          // if (navigator.onLine) {
           navigate('/server-down', {
             state: {redirectPath: '/main/home/'},
           });
+          // } else {
+          // alert(
+          //   'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+          // );
+          // }
         } else {
           updateRecipesError(err.message);
           updateRecipesLoading(false);
@@ -77,8 +83,6 @@ const HomeComponent = (props: any) => {
 
   const scrollTo = (ref: any) => {
     if (ref && ref.current /* + other conditions */) {
-      console.log('ref', ref.current);
-
       ref.current.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
   };

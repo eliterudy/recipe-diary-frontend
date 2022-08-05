@@ -66,7 +66,7 @@ const RecipeDetailsComponent = (props: any) => {
         updateRecipeLoading(false);
       })
       .catch(err => {
-        if (err && err.message && err.message === 'Network Error') {
+        if (navigator.onLine) {
           navigate('/server-down', {
             state: {redirectPath: '/'},
           });
