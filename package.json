@@ -1,8 +1,9 @@
 {
   "name": "recipe-diary",
+  "homepage": "https://Build-My-Stack.github.io/recipe-diary-frontend",
+
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Build-My-Stack.github.io/recipe-diary-frontend",
   "dependencies": {
     "@chakra-ui/avatar": "^2.0.5",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
