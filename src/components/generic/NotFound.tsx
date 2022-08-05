@@ -20,7 +20,7 @@ const NotFound = () => {
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
         src={images.route_not_found}
-        style={{width: 400}}
+        style={{width: 300}}
         className="mt-5 pt-5"
       />
       <span className="text-center">

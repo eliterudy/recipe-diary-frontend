@@ -45,7 +45,7 @@ const NoInternet = () => {
     <div className="container d-flex flex-column justify-content-center align-items-center pb-5 mb-5">
       <img
         src={images.no_internet}
-        style={{width: 400}}
+        style={{width: 300}}
         className="mt-5 pt-5 img-fluid"
       />
       <span className="text-center">
