@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Amiko:wght@400;600;700&family=Courgette&family=Gudea:ital,wght@0,400;0,700;1,400&family=Heebo:wght@100;200;400;600&family=Kaushan+Script&family=Noto+Sans+Display:ital@0;1&family=Playball&display=swap');
+
+
+body {
+  font-family: 'Amiko', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -35,4 +42,70 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.text-default-theme {
+  color: 'red';
+}
+
+.nav-pills .nav-link {
+  color: #fff;
+  cursor: default;
+  background-color: #868686;
+}
+
+.navbar .navbar-nav > li > a {
+  color: #151f2d;
+}
+
+.navbar .navbar-nav > li > a:hover {
+  color: #0450ba;
+}
+
+/* @media only screen and (min-width: 760px) {
+  .dishCardAnimate {
+    transition: 0.3s;
+  }
+
+  .dishCardAnimate:hover {
+    transform: 'scale(1.05)';
+    z-index: 10;
+    transition: '0.5s';
+  }
+  
+} */
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
+
+.hide {
+  display: none;
+}
+
+#error-symbol {
+  font-size: 50px;
+  border: 1px solid;
+  border-radius: 50%;
+  height: 55px;
+  width: 55px;
+  margin: auto;
+}
+
+.internet-error {
+  height: 40px;
+  background: #ff8100;
+  margin-top: 0;
+}
+
+.internet-error p {
+  font-size: 15px;
+  color: #fff;
+  margin: 0;
 }
