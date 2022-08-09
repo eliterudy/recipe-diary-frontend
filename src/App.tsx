@@ -8,11 +8,9 @@ import {store} from './redux/config/configureStore';
 function App() {
   return (
     <Provider store={store}>
-      <HashRouter basename={process.env.PUBLIC_URL}>
-        <div>
-          <Routes />
-        </div>
-      </HashRouter>
+      <div>
+        <Routes />
+      </div>
     </Provider>
   );
 }
