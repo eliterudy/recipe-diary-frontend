@@ -114,6 +114,8 @@ const RecipesComponent = (props: any) => {
   }, [callerCounter]);
 
   var getRecipesFromApi = () => {
+    updateRecipesLoading(true);
+
     apis
       .getAllRecipes({
         search,
