@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/recipe-diary-frontend/static/css/main.c79b4441.css",
-    "main.js": "/recipe-diary-frontend/static/js/main.872ee101.js",
+    "main.js": "/recipe-diary-frontend/static/js/main.6e9c9863.js",
     "static/js/787.4c716134.chunk.js": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js",
     "static/media/server-down.jpg": "/recipe-diary-frontend/static/media/server-down.663b0905a252be9d2500.jpg",
     "static/media/food-background-1.jpg": "/recipe-diary-frontend/static/media/food-background-1.c4dc8fb4298fe8d2e5d1.jpg",
@@ -10,6 +10,7 @@
     "static/media/fontawesome-webfont.ttf?v=4.7.0": "/recipe-diary-frontend/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/recipe-diary-frontend/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/recipe-diary-frontend/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
+    "static/media/loader.gif": "/recipe-diary-frontend/static/media/loader.0fbaebcb3dcba0cfcc43.gif",
     "static/media/404-error.png": "/recipe-diary-frontend/static/media/404-error.29fb0966d6ce490a8b11.png",
     "static/media/no_internet.png": "/recipe-diary-frontend/static/media/no_internet.4b8a2ad8199d6f09a5ff.png",
     "static/media/app_logo.png": "/recipe-diary-frontend/static/media/app_logo.863b3e6e48ca82cb4918.png",
@@ -18,13 +19,14 @@
     "static/media/bookmark_unselected.png": "/recipe-diary-frontend/static/media/bookmark_unselected.54541862ef8e8c61511c.png",
     "static/media/bookmark_hover.png": "/recipe-diary-frontend/static/media/bookmark_hover.7798c5a897f4da56d6bd.png",
     "static/media/search_black.png": "/recipe-diary-frontend/static/media/search_black.ba5920ba58a32d65f525.png",
+    "static/media/loader.svg": "/recipe-diary-frontend/static/media/loader.20a032193282e842a5171692f26f991f.svg",
     "index.html": "/recipe-diary-frontend/index.html",
     "main.c79b4441.css.map": "/recipe-diary-frontend/static/css/main.c79b4441.css.map",
-    "main.872ee101.js.map": "/recipe-diary-frontend/static/js/main.872ee101.js.map",
+    "main.6e9c9863.js.map": "/recipe-diary-frontend/static/js/main.6e9c9863.js.map",
     "787.4c716134.chunk.js.map": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c79b4441.css",
-    "static/js/main.872ee101.js"
+    "static/js/main.6e9c9863.js"
   ]
 }
