@@ -247,12 +247,8 @@ const Generic = {
         <div
           className="d-flex flex-column justify-content-center align-items-center"
           style={{height: 600}}>
-          <img
-            src={gifs.loadingGif}
-            style={{width: 100, height: 80}}
-            alt="loading..."
-          />
-          <p className="text-center mt-3">Loading {text}</p>
+          <img src={gifs.loadingGif} style={{width: 80, height: 80}} alt="" />
+          <p className="text-center">Loading {text}</p>
         </div>
       </div>
     );

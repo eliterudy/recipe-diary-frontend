@@ -19,7 +19,10 @@ const images: any = {
 };
 
 const gifs: any = {
-  loadingGif: '../assets/gifs/loader.gif',
+  loadingGif: require('../assets/gifs/loader.gif'),
+};
+const svgs: any = {
+  loadingSVG: require('../assets/gifs/loader.svg'),
 };
 
 const randomColorGenerator: any = () => {
@@ -48,4 +51,4 @@ const randomColorGenerator: any = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-export {colorCodes, icons, randomColorGenerator, images, gifs};
+export {colorCodes, icons, randomColorGenerator, images, gifs, svgs};
