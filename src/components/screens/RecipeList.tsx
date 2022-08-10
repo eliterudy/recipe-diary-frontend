@@ -183,11 +183,11 @@ const RecipesComponent = (props: any) => {
         return (
           <AccordionItem uuid={objectKeyIndex}>
             <AccordionItemHeading>
-              <AccordionItemButton style={{backgroundColor: '#fff'}}>
+              <AccordionItemButton style={{backgroundColor: '#eee'}}>
                 <strong>{title}</strong>
               </AccordionItemButton>
             </AccordionItemHeading>
-            <AccordionItemPanel>
+            <AccordionItemPanel className=" p-3 pt-0">
               <div className="noselect row" key={objectKeyIndex}>
                 {list.map((filterDataElement: any, listIndex: number) => {
                   return (
@@ -306,8 +306,10 @@ const RecipesComponent = (props: any) => {
           <div
             className="noselect col-12 border-bottom"
             style={{
-              padding: 20,
-              backgroundColor: '#ddd',
+              padding: 10,
+              paddingTop: 8,
+              paddingBottom: 8,
+              backgroundColor: '#eee',
             }}>
             <InputGroup className="col-12">
               <DebounceInput
@@ -358,14 +360,12 @@ const RecipesComponent = (props: any) => {
               {/* <InputGroupText></InputGroupText> */}
             </InputGroup>
           </div>
-          <div className="noselect  col-12   pt-1 pe-3">
+          <div className="noselect  col-12   pt-1 px-3">
             {recipes && (
               <div>
-                <div
-                  id="listTop"
-                  className="d-flex flex-column align-items-end pt-3">
+                <div className="d-flex flex-column align-items-end pt-3">
                   <em
-                    className="px-2 pt-1  me-4"
+                    className="px-2 pt-1  me-3"
                     style={{
                       border: '0.5px solid #ddd',
                       backgroundColor: '#eee',
@@ -392,7 +392,6 @@ const RecipesComponent = (props: any) => {
                       <b>Yay! You have seen it all</b>
                     </p>
                   }>
-                  {/* scrollableTarget="listTop"> */}
                   {localRecipes && loadRecipes(localRecipes)}
                 </InfiniteScroll>
               </div>
