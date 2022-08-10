@@ -1,7 +1,6 @@
 {
   "name": "recipe-diary",
   "homepage": "https://Build-My-Stack.github.io/recipe-diary-frontend/",
-
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,7 +15,6 @@
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
-
     "@types/react-dom": "^18.0.0",
     "@types/redux-logger": "^3.0.9",
     "axios": "^0.27.2",
@@ -27,6 +25,7 @@
     "node-sass": "^7.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-accessible-accordion": "^5.0.0",
     "react-bootstrap": "^2.4.0",
     "react-debounce-input": "^3.3.0",
     "react-dom": "^18.2.0",

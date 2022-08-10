@@ -139,7 +139,7 @@ const Header = ({modalCallback}: any) => {
               {!user && (
                 <div
                   {...myStuffNavItemStyle}
-                  className="noselect mt-2 ms-sm-4"
+                  className="noselect mt-2  mb-3 mb-sm-2 ms-sm-4 "
                   onClick={() => modalCallback()}>
                   <i className="noselect fa fa-lock me-1" />
                   <strong style={{cursor: 'pointer'}}>My Profile</strong>
