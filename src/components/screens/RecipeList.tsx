@@ -17,6 +17,14 @@ import actionReducers from '../../redux/actionReducers/index';
 import apis from '../../config/api';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {DebounceInput} from 'react-debounce-input';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionItemButton,
+  AccordionItemHeading,
+  AccordionItemPanel,
+} from 'react-accessible-accordion';
+import 'react-accessible-accordion/dist/fancy-example.css';
 
 const RecipesComponent = (props: any) => {
   const {pathDetails} = props;
@@ -52,6 +60,7 @@ const RecipesComponent = (props: any) => {
   const [isFiltersLoaded, updateFilterLoadStatus] = useState(false);
   const [recipeCount, updateRecipeCount] = useState(0);
   const [callerCounter, updateCallerCounter] = useState(0);
+
   // window.onbeforeunload = function () {
   //   window.sessionStorage.removeItem('selectedFilters');
   //   return '';
@@ -172,44 +181,57 @@ const RecipesComponent = (props: any) => {
         var list = value as string[];
 
         return (
-          <div className="noselect row my-4" key={objectKeyIndex}>
-            <strong>{title}</strong>
-            {list.map((filterDataElement: any, listIndex: number) => {
-              return (
-                <div className="noselect pt-2" key={listIndex}>
-                  <Generic.Checkbox
-                    key={listIndex}
-                    label={filterDataElement}
-                    value={(
-                      selectedFilters[key as keyof typeof filters] as string[]
-                    ).includes(filterDataElement)}
-                    onChange={async () => {
-                      var dict = {...selectedFilters} as RecipeFilters;
-                      var tempArr = [
-                        ...(dict[key as keyof typeof filters] as string[]),
-                      ];
-                      if (tempArr.includes(filterDataElement)) {
-                        tempArr.splice(tempArr.indexOf(filterDataElement), 1);
-                      } else {
-                        tempArr.push(filterDataElement);
-                      }
-                      dict[key as keyof typeof filters] = [...tempArr];
-                      await updateOffset(0);
-                      await updateRecipes(null);
-                      await updateRecipesLoading(true);
-                      await updateSelectedFilters(dict);
-                      await updateCallerCounter(callerCounter + 1);
+          <AccordionItem uuid={objectKeyIndex}>
+            <AccordionItemHeading>
+              <AccordionItemButton style={{backgroundColor: '#fff'}}>
+                <strong>{title}</strong>
+              </AccordionItemButton>
+            </AccordionItemHeading>
+            <AccordionItemPanel>
+              <div className="noselect row" key={objectKeyIndex}>
+                {list.map((filterDataElement: any, listIndex: number) => {
+                  return (
+                    <div className="noselect pt-2" key={listIndex}>
+                      <Generic.Checkbox
+                        key={listIndex}
+                        label={filterDataElement}
+                        value={(
+                          selectedFilters[
+                            key as keyof typeof filters
+                          ] as string[]
+                        ).includes(filterDataElement)}
+                        onChange={async () => {
+                          var dict = {...selectedFilters} as RecipeFilters;
+                          var tempArr = [
+                            ...(dict[key as keyof typeof filters] as string[]),
+                          ];
+                          if (tempArr.includes(filterDataElement)) {
+                            tempArr.splice(
+                              tempArr.indexOf(filterDataElement),
+                              1,
+                            );
+                          } else {
+                            tempArr.push(filterDataElement);
+                          }
+                          dict[key as keyof typeof filters] = [...tempArr];
+                          await updateOffset(0);
+                          await updateRecipes(null);
+                          await updateRecipesLoading(true);
+                          await updateSelectedFilters(dict);
+                          await updateCallerCounter(callerCounter + 1);
 
-                      window.sessionStorage.setItem(
-                        'selectedFilters',
-                        JSON.stringify(dict),
-                      );
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
+                          window.sessionStorage.setItem(
+                            'selectedFilters',
+                            JSON.stringify(dict),
+                          );
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </AccordionItemPanel>
+          </AccordionItem>
         );
       },
     );
@@ -274,8 +296,10 @@ const RecipesComponent = (props: any) => {
 
       <div className="noselect row col-12 m-0 p-0">
         {recipeFilters && (
-          <div className="noselect  col-12 col-sm-3 col-lg-2 border-end p-4 bg-white">
-            {loadFilters(recipeFilters)}
+          <div className="noselect  col-12 col-sm-3 col-lg-2 border-end bg-white p-0">
+            <Accordion preExpanded={[0]} allowZeroExpanded>
+              {loadFilters(recipeFilters)}
+            </Accordion>
           </div>
         )}
         <div className="noselect  col-12 col-sm-9 col-lg-10 m-0 p-0">
