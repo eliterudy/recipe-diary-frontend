@@ -108,7 +108,7 @@ const HomeComponent = (props: any) => {
         <div
           className="container"
           style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <p>{recipeError}</p>
+          <p>{"Oops! Looks like something went wrong. Please refresh the page so we can try and fetch the information you are looking for."}</p>
         </div>
       );
     }
@@ -160,7 +160,7 @@ const HomeComponent = (props: any) => {
               <div
                 className="noselect btn btn-outline-light btn-lg m-2"
                 onClick={() => navigate('/main/recipes')}>
-                Explore
+                Explore Recipes
               </div>
               <div
                 className="noselect btn btn-outline-light btn-lg m-2"
