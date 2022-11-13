@@ -20,6 +20,7 @@ import {
   CardTitle,
   CardSubtitle,
   CardText,
+  Tooltip,
 } from 'reactstrap';
 import {Link, useNavigate} from 'react-router-dom';
 import {cssHover} from './hoverProps';
@@ -46,8 +47,13 @@ const Generic = {
     });
     const {userState} = state;
     const {user} = userState;
+    const [timeTooltip, updateTimeTooltip] = useState(false);
+    const [saveTooltipStatus, updateSaveTooltipStatus] = useState(false);
 
     const [isMouseHoveredOnBookmarkButton, changeMouseStatus] = useState(false);
+    const toggleTimeTooltip = () => updateTimeTooltip(!timeTooltip);
+    const toggleSaveTooltip = () => updateSaveTooltipStatus(!saveTooltipStatus);
+
     const {data, index, redirect} = cardProps;
     const {
       _id,
@@ -121,6 +127,7 @@ const Generic = {
                 }}>
                 {user && (
                   <div
+                    id="save"
                     className="noselect  "
                     style={{
                       marginTop: -13,
@@ -200,6 +207,7 @@ const Generic = {
                   </div>
                 )}
                 <div
+                  id={'time'}
                   className="noselect px-2 mb-1 me-1 py-1"
                   style={{backgroundColor: 'antiquewhite', borderRadius: 50}}>
                   {totalTimeInMins} min
@@ -215,6 +223,22 @@ const Generic = {
               </div>
             </CardBody>
           </Card>
+          <Tooltip
+            placement={'top'}
+            isOpen={timeTooltip}
+            target={'time'}
+            toggle={toggleTimeTooltip}>
+            Total Cooking Time
+          </Tooltip>
+          {user && (
+            <Tooltip
+              placement={'top'}
+              isOpen={saveTooltipStatus}
+              target={'save'}
+              toggle={toggleSaveTooltip}>
+              Bookmark
+            </Tooltip>
+          )}
         </div>
       </Link>
     );

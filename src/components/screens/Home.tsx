@@ -108,7 +108,11 @@ const HomeComponent = (props: any) => {
         <div
           className="container"
           style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <p>{"Oops! Looks like something went wrong. Please refresh the page so we can try and fetch the information you are looking for."}</p>
+          <p>
+            {
+              'Oops! Looks like something went wrong. Please refresh the page so we can try and fetch the information you are looking for.'
+            }
+          </p>
         </div>
       );
     }

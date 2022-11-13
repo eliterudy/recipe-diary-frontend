@@ -89,11 +89,7 @@ const RecipeDetailsComponent = (props: any) => {
     return <Generic.Spinner text={'recipes'} />;
   } else if (recipeDetails) {
     var localRecipeDetails: RecipeDetails = recipeDetails;
-    if (
-      user &&
-      user.favorites !== {} &&
-      user.favorites.hasOwnProperty('recipes')
-    ) {
+    if (user && user.favorites && user.favorites.hasOwnProperty('recipes')) {
       const favoriteRecipes = user.favorites.recipes;
       localRecipeDetails = {
         ...localRecipeDetails,

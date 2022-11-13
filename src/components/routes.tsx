@@ -256,4 +256,4 @@ const MainRouter = () => {
   );
 };
 
-export default NoInternetWrapper(MainRouter);
+export default MainRouter;

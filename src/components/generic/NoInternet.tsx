@@ -72,7 +72,7 @@ const NoInternet = () => {
             }
           } else {
             alert(
-              'Server is not up yet! Please try again later or in a few minutes',
+              'The device is not connected to the internet! Please connect and try again',
             );
           }
         }}>

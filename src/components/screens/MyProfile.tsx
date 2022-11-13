@@ -44,9 +44,7 @@ const MyProfileComponent = (props: any) => {
   const {user} = userState;
   const navigate = useNavigate();
 
-  const [activeTab, updateActiveTab] = useState(
-    user && user.isVerified ? 0 : 1,
-  );
+  const [activeTab, updateActiveTab] = useState(0);
   const [myRecipes, updateMyRecipes] = useState<null | RecipeListElement[]>(
     null,
   );
@@ -256,11 +254,7 @@ const MyProfileComponent = (props: any) => {
   var localFavRecipes = favoriteRecipes;
   var localRecents = recents;
   var localMyRecipes = myRecipes;
-  if (
-    user &&
-    user.favorites !== {} &&
-    user.favorites.hasOwnProperty('recipes')
-  ) {
+  if (user && user.favorites.hasOwnProperty('recipes')) {
     var favRecipeList = user.favorites.recipes;
     localFavRecipes =
       localFavRecipes &&
@@ -394,9 +388,6 @@ const MyProfileComponent = (props: any) => {
               <Nav tabs className="m-2">
                 {tabs &&
                   tabs.map((tab, index) => {
-                    if (tab === 'My Recipes' && !user.isVerified) {
-                      return null;
-                    }
                     return (
                       <NavItem>
                         <NavLink
@@ -412,7 +403,7 @@ const MyProfileComponent = (props: any) => {
               </Nav>
               <TabContent activeTab={activeTab} className="m-3">
                 {/* For v2 */}
-                {/* <TabPane tabId={0}>
+                <TabPane tabId={0}>
                   <Col className="m-0">
                     <Button
                       color="success"
@@ -427,7 +418,7 @@ const MyProfileComponent = (props: any) => {
                     myRecipeError,
                     'Shared Recipes',
                   )}
-                </TabPane> */}
+                </TabPane>
                 <TabPane tabId={1}>
                   {loadRecipes(
                     localRecents,
