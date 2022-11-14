@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/recipe-diary-frontend/static/css/main.c79b4441.css",
-    "main.js": "/recipe-diary-frontend/static/js/main.4c2dea90.js",
+    "main.js": "/recipe-diary-frontend/static/js/main.d76c2f14.js",
     "static/js/787.4c716134.chunk.js": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js",
     "static/media/server-down.jpg": "/recipe-diary-frontend/static/media/server-down.663b0905a252be9d2500.jpg",
     "static/media/food-background-1.jpg": "/recipe-diary-frontend/static/media/food-background-1.c4dc8fb4298fe8d2e5d1.jpg",
@@ -22,11 +22,11 @@
     "static/media/loader.svg": "/recipe-diary-frontend/static/media/loader.20a032193282e842a5171692f26f991f.svg",
     "index.html": "/recipe-diary-frontend/index.html",
     "main.c79b4441.css.map": "/recipe-diary-frontend/static/css/main.c79b4441.css.map",
-    "main.4c2dea90.js.map": "/recipe-diary-frontend/static/js/main.4c2dea90.js.map",
+    "main.d76c2f14.js.map": "/recipe-diary-frontend/static/js/main.d76c2f14.js.map",
     "787.4c716134.chunk.js.map": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c79b4441.css",
-    "static/js/main.4c2dea90.js"
+    "static/js/main.d76c2f14.js"
   ]
 }
