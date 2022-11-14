@@ -244,6 +244,7 @@ const MainRouter = () => {
   return (
     <div>
       <Routes>
+        <Route path="/" element={<Navigate to="/main" replace />} />
         <Route path={'auth/*'} element={<AuthRoutes />} />
         <Route path={'main/*'} element={<MainRoutes />} />
         <Route path={'not-found'} element={<NotFound />} />
