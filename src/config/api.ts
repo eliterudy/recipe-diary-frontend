@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const baseURL = 'https://staging-recipediary.herokuapp.com';
+export const baseURL = 'https://recipe-diary-backend.onrender.com';
 
 const headers = {
   Accept: 'application/json',
