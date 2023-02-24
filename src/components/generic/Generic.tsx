@@ -223,7 +223,56 @@ const Generic = {
       </Link>
     );
   },
+  InfoCard: ({cardProps}: {cardProps: any}) => {
+    const {title, description, link, image, color} = cardProps;
+    return (
+      <>
+        <Card
+          className="noselect  col-12  mb-3  border-0 "
+          style={{
+            height: '100%',
+            backgroundColor: color,
+            boxShadow: `0px 0px 10px 3px #ccc`,
+          }}>
+          <CardBody className="noselect p-0  m-0 d-flex flex-column justify-content-end align-items-center">
+            {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
 
+            <div className="noselect p-0 px-4 ">
+              <CardTitle
+                className="mt-5"
+                style={{
+                  color: '#333',
+                  fontSize: '30px',
+                  lineHeight: '34px',
+                  fontWeight: 'bolder',
+
+                  textAlign: 'center',
+                  marginBottom: 20,
+                }}>
+                {title}
+              </CardTitle>
+              <CardSubtitle
+                className="noselect mb-2 px-2 "
+                style={{
+                  color: '#333',
+                  fontSize: '16px',
+                  lineHeight: '18px',
+                  fontWeight: 'lighter',
+                  textAlign: 'center',
+                }}>
+                {description}
+              </CardSubtitle>
+            </div>
+            <img
+              src={image}
+              className="img-fluid m-0 "
+              // style={{transform: 'translate(0px, 16px)'}}
+            />
+          </CardBody>
+        </Card>
+      </>
+    );
+  },
   Checkbox: (checkboxProps: CheckboxProps) => {
     const {label, value, onChange} = checkboxProps;
     return (

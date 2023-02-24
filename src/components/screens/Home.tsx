@@ -26,6 +26,8 @@ import {useNavigate} from 'react-router-dom';
 import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 import apis from '../../config/api';
 import {images} from '../../config/configuration';
+import {useMediaQuery} from 'react-responsive';
+import {homeCards} from '../../config/dataset';
 
 const HomeComponent = (props: any) => {
   const {pathDetails} = props;
@@ -134,6 +136,18 @@ const HomeComponent = (props: any) => {
         });
       });
   }
+
+  const isTabletOrMobile = useMediaQuery({query: '(max-width: 576px)'});
+
+  const renderHomeCard = (home: any, index: number) => {
+    console.log(home);
+    return (
+      <div key={index} className="flex-1 w-50 p-3">
+        <Generic.InfoCard cardProps={home} />
+      </div>
+    );
+  };
+
   return (
     <>
       <div
@@ -174,6 +188,43 @@ const HomeComponent = (props: any) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="container  d-flex justify-content-center ">
+        <div className="d-flex flex-wrap my-5 col-lg-8">
+          {homeCards.map((home, index) => renderHomeCard(home, index))}
+        </div>
+      </div>
+      <div className="row col-12 pt-5 m-0" style={{backgroundColor: '#eee'}}>
+        <div className="col col-12 col-sm-4 px-sm-5 position-relative">
+          <p
+            className={
+              isTabletOrMobile ? 'position-relative' : '  position-absolute'
+            }
+            style={{
+              width: isTabletOrMobile ? '100%' : '150%',
+              top: '50%',
+              transform: isTabletOrMobile
+                ? 'translate(0%, -10%)'
+                : 'translate(0%, -60%)',
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+              textAlign: 'center',
+              fontSize: isTabletOrMobile ? 20 : '2.5cqw',
+            }}>
+            The joy of cooking for others is one of life's greatest pleasures.
+            Take pride in creating a meal that brings people together.
+          </p>
+        </div>
+        <div className=" col col-sm-8 m-0">
+          <img
+            className="img-fluid w-100 m-0 "
+            src={
+              isTabletOrMobile
+                ? 'https://pngimg.com/d/chef_PNG211.png'
+                : 'https://pngimg.com/d/chef_PNG196.png'
+            }
+          />
         </div>
       </div>
       <div className="noselect container pt-5">
