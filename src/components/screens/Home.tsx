@@ -88,7 +88,7 @@ const HomeComponent = (props: any) => {
       return <Generic.Spinner text={'recipes'} />;
     } else if (!recipeLoading && localRecipes) {
       return localRecipes.map((special: RecipeListElement, index: number) => (
-        <div key={index} className={`col-12  col-sm-6 col-lg-4 mb-5 px-3 `}>
+        <div key={index} className={`col-12  col-sm-6 col-lg-4 px-3 mb-3 `}>
           {/* <Animate
             play={showSpecials}
             start={{opacity: 0, marginTop: 100}}
@@ -108,7 +108,11 @@ const HomeComponent = (props: any) => {
         <div
           className="container"
           style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <p>{"Oops! Looks like something went wrong. Please refresh the page so we can try and fetch the information you are looking for."}</p>
+          <p>
+            {
+              'Oops! Looks like something went wrong. Please refresh the page so we can try and fetch the information you are looking for.'
+            }
+          </p>
         </div>
       );
     }
@@ -139,11 +143,12 @@ const HomeComponent = (props: any) => {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          height: '50vh',
         }}
-        className="noselect bg-image shadow-5-strong vh-100 col-12">
+        className="noselect bg-image shadow-5-strong col-12">
         <div
-          className="noselect mask vh-100 col-12"
-          style={{backgroundColor: 'rgba(0, 0, 0, 0.85)'}}>
+          className="noselect mask  col-12"
+          style={{backgroundColor: 'rgba(0, 0, 0, 0.85)', height: '50vh'}}>
           <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
             <div className="noselect text-white">
               <h1

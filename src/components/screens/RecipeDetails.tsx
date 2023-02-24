@@ -147,12 +147,12 @@ const RecipeDetailsComponent = (props: any) => {
             </Breadcrumb>
           </div>
         )}
-        <div className="noselect container pb-5 ">
+        <div className="noselect container pb-5 px-0 ">
           <div className="noselect px-4 pb-5">
             <h1 className="noselect  col-12 mt-5">{title}</h1>
             <h5 className="noselect text-muted col-12 mb-4">{cuisine}</h5>
             <div className="noselect row">
-              <div className="noselect  d-flex flex-wrap col-12 col-md-6 mt-2">
+              <div className="noselect  d-flex flex-wrap col-12 col-md-8 mt-2">
                 <p
                   className="noselect py-1 px-3 my-1 "
                   style={{
@@ -179,7 +179,7 @@ const RecipeDetailsComponent = (props: any) => {
                 </p>
               </div>
               {!isTabletOrMobile && user && user.favorites && (
-                <div className="noselect col-12 col-md-6 d-flex justify-content-end align-items-end">
+                <div className="noselect col-12 col-md-4 d-flex justify-content-end align-items-end">
                   <div
                     onClick={e => {
                       e.preventDefault();
@@ -196,7 +196,7 @@ const RecipeDetailsComponent = (props: any) => {
                 </div>
               )}
             </div>
-            <div className="noselect " style={{position: 'relative'}}>
+            <div className="noselect" style={{position: 'relative'}}>
               <img
                 src={imageUrl}
                 className="noselect  img-fluid center col-12 my-3"
@@ -257,7 +257,7 @@ const RecipeDetailsComponent = (props: any) => {
               </div>
             </div>
             <Row>
-              <Col className="col-12 col-md-3 border-end">
+              <Col className="col-12 col-md-4 ">
                 <h3 className="noselect  col-12 mt-5">Ingredients</h3>
                 <div className="text-decoration-none">
                   {ingredients &&
@@ -265,14 +265,25 @@ const RecipeDetailsComponent = (props: any) => {
                       return (
                         <li
                           key={index}
-                          className="noselect my-4 text-decoration-none list-unstyled">
+                          className="noselect my-3 text-decoration-none list-unstyled">
                           {ingredient}
                         </li>
                       );
                     })}
                 </div>
               </Col>
-              <Col className="col-12 col-md-7 ps-md-5 ">
+              <div
+                className="col-md-1 flex-1 d-flex justify-content-center p-0"
+                style={{width: '1px', backgroundColor: 'white'}}>
+                <div
+                  style={{
+                    // flex: 1,
+                    width: 20,
+                    height: '100%',
+                    backgroundColor: '#eee',
+                  }}></div>
+              </div>
+              <Col className="col-12 col-md-7 ps-md-4 ">
                 <h3 className="noselect col-12 mt-5">Instructions</h3>
                 <ol className="text-decoration-none">
                   {instructions &&
@@ -280,7 +291,7 @@ const RecipeDetailsComponent = (props: any) => {
                       return (
                         <li
                           key={index}
-                          className="noselect text-decoration-none my-5">
+                          className="noselect text-decoration-none my-3">
                           {instruction}
                         </li>
                       );

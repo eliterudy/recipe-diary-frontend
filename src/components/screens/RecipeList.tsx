@@ -246,7 +246,7 @@ const RecipesComponent = (props: any) => {
       return localRecipes.map((recipe: RecipeListElement, index: number) => (
         <div
           key={index}
-          className={`col-12 col-sm-6 col-lg-4 col-xl-4 mb-5 px-3 `}>
+          className={`col-12 col-sm-6 col-lg-4 col-xl-4 mb-3 px-2 `}>
           <Generic.RecipeCard
             data={recipe}
             index={index}
@@ -367,7 +367,7 @@ const RecipesComponent = (props: any) => {
               <div>
                 <div className="d-flex flex-column align-items-end pt-3">
                   <em
-                    className="px-2 pt-1  me-3"
+                    className="px-2 pt-1  me-2"
                     style={{
                       border: '0.5px solid #ddd',
                       backgroundColor: '#eee',

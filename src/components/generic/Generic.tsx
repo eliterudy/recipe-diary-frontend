@@ -67,6 +67,7 @@ const Generic = {
         transition: '0.5s',
       },
       {transition: '0.3s'},
+      {height: '100%'},
     );
     var bookmarkIcon = () => {
       if (isMouseHoveredOnBookmarkButton) {
@@ -80,9 +81,10 @@ const Generic = {
       <Link
         to={redirect}
         state={{recipeId: data._id}}
-        style={{textDecoration: 'none', color: 'black'}}>
+        style={{textDecoration: 'none', color: 'black', height: '100%'}}>
         <div
           {...cardHoverStlye}
+          className="pb-3"
           onClick={() => {
             user &&
               apis
@@ -100,7 +102,9 @@ const Generic = {
                   );
                 });
           }}>
-          <Card className="noselect  col-12 col-sm-12 ">
+          <Card
+            className="noselect  col-12 col-sm-12 mb-3"
+            style={{height: '100%'}}>
             <CardBody className="noselect p-0">
               {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
               <div
