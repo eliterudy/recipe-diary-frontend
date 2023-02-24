@@ -27,7 +27,8 @@ import reduxApiCallers from '../../redux/thunks/reduxApiCallers';
 import apis from '../../config/api';
 import {images} from '../../config/configuration';
 import {useMediaQuery} from 'react-responsive';
-import {homeCards} from '../../config/dataset';
+import {homeCards, homeCards2} from '../../config/dataset';
+import classNames from 'classnames';
 
 const HomeComponent = (props: any) => {
   const {pathDetails} = props;
@@ -140,9 +141,8 @@ const HomeComponent = (props: any) => {
   const isTabletOrMobile = useMediaQuery({query: '(max-width: 576px)'});
 
   const renderHomeCard = (home: any, index: number) => {
-    console.log(home);
     return (
-      <div key={index} className="flex-1 w-50 p-3">
+      <div key={index} className="flex-1 col-12 col-sm-6 col-lg-3 p-3">
         <Generic.InfoCard cardProps={home} />
       </div>
     );
@@ -157,12 +157,12 @@ const HomeComponent = (props: any) => {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          height: '50vh',
+          height: '80vh',
         }}
         className="noselect bg-image shadow-5-strong col-12">
         <div
           className="noselect mask  col-12"
-          style={{backgroundColor: 'rgba(0, 0, 0, 0.85)', height: '50vh'}}>
+          style={{backgroundColor: 'rgba(0, 0, 0, 0.85)', height: '80vh'}}>
           <div className="noselect container d-flex align-items-center justify-content-center text-center h-100">
             <div className="noselect text-white">
               <h1
@@ -190,9 +190,101 @@ const HomeComponent = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="container  d-flex justify-content-center ">
-        <div className="d-flex flex-wrap my-5 col-lg-8">
+      <div className="container-fluid  d-flex justify-content-center ">
+        <div className="d-flex flex-wrap my-5 col-lg-12">
           {homeCards.map((home, index) => renderHomeCard(home, index))}
+        </div>
+      </div>
+      <div className="m-0 " style={{backgroundColor: '#ede'}}>
+        <div className="container  py-5 d-none d-lg-flex ">
+          <div className="d-flex flex-column justify-content-between align-items-start  col-sm-4 col-lg-3 py-5">
+            <p className="pb-1 ps-3 p-0 position-relative m-0">
+              <p className="h1 fw-bold"> {homeCards2[0].title}</p>
+              <p className="m-0" style={{width: '150%'}}>
+                {homeCards2[0].description}
+              </p>
+            </p>
+            <p className="pt-1 ps-3 p-0 position-relative">
+              <p className="h1 fw-bold" style={{width: '150%'}}>
+                {homeCards2[1].title}
+              </p>
+              <p className="m-0" style={{width: '150%'}}>
+                {homeCards2[1].description}
+              </p>
+            </p>
+          </div>
+          <div className="d-flex justify-content-center align-items-center col-sm-4 col-lg-6">
+            <img
+              className="img-fluid d-none d-lg-block"
+              src="https://previews.dropbox.com/p/thumb/AB35XweCsURULl6epPOYwEaEbHrVBItLNSfT8FhvisUu7xAiIShD4gnpMa8U7TxVSzHk_Ngi5M-ICqb2UqGnIiRR07ylY4Pw9u89itgxwXJEu7KF_9svIDPCv36tjIUcUy43gLKm8LZZ5O7EcLkZdEVim0n8GDweAhqRIuvY9GyUTQ99Q00WlF07WZ9R5Wa7kSEdY6XlJ5sYbBiR1lzLPQjGWQxr0YcM1b5AHNxUWsfKwuWKS0sS7IwIA42v0ZK3MDGrzJS0RTJLQmswP_UuQvA9fu0n592qOxPBm28oJppqSqCSU8mx0qJf03udHTBjLhjMx9Fs5LI_D53OEDfeY8oM4s-rk5l1vE2ODWTmPRBMv2w7DAompIYXzi3LopbltDs/p.png"
+            />
+          </div>
+          <div className="d-flex flex-column justify-content-between align-items-end col-sm-4 col-lg-3 py-5 ">
+            <p className="text-end pb-1 pe-3 p-0 position-relative m-0">
+              <p
+                className="h1 fw-bold"
+                style={{width: '150%', transform: 'translate(-35%, 0%'}}>
+                {homeCards2[2].title}
+              </p>
+              <p
+                className="m-0"
+                style={{width: '130%', transform: 'translate(-25%, 0%'}}>
+                {homeCards2[2].description}
+              </p>
+            </p>
+            <p className="text-end pt-1 pe-3 p-0 position-relative m-0">
+              <p
+                className="h1 fw-bold"
+                style={{width: '150%', transform: 'translate(-35%, 0%'}}>
+                {homeCards2[3].title}
+              </p>
+              <p
+                className="m-0"
+                style={{width: '140%', transform: 'translate(-30%, 0%'}}>
+                {homeCards2[3].description}
+              </p>
+            </p>
+          </div>
+        </div>
+        <div className="container-fluid px-4 py-5 d-flex flex-column align-items-center d-lg-none">
+          {homeCards2.map((elem: any, index: number) => {
+            console.log(index);
+            return (
+              <div
+                className={classNames('col-12 py-4 py-sm-2 d-block d-sm-flex ')}
+                style={{
+                  flexDirection: index % 2 == 0 ? 'row' : 'row-reverse',
+                }}>
+                <img
+                  src={elem.image}
+                  alt="i"
+                  className="col-12 col-sm-3 col-md-2 img-fluid"
+                  style={{
+                    borderRadius: '50%',
+                    aspectRatio: '1',
+                    padding: 10,
+                    backgroundColor: 'white',
+                  }}
+                />
+                <div className="col-12 col-sm-9 col-md-10 p-3 p-0 position-relative m-0 d-flex flex-column justify-content-center ">
+                  <p
+                    className={classNames(
+                      'h1 fw-bold text-center',
+                      index % 2 === 0 ? 'text-sm-start' : 'text-sm-end',
+                    )}>
+                    {elem.title}
+                  </p>
+                  <p
+                    className={classNames(
+                      'm-0  text-center text-center',
+                      index % 2 == 0 ? 'text-sm-start' : 'text-sm-end',
+                    )}>
+                    {elem.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="row col-12 pt-5 m-0" style={{backgroundColor: '#eee'}}>
@@ -227,6 +319,7 @@ const HomeComponent = (props: any) => {
           />
         </div>
       </div>
+
       <div className="noselect container pt-5">
         <h1
           className="noselect text-center mb-5"

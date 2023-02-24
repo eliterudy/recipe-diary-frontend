@@ -245,7 +245,6 @@ const Generic = {
                   fontSize: '30px',
                   lineHeight: '34px',
                   fontWeight: 'bolder',
-
                   textAlign: 'center',
                   marginBottom: 20,
                 }}>
@@ -263,11 +262,7 @@ const Generic = {
                 {description}
               </CardSubtitle>
             </div>
-            <img
-              src={image}
-              className="img-fluid m-0 "
-              // style={{transform: 'translate(0px, 16px)'}}
-            />
+            <img src={image} className="img-fluid m-0 " alt="a" />
           </CardBody>
         </Card>
       </>
