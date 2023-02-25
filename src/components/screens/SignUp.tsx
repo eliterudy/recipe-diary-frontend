@@ -185,7 +185,7 @@ const SignUpComponent = () => {
                     </FormText>
                     <FormFeedback>{formErrors.username}</FormFeedback>
                   </FormGroup>
-                  <FormGroup className="mb-4 fa fa-cance">
+                  <FormGroup className="mb-4">
                     <Label for="firstname">First name</Label>
                     <Input
                       invalid={formErrors.firstname.length > 0}

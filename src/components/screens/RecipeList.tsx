@@ -109,13 +109,15 @@ const RecipesComponent = (props: any) => {
 
   useEffect(() => {
     if (isFiltersLoaded) {
-      getRecipesFromApi();
+      console.log('here me');
+      updateRecipesLoading(true);
+      setTimeout(() => {
+        getRecipesFromApi();
+      }, 2000);
     }
   }, [callerCounter]);
 
   var getRecipesFromApi = () => {
-    updateRecipesLoading(true);
-
     apis
       .getAllRecipes({
         search,
@@ -189,7 +191,7 @@ const RecipesComponent = (props: any) => {
                 <strong>{title}</strong>
               </AccordionItemButton>
             </AccordionItemHeading>
-            <AccordionItemPanel className=" p-3 pt-0">
+            {/* <AccordionItemPanel className=" p-3 pt-0">
               <div className="noselect row" key={objectKeyIndex}>
                 {list.map((filterDataElement: any, listIndex: number) => {
                   return (
@@ -232,7 +234,7 @@ const RecipesComponent = (props: any) => {
                   );
                 })}
               </div>
-            </AccordionItemPanel>
+            </AccordionItemPanel> */}
           </AccordionItem>
         );
       },
@@ -240,9 +242,7 @@ const RecipesComponent = (props: any) => {
   };
 
   const loadRecipes = (localRecipes: RecipeListElement[]) => {
-    if (recipeLoading) {
-      return <Generic.Spinner text={'recipes'} />;
-    } else if (!recipeLoading && localRecipes) {
+    if (!recipeLoading && localRecipes) {
       return localRecipes.map((recipe: RecipeListElement, index: number) => (
         <div
           key={index}
@@ -304,16 +304,15 @@ const RecipesComponent = (props: any) => {
             </Accordion>
           </div>
         )}
-        <div className="noselect  col-12 col-sm-9 col-lg-10 m-0 p-0">
+        <div className="noselect  col-12 col-sm-9 col-lg-10 m-0 p-0 ">
           <div
-            className="noselect col-12 border-bottom"
+            className="noselect col-12 border-bottom px-3  py-2"
             style={{
-              padding: 10,
-              paddingTop: 8,
-              paddingBottom: 8,
+              // padding: 2,
+
               backgroundColor: '#eee',
             }}>
-            <InputGroup className="col-12">
+            <InputGroup className="col-12 px-2">
               <DebounceInput
                 minLength={2}
                 debounceTimeout={300}
@@ -363,6 +362,11 @@ const RecipesComponent = (props: any) => {
             </InputGroup>
           </div>
           <div className="noselect  col-12   pt-1 px-3">
+            {recipeLoading && (
+              <div className="vh-100">
+                <Generic.Spinner text={'recipes'} />
+              </div>
+            )}
             {recipes && (
               <div>
                 <div className="d-flex flex-column align-items-end pt-3">

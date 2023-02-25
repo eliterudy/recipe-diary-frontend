@@ -206,14 +206,16 @@ const Header = ({modalCallback}: any) => {
                       <div>
                         <DropdownItem divider />
                         {/* For v2 */}
-                        {/* <DropdownItem
-                          onClick={() => {
-                            navigate('/main/my-profile/', {
-                              state: {tab: 0},
-                            });
-                          }}>
-                          My Recipes
-                        </DropdownItem> */}
+                        {user && user.admin == true && (
+                          <DropdownItem
+                            onClick={() => {
+                              navigate('/main/my-profile/', {
+                                state: {tab: 0},
+                              });
+                            }}>
+                            My Recipes
+                          </DropdownItem>
+                        )}
                         <DropdownItem
                           onClick={() => {
                             navigate('/main/my-profile/', {

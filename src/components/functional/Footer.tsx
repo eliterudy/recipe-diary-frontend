@@ -4,12 +4,16 @@ import {Link} from 'react-router-dom';
 const Footer = () => {
   return (
     <div className="noselect footer">
-      <div className="noselect mx-4">
+      <div className="noselect m-4 mb-0 container">
         <div className="noselect row justify-content-center align-items-center col-12">
-          <div className="noselect col-12 col-sm-4 align-items-center ">
-            <ul className="noselect list-unstyled d-flex flex-row col-12 justify-content-center align-items-center mb-0  ">
+          <div className="noselect col-12 col-sm-8 align-items-center ">
+            <p className="h5 text-white m-0">Quick Links</p>
+            <ul className="noselect  d-flex flex-column col-12 justify-content-start align-items-start mb-0  ">
               <li className="noselect me-2">
-                <Link to="/">Home</Link>
+                <Link to="/">HomePage</Link>
+              </li>
+              <li className="noselect me-2">
+                <Link to="/main/recipes">Recipes</Link>
               </li>
               <li className="noselect me-2">
                 <Link to="/main/my-profile">My Profile</Link>
@@ -20,13 +24,6 @@ const Footer = () => {
                 <Link to="/main/contact-us">Contact Us</Link>
               </li> */}
             </ul>
-          </div>
-          <div className="noselect col-12 col-sm-4 align-items-center justify-content-around">
-            <p
-              className="noselect mb-0 "
-              style={{color: '#ddd', textAlign: 'center'}}>
-              © Copyright 2022 Recipe Diary
-            </p>
           </div>
 
           <div className="noselect col-12 col-sm-4 row d-flex flex-row align-items-center justify-content-center mt-2 mt-sm-0">
@@ -57,6 +54,13 @@ const Footer = () => {
               </a>
             </div>
           </div>
+        </div>
+        <div className="noselect col-12 mt-3 align-items-center justify-content-around">
+          <p
+            className="noselect mb-0 "
+            style={{color: '#ddd', textAlign: 'center'}}>
+            © Copyright 2023 Recipe Diary
+          </p>
         </div>
       </div>
     </div>

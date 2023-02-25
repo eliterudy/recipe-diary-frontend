@@ -190,12 +190,13 @@ const HomeComponent = (props: any) => {
           </div>
         </div>
       </div>
-      <div className="container-fluid  d-flex justify-content-center ">
+      <div className="container  d-flex justify-content-center ">
         <div className="d-flex flex-wrap my-5 col-lg-12">
           {homeCards.map((home, index) => renderHomeCard(home, index))}
         </div>
       </div>
       <div className="m-0 " style={{backgroundColor: '#ede'}}>
+        {/* Purple view for large screens */}
         <div className="container  py-5 d-none d-lg-flex ">
           <div className="d-flex flex-column justify-content-between align-items-start  col-sm-4 col-lg-3 py-5">
             <p className="pb-1 ps-3 p-0 position-relative m-0">
@@ -246,19 +247,21 @@ const HomeComponent = (props: any) => {
             </p>
           </div>
         </div>
-        <div className="container-fluid px-4 py-5 d-flex flex-column align-items-center d-lg-none">
+        {/* Purple view for small screens */}
+        <div className="container px-3 py-5 d-flex flex-column align-items-center d-lg-none">
           {homeCards2.map((elem: any, index: number) => {
-            console.log(index);
             return (
               <div
-                className={classNames('col-12 py-4 py-sm-2 d-block d-sm-flex ')}
+                className={classNames(
+                  'col-12 py-4 px-2 px-sm-0 py-sm-2 d-block d-sm-flex ',
+                )}
                 style={{
-                  flexDirection: index % 2 == 0 ? 'row' : 'row-reverse',
+                  flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
                 }}>
                 <img
                   src={elem.image}
                   alt="i"
-                  className="col-12 col-sm-3 col-md-2 img-fluid"
+                  className="col-12 col-sm-4 col-md-3 img-fluid"
                   style={{
                     borderRadius: '50%',
                     aspectRatio: '1',
@@ -266,7 +269,7 @@ const HomeComponent = (props: any) => {
                     backgroundColor: 'white',
                   }}
                 />
-                <div className="col-12 col-sm-9 col-md-10 p-3 p-0 position-relative m-0 d-flex flex-column justify-content-center ">
+                <div className="col-12 col-sm-8 col-md-9 p-3 p-0 position-relative m-0 d-flex flex-column justify-content-center ">
                   <p
                     className={classNames(
                       'h1 fw-bold text-center',
@@ -287,7 +290,7 @@ const HomeComponent = (props: any) => {
           })}
         </div>
       </div>
-      <div className="row col-12 pt-5 m-0" style={{backgroundColor: '#eee'}}>
+      {/* <div className="row col-12 pt-5 m-0" style={{backgroundColor: '#eee'}}>
         <div className="col col-12 col-sm-4 px-sm-5 position-relative">
           <p
             className={
@@ -318,7 +321,7 @@ const HomeComponent = (props: any) => {
             }
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="noselect container pt-5">
         <h1
