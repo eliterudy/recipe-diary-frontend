@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/recipe-diary-frontend/static/css/main.c79b4441.css",
-    "main.js": "/recipe-diary-frontend/static/js/main.378e0a16.js",
+    "main.js": "/recipe-diary-frontend/static/js/main.1593053a.js",
     "static/js/787.4c716134.chunk.js": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js",
     "static/media/center-food-3.png": "/recipe-diary-frontend/static/media/center-food-3.21fe889ff7e1da8aed4c.png",
     "static/media/server-down.jpg": "/recipe-diary-frontend/static/media/server-down.663b0905a252be9d2500.jpg",
@@ -31,11 +31,11 @@
     "static/media/loader.svg": "/recipe-diary-frontend/static/media/loader.20a032193282e842a5171692f26f991f.svg",
     "index.html": "/recipe-diary-frontend/index.html",
     "main.c79b4441.css.map": "/recipe-diary-frontend/static/css/main.c79b4441.css.map",
-    "main.378e0a16.js.map": "/recipe-diary-frontend/static/js/main.378e0a16.js.map",
+    "main.1593053a.js.map": "/recipe-diary-frontend/static/js/main.1593053a.js.map",
     "787.4c716134.chunk.js.map": "/recipe-diary-frontend/static/js/787.4c716134.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c79b4441.css",
-    "static/js/main.378e0a16.js"
+    "static/js/main.1593053a.js"
   ]
 }
