@@ -16,6 +16,9 @@ import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
 import {useMediaQuery} from 'react-responsive';
 import actions from '../../redux/actionReducers/index';
+import apis from '../../config/api';
+import FormValidators from '../generic/FormValidators';
+import {icons} from '../../config/configuration';
 
 const {loadUser, removeUser} = actions;
 
@@ -25,6 +28,14 @@ const SignInComponent = () => {
   const navigate = useNavigate();
 
   const [isErrorVisible, updateErrorVisible] = useState(false);
+  const [formValues, updateFormValues] = useState({
+    username: '',
+    password: '',
+  });
+  const [formErrors, updateFormErrors] = useState({
+    username: '',
+    password: '',
+  });
 
   const state = useSelector((state: any) => {
     return {
@@ -70,6 +81,48 @@ const SignInComponent = () => {
     },
   );
 
+  const submitLoginDetailsToApi = () => {
+    // alert('Either username or password is not entered');
+    const {username, password} = formValues;
+    const {textValidator, passwordValidator} = FormValidators;
+    if (
+      textValidator(username, 4, 20)[1] ||
+      passwordValidator(password, 6, 20)[1]
+    ) {
+      updateFormErrors({
+        ...formErrors,
+        username: textValidator(username, 4, 20)[0],
+        password: passwordValidator(password, 6, 20)[0],
+      });
+    } else {
+      apis
+        .login({username: formValues.username, password: formValues.password})
+        .then(({data}) => {
+          if (data.success) {
+            localStorage.setItem('token', data.token);
+            dispatch(loadUser(data.user));
+            navigate('/');
+          }
+        })
+        .catch(err => {
+          if (err && err.message && err.message === 'Network Error') {
+            if (navigator.onLine) {
+              navigate('/server-down', {
+                state: {redirectPath: '/auth/signin'},
+              });
+            } else {
+              alert(
+                'This action cannot be performed at the moment because of no internet connection. Please connect to an internet connection and try again',
+              );
+            }
+          } else {
+            updateErrorVisible(true);
+          }
+        });
+    }
+  };
+
+  const {textValidator, passwordValidator} = FormValidators;
   return (
     <div className="p-3">
       <div className="noselect col-12 d-flex flex-row justify-content-center my-5  ">
@@ -80,7 +133,7 @@ const SignInComponent = () => {
             <div className=" mx-5 d-flex flex-column align-items-center">
               <img
                 className="noselect m-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={100}
                 width={100}
                 alt="Recipe Diary"
@@ -114,30 +167,52 @@ const SignInComponent = () => {
                 <FormGroup className="mb-4">
                   <Label for="password">Username</Label>
                   <Input
+                    invalid={formErrors.username.length > 0}
                     type="text"
                     name="username"
                     id="username"
-                    placeholder=""
+                    placeholder="John"
+                    value={formValues.username}
+                    onChange={({target}) => {
+                      updateFormValues({
+                        ...formValues,
+                        username: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        username: textValidator(target.value, 4, 20)[0],
+                      });
+                    }}
                   />
-                  <FormText>Example: john</FormText>
+                  <FormFeedback>{formErrors.username}</FormFeedback>
                 </FormGroup>
                 <FormGroup className="mb-4">
                   <Label for="password">Password</Label>
                   <Input
+                    invalid={formErrors.password.length > 0}
                     type="password"
                     name="password"
                     id="password"
-                    placeholder=""
+                    placeholder="***"
+                    value={formValues.password}
+                    onChange={({target}) => {
+                      updateFormValues({
+                        ...formValues,
+                        password: target.value,
+                      });
+                      updateFormErrors({
+                        ...formErrors,
+                        password: passwordValidator(target.value, 6, 20)[0],
+                      });
+                    }}
                   />
-                  <FormText>Example: ****</FormText>
+                  <FormFeedback>{formErrors.password}</FormFeedback>
                 </FormGroup>
                 <Button
                   {...signInButtonStyle}
                   onClick={e => {
                     e.preventDefault();
-                    updateErrorVisible(true);
-                    dispatch(loadUser(null));
-                    navigate('/');
+                    submitLoginDetailsToApi();
                   }}>
                   Sign In
                 </Button>

@@ -32,6 +32,22 @@ export const userSlice = createSlice({
         state.user.favorites &&
         state.user.favorites.recipes.push(action.payload);
     },
+    addRecipeToRecents: (state, action) => {
+      if (
+        state.user &&
+        state.user.recents &&
+        state.user.recents.recipes &&
+        state.user.recents.recipes.includes(action.payload)
+      ) {
+        state.user.recents.recipes.splice(
+          state.user.recents.recipes.indexOf(action.payload),
+          1,
+        );
+      }
+      state.user &&
+        state.user.recents &&
+        state.user.recents.recipes.push(action.payload);
+    },
     deleteRecipeFromFavorites: (state, action) => {
       state.errMessUser = null;
       state.isLoadingUser = false;
@@ -43,19 +59,13 @@ export const userSlice = createSlice({
         );
     },
     loadUser: (state, action) => {
-      console.log('LOAD USER');
-      state.user = {
-        _id: 1,
-        firstname: 'Harvey',
-        lastname: 'Spectre',
-        fullname: 'Harvey Spectre',
-        favorites: {
-          recipes: [],
-        },
-      };
+      state.user = action.payload;
     },
     removeUser: state => {
       state.user = null;
+    },
+    verifyUser: (state, action) => {
+      state.user && (state.user.isVerified = action.payload);
     },
   },
 });
@@ -65,8 +75,10 @@ export const {
   favoritesLoading,
   favoritesLoadingFailed,
   addRecipeToFavorites,
+  addRecipeToRecents,
   deleteRecipeFromFavorites,
   loadUser,
   removeUser,
+  verifyUser,
 } = userSlice.actions;
 export default userSlice.reducer;

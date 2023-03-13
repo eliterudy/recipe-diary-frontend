@@ -1,5 +1,6 @@
 {
-  "name": "the-cook-book",
+  "name": "recipe-diary",
+  "homepage": "https://gavindmello97.github.io/recipe-diary-frontend/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -11,6 +12,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "@types/jest": "^27.0.1",
+    "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -20,11 +22,13 @@
     "bootstrap-social": "^5.1.1",
     "classnames": "^2.3.1",
     "font-awesome": "^4.7.0",
-    "node-sass": "^7.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-accessible-accordion": "^5.0.0",
     "react-bootstrap": "^2.4.0",
+    "react-debounce-input": "^3.3.0",
     "react-dom": "^18.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^8.0.2",
     "react-responsive": "^9.0.0-beta.10",
     "react-router-dom": "^6.3.0",
@@ -38,6 +42,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -62,6 +68,7 @@
     ]
   },
   "devDependencies": {
-    "babel-plugin-typescript-to-proptypes": "^2.0.0"
+    "babel-plugin-typescript-to-proptypes": "^2.0.0",
+    "gh-pages": "^4.0.0"
   }
 }

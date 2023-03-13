@@ -27,14 +27,16 @@ import {useLocation} from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import {Dispatch} from '@reduxjs/toolkit';
 import {cssHover} from '../generic/hoverProps';
-import {randomColorGenerator} from '../../config/configuration';
+import {icons, randomColorGenerator} from '../../config/configuration';
 import actions from '../../redux/actionReducers/index';
+import {useMediaQuery} from 'react-responsive';
 
 const {loadUser, removeUser} = actions;
 
 const avatarColor = randomColorGenerator();
 const Header = ({modalCallback}: any) => {
   const dispatch: Dispatch<any> = useDispatch();
+  const isTabletOrMobile = useMediaQuery({query: '(max-width: 820px)'});
 
   const myStuffNavItemStyle = cssHover(
     {
@@ -65,6 +67,7 @@ const Header = ({modalCallback}: any) => {
   const navigate = useNavigate();
   const [isNavOpen, updateNavOpen] = useState(false);
   const [isDropdownOpen, updateDropdown] = useState(false);
+  const [myProfileDropdown, updateMyProfileDropdown] = useState(false);
 
   const toggleNav = () => {
     updateNavOpen(!isNavOpen);
@@ -79,9 +82,9 @@ const Header = ({modalCallback}: any) => {
   const {user} = userState;
 
   return (
-    <>
+    <div className="col-12">
       {/* Show toggle button when size is smaller than md */}
-      <Navbar light expand="md" className="noselect border-bottom">
+      <Navbar light expand="md" className="noselect border-bottom col-12">
         <div
           className="noselect container-fluid px-sm-4 row mx-sm-0"
           // style={{display: 'flex', flexDirection: 'row'}}
@@ -93,13 +96,13 @@ const Header = ({modalCallback}: any) => {
           />
           <NavbarBrand
             className="noselect col-8 col-sm-3 m-sm-0 p-sm-0"
-            href="/">
+            href="/main/home">
             <div
               className="noselect d-flex flex-row align-items-center"
               style={{marginLeft: 12}}>
               <img
                 className="noselect col-auto"
-                src="../../assets/icons/app_logo.png"
+                src={icons.app_logo}
                 height={50}
                 width={50}
                 alt="Recipe Diary"
@@ -115,14 +118,20 @@ const Header = ({modalCallback}: any) => {
             isOpen={isNavOpen}
             navbar>
             {/* Navigation */}
-            <Nav navbar>
-              <NavItem className="noselect me-2">
-                <NavLink tag={RRNavLink} className={'nav-link '} to="/home">
+            <Nav navbar className={isTabletOrMobile ? 'offset-0' : 'offset-2'}>
+              <NavItem className="noselect ms-sm-4 ">
+                <NavLink
+                  tag={RRNavLink}
+                  className={'nav-link '}
+                  to="/main/home">
                   <strong>Home</strong>
                 </NavLink>
               </NavItem>
-              <NavItem className="noselect mx-sm-1">
-                <NavLink tag={RRNavLink} className={'nav-link '} to="/recipes">
+              <NavItem className="noselect ms-sm-4">
+                <NavLink
+                  tag={RRNavLink}
+                  className={'nav-link '}
+                  to="/main/recipes">
                   <strong>Recipes</strong>
                 </NavLink>
               </NavItem>
@@ -130,36 +139,39 @@ const Header = ({modalCallback}: any) => {
               {!user && (
                 <div
                   {...myStuffNavItemStyle}
-                  className="noselect mt-2 mx-3"
+                  className="noselect mt-2  mb-3 mb-sm-2 ms-sm-4 "
                   onClick={() => modalCallback()}>
                   <i className="noselect fa fa-lock me-1" />
                   <strong style={{cursor: 'pointer'}}>My Profile</strong>
                 </div>
               )}
               {user && (
-                <NavItem className="noselect mx-sm-1">
+                <NavItem className="noselect ms-sm-4">
                   <NavLink
                     tag={RRNavLink}
                     className={'nav-link '}
-                    to="/my-profile">
+                    to="/main/my-profile">
                     <strong>My Profile</strong>
                   </NavLink>
                 </NavItem>
               )}
-              <NavItem className="noselect mx-sm-1">
+              {/* For v2 */}
+              {/* <NavItem className="noselect mx-sm-1">
                 <NavLink
                   tag={RRNavLink}
                   className={'nav-link '}
-                  to="/contact-us">
+                  to="/main/contact-us">
                   <strong>Contact Us</strong>
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
             </Nav>
             <Nav className="noselect ml-auto" navbar>
               {user ? (
                 <Dropdown
                   isOpen={isDropdownOpen}
-                  toggle={() => updateDropdown(!isDropdownOpen)}>
+                  toggle={() => {
+                    updateDropdown(!isDropdownOpen);
+                  }}>
                   <DropdownToggle
                     style={{
                       backgroundColor: avatarColor,
@@ -170,12 +182,65 @@ const Header = ({modalCallback}: any) => {
                     }}>
                     <Avatar size={'md'} name={user.fullname} />
                   </DropdownToggle>
+
                   <DropdownMenu style={{marginTop: 14, marginRight: -15}}>
-                    <DropdownItem>My Profile</DropdownItem>
-                    <DropdownItem>My Recipes</DropdownItem>
-                    <DropdownItem>Saved Recipes</DropdownItem>
+                    <div
+                      className="mx-3 mt-1 mb-2"
+                      onClick={() =>
+                        updateMyProfileDropdown(!myProfileDropdown)
+                      }
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <span> My Profile </span>
+                      {myProfileDropdown ? (
+                        <i className="fa fa-chevron-down " />
+                      ) : (
+                        <i className="fa fa-chevron-right " />
+                      )}
+                    </div>
+
+                    {myProfileDropdown && (
+                      <div>
+                        <DropdownItem divider />
+                        {/* For v2 */}
+                        {user && user.admin == true && (
+                          <DropdownItem
+                            onClick={() => {
+                              navigate('/main/my-profile/', {
+                                state: {tab: 0},
+                              });
+                            }}>
+                            My Recipes
+                          </DropdownItem>
+                        )}
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/main/my-profile/', {
+                              state: {tab: 1},
+                            });
+                          }}>
+                          Recent Viewed
+                        </DropdownItem>
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/main/my-profile/', {
+                              state: {tab: 2},
+                            });
+                          }}>
+                          Saved Recipes
+                        </DropdownItem>
+                      </div>
+                    )}
                     <DropdownItem divider />
-                    <DropdownItem onClick={() => dispatch(removeUser())}>
+                    <DropdownItem
+                      onClick={() => {
+                        localStorage.setItem('token', '');
+
+                        dispatch(removeUser());
+                      }}>
                       Logout
                     </DropdownItem>
                   </DropdownMenu>
@@ -186,7 +251,7 @@ const Header = ({modalCallback}: any) => {
                     outline
                     onClick={() => {
                       // dispatch(loadUser(null));
-                      navigate('auth/signin');
+                      navigate('/auth/signin');
                     }}
                     {...signInButtonStyle}>
                     <span className="noselect">{` Sign In`}</span>
@@ -197,7 +262,7 @@ const Header = ({modalCallback}: any) => {
           </Collapse>
         </div>
       </Navbar>
-    </>
+    </div>
   );
 };
 

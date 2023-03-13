@@ -1,52 +1,139 @@
-import axios from "axios";
-export const baseURL = "https://localhost:3443/";
+import axios from 'axios';
+export const baseURL = 'https://recipe-diary-backend.onrender.com';
 
 const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json",
-  Origin: baseURL,
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+  // Origin: baseURL,
 };
 
 const ApiCaller = axios.create({
   baseURL: baseURL,
-  timeout: 20000,
+  timeout: 10000,
   headers: headers,
 });
 ApiCaller.interceptors.request.use(async function (config: any) {
-  let token = await localStorage.getItem("token");
-  config.headers.Authorization = token ? `${token}` : "";
+  let token = await localStorage.getItem('token');
+  config.headers.Authorization = token ? `bearer ${token}` : '';
   return config;
 });
 
 const recipeApiList = {
-  getRecipes: () => {
+  getAllRecipes: (params: any) => {
     return ApiCaller({
       url: `/recipes`,
-      method: "get",
-    });
-  },
- 
- 
-  getComments: (params: any) => {
-    return ApiCaller({
-      url: `/comments`,
-      method: "get",
+      method: 'get',
       params,
     });
   },
-  postNewComment: (data: any) => {
+  getRecipe: (recipeId: string) => {
     return ApiCaller({
-      url: `/comments`,
-      method: "post",
-      data,
+      url: `/recipes/id/${recipeId}`,
+      method: 'get',
     });
   },
 
-  postFeedback: (data: any) => {
+  // postRecipe: (payload: any) => {
+  //   return ApiCaller({
+  //     url: `/users/verifyUser`,
+  //     method: 'post',
+  //     // data: payload,
+  //   });
+  // },
+
+  getRecipeFilters: () => {
     return ApiCaller({
-      url: `/feedback`,
-      method: "post",
+      url: `/recipes/filters`,
+      method: 'get',
+    });
+  },
+
+  postRecipeImage: (data: any, params: any) => {
+    return ApiCaller({
+      url: `/uploads/recipe`,
+      method: 'post',
       data,
+      params,
+    });
+  },
+
+  postRecipe: (data: any) => {
+    return ApiCaller({
+      url: `/recipes`,
+      method: 'post',
+      data,
+    });
+  },
+};
+
+const userApiList = {
+  login: (payload: any) => {
+    return ApiCaller({
+      url: `/users/login`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
+  signup: (payload: any) => {
+    return ApiCaller({
+      url: `/users/signup`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
+  usernameCheck: (payload: any) => {
+    return ApiCaller({
+      url: `/users/usernameCheck`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
+  getUserDetails: () => {
+    return ApiCaller({
+      url: `/users/userDetails`,
+      method: 'get',
+    });
+  },
+  getRecipesByCategory: (params: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'get',
+      params,
+    });
+  },
+  postToCategory: (payload: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'post',
+      data: payload,
+    });
+  },
+
+  deleteFromCategory: (payload: any) => {
+    return ApiCaller({
+      url: `/users/category`,
+      method: 'delete',
+      data: payload,
+    });
+  },
+
+  postVerifyUser: (payload: any) => {
+    return ApiCaller({
+      url: `/users/verifyUser`,
+      method: 'post',
+      // data: payload,
+    });
+  },
+};
+
+const apiDefault = {
+  checkServerConnection: () => {
+    return ApiCaller({
+      url: `/checkConnection`,
+      method: 'get',
     });
   },
 };
@@ -54,4 +141,6 @@ const recipeApiList = {
 export default {
   ApiCaller,
   ...recipeApiList,
+  ...userApiList,
+  ...apiDefault,
 };
