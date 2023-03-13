@@ -43,23 +43,22 @@ const MyProfileComponent = (props: any) => {
   const {recipeState, userState} = state;
   const {user} = userState;
   const navigate = useNavigate();
-
+  console.log('USER', user);
   const [activeTab, updateActiveTab] = useState(
-    user && user.isVerified ? 0 : 1,
+    user && user.admin == true ? 0 : 1,
   );
   const [myRecipes, updateMyRecipes] = useState<null | RecipeListElement[]>(
     null,
   );
-  const [myRecipeLoading, updateMyRecipeLoading] = useState(false);
+  const [myRecipeLoading, updateMyRecipeLoading] = useState(true);
   const [myRecipeError, updateMyRecipeError] = useState(null);
   const [recents, updateRecents] = useState<null | RecipeListElement[]>(null);
-  const [recentsLoading, updateRecentsLoading] = useState(false);
+  const [recentsLoading, updateRecentsLoading] = useState(true);
   const [recentsError, updateRecentsError] = useState(null);
   const [favoriteRecipes, updateFavoriteRecipes] = useState<
     null | RecipeListElement[]
   >(null);
-  const [favoriteRecipesLoading, updateFavoriteRecipesLoading] =
-    useState(false);
+  const [favoriteRecipesLoading, updateFavoriteRecipesLoading] = useState(true);
   const [favoriteRecipesError, updateFavoriteRecipesError] = useState(null);
   useEffect(() => {
     if (locationParams && locationParams.state) {
@@ -147,52 +146,52 @@ const MyProfileComponent = (props: any) => {
     .map(elem => elem.substring(0, 1).toUpperCase() + elem.substring(1))
     .join(' ');
 
-  const verifyCardHoverStyle = cssHover(
-    {
-      transform: 'scale(1.05)',
-      zIndex: 10,
-      transition: '0.5s',
-    },
-    {transition: '0.3s'},
-    {
-      flex: 1,
-      padding: 10,
-      paddingLeft: 20,
-      paddingRight: 20,
-      backgroundColor: '#774360',
-      borderRadius: 8,
-    },
-  );
-  const getVerifiedButtonStyle = cssHover(
-    {
-      border: '1px solid #2b72a1',
-      boxShadow: '0px 0px 1px 2px rgba(231, 171, 121, 1)',
-      backgroundColor: '#B25068',
-    },
-    {
-      border: '0px solid #2b72a1',
-      backgroundColor: '#B25068',
-    },
-    {
-      cursor: 'pointer',
-      color: '#ECDBBA',
-    },
-  );
-  const editProfileButtonStyle = cssHover(
-    {
-      border: '1px solid #2b72a1',
-      boxShadow: '0px 0px 1px 2px rgba(43, 114, 161, 0.6)',
-      color: '#2b72a1',
-    },
-    {
-      border: '1px solid #2b59a1',
-      color: '#2b59a1',
-    },
-    {
-      cursor: 'pointer',
-      backgroundColor: 'white',
-    },
-  );
+  // const verifyCardHoverStyle = cssHover(
+  //   {
+  //     transform: 'scale(1.05)',
+  //     zIndex: 10,
+  //     transition: '0.5s',
+  //   },
+  //   {transition: '0.3s'},
+  //   {
+  //     flex: 1,
+  //     padding: 10,
+  //     paddingLeft: 20,
+  //     paddingRight: 20,
+  //     backgroundColor: '#774360',
+  //     borderRadius: 8,
+  //   },
+  // );
+  // const getVerifiedButtonStyle = cssHover(
+  //   {
+  //     border: '1px solid #2b72a1',
+  //     boxShadow: '0px 0px 1px 2px rgba(231, 171, 121, 1)',
+  //     backgroundColor: '#B25068',
+  //   },
+  //   {
+  //     border: '0px solid #2b72a1',
+  //     backgroundColor: '#B25068',
+  //   },
+  //   {
+  //     cursor: 'pointer',
+  //     color: '#ECDBBA',
+  //   },
+  // );
+  // const editProfileButtonStyle = cssHover(
+  //   {
+  //     border: '1px solid #2b72a1',
+  //     boxShadow: '0px 0px 1px 2px rgba(43, 114, 161, 0.6)',
+  //     color: '#2b72a1',
+  //   },
+  //   {
+  //     border: '1px solid #2b59a1',
+  //     color: '#2b59a1',
+  //   },
+  //   {
+  //     cursor: 'pointer',
+  //     backgroundColor: 'white',
+  //   },
+  // );
 
   var loadRecipes = (
     recipes: RecipeListElement[] | null,
@@ -390,11 +389,11 @@ const MyProfileComponent = (props: any) => {
                 </Col> */}
               </div>
             </div>
-            <div className="noselect  col-12 col-md-8 col-xl-9  p-2">
+            <div className="noselect  col-12 col-md-8 col-xl-9  p-0">
               <Nav tabs className="m-2">
                 {tabs &&
                   tabs.map((tab, index) => {
-                    if (tab === 'My Recipes' && !user.isVerified) {
+                    if (tab === 'My Recipes' && !user.admin) {
                       return null;
                     }
                     return (
@@ -410,24 +409,26 @@ const MyProfileComponent = (props: any) => {
                     );
                   })}
               </Nav>
-              <TabContent activeTab={activeTab} className="m-3">
+              <TabContent activeTab={activeTab} className="my-3 mx-2">
                 {/* For v2 */}
-                {/* <TabPane tabId={0}>
-                  <Col className="m-0">
-                    <Button
-                      color="success"
-                      className="ms-3 ps-3 pe-3"
-                      onClick={() => navigate('/main/my-profile/new')}>
-                      + New Recipe
-                    </Button>
-                  </Col>
-                  {loadRecipes(
-                    localMyRecipes,
-                    myRecipeLoading,
-                    myRecipeError,
-                    'Shared Recipes',
-                  )}
-                </TabPane> */}
+                {user && user.admin === true && (
+                  <TabPane tabId={0}>
+                    <Col className="m-0">
+                      <Button
+                        color="success"
+                        className="ms-3 ps-3 pe-3"
+                        onClick={() => navigate('/main/my-profile/new')}>
+                        + New Recipe
+                      </Button>
+                    </Col>
+                    {loadRecipes(
+                      localMyRecipes,
+                      myRecipeLoading,
+                      myRecipeError,
+                      'Shared Recipes',
+                    )}
+                  </TabPane>
+                )}
                 <TabPane tabId={1}>
                   {loadRecipes(
                     localRecents,
