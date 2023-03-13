@@ -217,7 +217,7 @@ const HomeComponent = (props: any) => {
           <div className="d-flex justify-content-center align-items-center col-sm-4 col-lg-6">
             <img
               className="img-fluid d-none d-lg-block"
-              src="https://previews.dropbox.com/p/thumb/AB35XweCsURULl6epPOYwEaEbHrVBItLNSfT8FhvisUu7xAiIShD4gnpMa8U7TxVSzHk_Ngi5M-ICqb2UqGnIiRR07ylY4Pw9u89itgxwXJEu7KF_9svIDPCv36tjIUcUy43gLKm8LZZ5O7EcLkZdEVim0n8GDweAhqRIuvY9GyUTQ99Q00WlF07WZ9R5Wa7kSEdY6XlJ5sYbBiR1lzLPQjGWQxr0YcM1b5AHNxUWsfKwuWKS0sS7IwIA42v0ZK3MDGrzJS0RTJLQmswP_UuQvA9fu0n592qOxPBm28oJppqSqCSU8mx0qJf03udHTBjLhjMx9Fs5LI_D53OEDfeY8oM4s-rk5l1vE2ODWTmPRBMv2w7DAompIYXzi3LopbltDs/p.png"
+              src={require('../../assets/images/center-food.png')}
             />
           </div>
           <div className="d-flex flex-column justify-content-between align-items-end col-sm-4 col-lg-3 py-5 ">

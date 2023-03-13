@@ -191,7 +191,7 @@ const RecipesComponent = (props: any) => {
                 <strong>{title}</strong>
               </AccordionItemButton>
             </AccordionItemHeading>
-            {/* <AccordionItemPanel className=" p-3 pt-0">
+            <AccordionItemPanel className=" p-3 pt-0">
               <div className="noselect row" key={objectKeyIndex}>
                 {list.map((filterDataElement: any, listIndex: number) => {
                   return (
@@ -234,7 +234,7 @@ const RecipesComponent = (props: any) => {
                   );
                 })}
               </div>
-            </AccordionItemPanel> */}
+            </AccordionItemPanel>
           </AccordionItem>
         );
       },
