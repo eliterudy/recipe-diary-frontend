@@ -96,7 +96,7 @@ const Header = ({modalCallback}: any) => {
           />
           <NavbarBrand
             className="noselect col-8 col-sm-3 m-sm-0 p-sm-0"
-            href="/main/home">
+            href="/">
             <div
               className="noselect d-flex flex-row align-items-center"
               style={{marginLeft: 12}}>
