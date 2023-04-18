@@ -47,6 +47,7 @@ const NoInternet = () => {
         src={images.no_internet}
         style={{width: 300}}
         className="mt-5 pt-5 img-fluid"
+        alt="noInternet"
       />
       <span className="text-center">
         <h3>Internet Connection Lost! </h3>

@@ -136,7 +136,7 @@ const Header = ({modalCallback}: any) => {
                 </NavLink>
               </NavItem>
 
-              {!user && (
+              {!user && (<NavItem>
                 <div
                   {...myStuffNavItemStyle}
                   className="noselect mt-2  mb-3 mb-sm-2 ms-sm-4 "
@@ -144,6 +144,7 @@ const Header = ({modalCallback}: any) => {
                   <i className="noselect fa fa-lock me-1" />
                   <strong style={{cursor: 'pointer'}}>My Profile</strong>
                 </div>
+                </NavItem>
               )}
               {user && (
                 <NavItem className="noselect ms-sm-4">

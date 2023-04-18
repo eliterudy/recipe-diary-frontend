@@ -481,7 +481,7 @@ const AddRecipeComponent = () => {
                     }}>
                     {ingredients.map(ingredient => {
                       return (
-                        <p
+                        <p 
                           style={{
                             fontSize: 12,
                             color: '#666',

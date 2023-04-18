@@ -22,6 +22,7 @@ const NotFound = () => {
         src={images.route_not_found}
         style={{width: 300}}
         className="mt-5 pt-5"
+        alt="not found"
       />
       <span className="text-center">
         <h3>Page not found! </h3>
