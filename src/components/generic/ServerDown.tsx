@@ -47,6 +47,7 @@ const ServerDown = () => {
         src={images.server_down}
         style={{width: 300}}
         className="mt-5 pt-5 img-fluid"
+        alt="server down"
       />
       <span className="text-center">
         <h3>Server under maintainance! </h3>

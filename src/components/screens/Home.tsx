@@ -218,6 +218,7 @@ const HomeComponent = (props: any) => {
             <img
               className="img-fluid d-none d-lg-block"
               src={require('../../assets/images/center-food.png')}
+              alt="center"
             />
           </div>
           <div className="d-flex flex-column justify-content-between align-items-end col-sm-4 col-lg-3 py-5 ">
