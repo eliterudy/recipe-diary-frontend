@@ -141,123 +141,125 @@ const Header = ({modalCallback}: any) => {
                   {...myStuffNavItemStyle}
                   className="noselect mt-2  mb-3 mb-sm-2 ms-sm-4 "
                   onClick={() => modalCallback()}>
-
                   <i className="noselect fa fa-lock me-1" />
-                  <strong style={{ cursor: 'pointer' }}>My Profile</strong>
+                  <strong style={{cursor: 'pointer'}}>My Profile</strong>
                 </div>
-                </NavItem >
-                )}
-                {user && (
-                  <NavItem className="noselect ms-sm-4">
-                    <NavLink
-                      tag={RRNavLink}
-                      className={'nav-link '}
-                      to="/main/my-profile">
-                      <strong>My Profile</strong>
-                    </NavLink>
-                  </NavItem>
-                )}
-                {/* For v2 */}
-                {/* <NavItem className="noselect mx-sm-1">
-      <NavLink
-        tag={RRNavLink}
-        className={'nav-link '}
-        to="/main/contact-us">
-        <strong>Contact Us</strong>
-      </NavLink>
-    </NavItem> */}
-              </Nav><Nav className="noselect ml-auto" navbar>
-                  {user ? (
-                    <Dropdown
-                      isOpen={isDropdownOpen}
-                      toggle={() => {
-                        updateDropdown(!isDropdownOpen);
-                      } }>
-                      <DropdownToggle
-                        style={{
-                          backgroundColor: avatarColor,
-                          borderRadius: 40,
-                          height: 40,
-                          width: 40,
-                          padding: 0,
-                        }}>
-                        <Avatar size={'md'} name={user.fullname} />
-                      </DropdownToggle>
+                </NavItem>
+              )}
+              {user && (
+                <NavItem className="noselect ms-sm-4">
+                  <NavLink
+                    tag={RRNavLink}
+                    className={'nav-link '}
+                    to="/main/my-profile">
+                    <strong>My Profile</strong>
+                  </NavLink>
+                </NavItem>
+              )}
+              {/* For v2 */}
+              {/* <NavItem className="noselect mx-sm-1">
+                <NavLink
+                  tag={RRNavLink}
+                  className={'nav-link '}
+                  to="/main/contact-us">
+                  <strong>Contact Us</strong>
+                </NavLink>
+              </NavItem> */}
+            </Nav>
+            <Nav className="noselect ml-auto" navbar>
+              {user ? (
+                <Dropdown
+                  isOpen={isDropdownOpen}
+                  toggle={() => {
+                    updateDropdown(!isDropdownOpen);
+                  }}>
+                  <DropdownToggle
+                    style={{
+                      backgroundColor: avatarColor,
+                      borderRadius: 40,
+                      height: 40,
+                      width: 40,
+                      padding: 0,
+                    }}>
+                    <Avatar size={'md'} name={user.fullname} />
+                  </DropdownToggle>
 
-                      <DropdownMenu style={{ marginTop: 14, marginRight: -15 }}>
-                        <div
-                          className="mx-3 mt-1 mb-2"
-                          onClick={() => updateMyProfileDropdown(!myProfileDropdown)}
-                          style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                          }}>
-                          <span> My Profile </span>
-                          {myProfileDropdown ? (
-                            <i className="fa fa-chevron-down " />
-                          ) : (
-                            <i className="fa fa-chevron-right " />
-                          )}
-                        </div>
+                  <DropdownMenu style={{marginTop: 14, marginRight: -15}}>
+                    <div
+                      className="mx-3 mt-1 mb-2"
+                      onClick={() =>
+                        updateMyProfileDropdown(!myProfileDropdown)
+                      }
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}>
+                      <span> My Profile </span>
+                      {myProfileDropdown ? (
+                        <i className="fa fa-chevron-down " />
+                      ) : (
+                        <i className="fa fa-chevron-right " />
+                      )}
+                    </div>
 
-                        {myProfileDropdown && (
-                          <div>
-                            <DropdownItem divider />
-                            {/* For v2 */}
-                            {user && user.admin == true && (
-                              <DropdownItem
-                                onClick={() => {
-                                  navigate('/main/my-profile/', {
-                                    state: { tab: 0 },
-                                  });
-                                } }>
-                                My Recipes
-                              </DropdownItem>
-                            )}
-                            <DropdownItem
-                              onClick={() => {
-                                navigate('/main/my-profile/', {
-                                  state: { tab: 1 },
-                                });
-                              } }>
-                              Recent Viewed
-                            </DropdownItem>
-                            <DropdownItem
-                              onClick={() => {
-                                navigate('/main/my-profile/', {
-                                  state: { tab: 2 },
-                                });
-                              } }>
-                              Saved Recipes
-                            </DropdownItem>
-                          </div>
-                        )}
+                    {myProfileDropdown && (
+                      <div>
                         <DropdownItem divider />
+                        {/* For v2 */}
+                        {user && user.admin == true && (
+                          <DropdownItem
+                            onClick={() => {
+                              navigate('/main/my-profile/', {
+                                state: {tab: 0},
+                              });
+                            }}>
+                            My Recipes
+                          </DropdownItem>
+                        )}
                         <DropdownItem
                           onClick={() => {
-                            localStorage.setItem('token', '');
-
-                            dispatch(removeUser());
-                          } }>
-                          Logout
+                            navigate('/main/my-profile/', {
+                              state: {tab: 1},
+                            });
+                          }}>
+                          Recent Viewed
                         </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  ) : (
-                    <NavItem className="noselect mx-sm-1">
-                      <Button
-                        outline
-                        onClick={() => {
-                          // dispatch(loadUser(null));
-                          navigate('/auth/signin');
-                        } }
-                        {...signInButtonStyle}>
-                        <span className="noselect">{` Sign In`}</span>
-                      </Button>
-                    </NavItem>
-                  )}
-                </Nav></>
+                        <DropdownItem
+                          onClick={() => {
+                            navigate('/main/my-profile/', {
+                              state: {tab: 2},
+                            });
+                          }}>
+                          Saved Recipes
+                        </DropdownItem>
+                      </div>
+                    )}
+                    <DropdownItem divider />
+                    <DropdownItem
+                      onClick={() => {
+                        localStorage.setItem('token', '');
+
+                        dispatch(removeUser());
+                      }}>
+                      Logout
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <NavItem className="noselect mx-sm-1">
+                  <Button
+                    outline
+                    onClick={() => {
+                      // dispatch(loadUser(null));
+                      navigate('/auth/signin');
+                    }}
+                    {...signInButtonStyle}>
+                    <span className="noselect">{` Sign In`}</span>
+                  </Button>
+                </NavItem>
+              )}
+            </Nav>
           </Collapse>
         </div>
       </Navbar>
